@@ -24,6 +24,10 @@ std::string Salle::getTypeSalle()
     return typeSalle;
 }
 
+void Salle::setTypeSalle()
+{
+    this->typeSalle=typeSalle;
+}
 void Salle::deleteSalle() {
     numero = 0;
     typeSalle = "";
