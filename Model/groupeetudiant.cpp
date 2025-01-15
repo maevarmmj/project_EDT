@@ -1,5 +1,5 @@
 #include "groupeetudiant.h"
-#include <iostream>
+
 
 GroupeEtudiant::GroupeEtudiant() : nomGroupe("Inconnu") {}
 
