@@ -7,7 +7,7 @@ SOURCES += \
         Model/enseignant.cpp \
         Model/groupeetudiant.cpp \
         Model/salle.cpp \
-        Model/ecue.h \
+        Model/ecue.cpp \
         main.cpp
 
 HEADERS += \
