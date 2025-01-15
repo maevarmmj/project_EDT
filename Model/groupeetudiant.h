@@ -1,5 +1,6 @@
 #ifndef GROUPEETUDIANT_H
 #define GROUPEETUDIANT_H
+#include <iostream>
 
 #include <string>
 
