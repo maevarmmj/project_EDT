@@ -1,6 +1,4 @@
 #include "Salle.h"
-#include <iostream>
-#include <string>
 
 
 Salle::Salle() : numero(0), typeSalle("")
@@ -26,6 +24,11 @@ int Salle::getNumero()
 std::string Salle::getTypeSalle()
 {
     return typeSalle;
+}
+
+void Salle::setTypeSalle()
+{
+    this->typeSalle=typeSalle;
 }
 
 void Salle::deleteSalle() {

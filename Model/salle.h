@@ -13,6 +13,7 @@ public:
     Salle(int numero,std::string typeSalle);
     int getNumero();
     std::string getTypeSalle();
+    void setTypeSalle();
     void deleteSalle();
     void affiche();
 };
