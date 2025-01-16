@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Model/creneau.cpp \
         Model/enseignant.cpp \
         Model/groupeetudiant.cpp \
         Model/salle.cpp \
@@ -13,6 +14,7 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
+    Model/creneau.h \
     Model/enseignant.h \
     Model/groupeetudiant.h \
     Model/salle.h \
