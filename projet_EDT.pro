@@ -1,9 +1,12 @@
 TEMPLATE = app
-CONFIG += console c++17
+CONFIG += c++17
 CONFIG -= app_bundle
-CONFIG -= qt
+CONFIG += qt
+
+QT += widgets
 
 SOURCES += \
+        Controlleur/CreneauControl.cpp \
         Model/creneau.cpp \
         Model/enseignant.cpp \
         Model/groupeetudiant.cpp \
@@ -14,6 +17,7 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
+    Controlleur/CreneauControl.h \
     Model/creneau.h \
     Model/enseignant.h \
     Model/groupeetudiant.h \
@@ -21,6 +25,7 @@ HEADERS += \
     Model/ecue.h \
     Model/semaine.h \
     Model/edt.h \
+    definition.h \
     main.h
 
 

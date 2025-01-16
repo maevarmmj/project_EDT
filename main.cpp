@@ -1,9 +1,14 @@
-#include <iostream>
+#include "main.h"
 
-using namespace std;
+
 
 int main()
 {
-    cout << "Hello World!" << endl;
-    return 0;
+    tm jourHeure = setJourHeure(0,8);
+
+
+    std::cout << jourHeure.tm_hour << std::endl;
+
+    salleLibreHeure(5);
+
 }
