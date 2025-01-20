@@ -11,6 +11,7 @@ SOURCES += \
         Model/ecue.cpp \
         Model/semaine.cpp \
         Model/edt.cpp \
+        controleur/grpeetudiantcontrolleur.cpp \
         main.cpp
 
 HEADERS += \
@@ -21,6 +22,7 @@ HEADERS += \
     Model/ecue.h \
     Model/semaine.h \
     Model/edt.h \
+    controleur/grpeetudiantcontrolleur.h \
     main.h
 
 
