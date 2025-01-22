@@ -29,6 +29,7 @@ int createDatabase(QSqlDatabase db){
         qDebug() << query.lastError().text();
         return 1;
     }
+    return 0;
 }
 
 int addreservation(){
