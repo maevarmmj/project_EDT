@@ -29,7 +29,7 @@ HEADERS += \
     Model/semaine.h \
     Model/edt.h \
     definition.h \
-    Controleur/CreneauControl.cpp \
-    controleur/grpeetudiantcontrolleur.cpp \
+    Controleur/CreneauControl.h \
+    controleur/grpeetudiantcontrolleur.h \
     controleur/ecuecontroleur.h \
     main.h
