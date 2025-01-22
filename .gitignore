@@ -35,3 +35,4 @@
 *.idx
 *.user
 *.json
+/build

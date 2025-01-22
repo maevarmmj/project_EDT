@@ -35,3 +35,13 @@ void Salle::deleteSalle() {
     numero = 0;
     typeSalle = "";
 }
+
+bool Salle::estdisponible()
+{
+    return disponible;
+}
+
+void Salle::setDisponible()
+{
+    this->disponible=disponible;
+}

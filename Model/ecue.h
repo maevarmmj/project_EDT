@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-#include "main.h"
+#include "definition.h"
 #include <string>
 #include "enseignant.h"
 #include "groupeetudiant.h"
