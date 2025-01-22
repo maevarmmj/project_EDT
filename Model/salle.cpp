@@ -1,15 +1,14 @@
 #include "salle.h"
 
 
-Salle::Salle() : numero(0), typeSalle(CM)
+Salle::Salle() : numero(0), typeSalle(CM), disponible(true)
 {
+
 }
 
 
-Salle::Salle(int numero, cours typeSalle) : numero(numero), typeSalle(typeSalle)
+Salle::Salle(int numero, cours typeSalle) : numero(numero), typeSalle(typeSalle), disponible(true)
 {
-    this->numero=numero;
-    this->typeSalle=typeSalle;
 }
 
 int Salle::getNumero() const
@@ -32,3 +31,14 @@ void Salle::deleteSalle() {
     numero = 0;
     typeSalle = CM;
 }
+
+bool Salle::estdisponible()
+{
+    return disponible;
+}
+
+void Salle::setDisponible(bool disponible)
+{
+    this->disponible=disponible;
+}
+
