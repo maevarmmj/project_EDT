@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG += qt
 
 QT += widgets
+QT += sql
 
 SOURCES += \
         Controlleur/CreneauControl.cpp \
@@ -27,5 +28,8 @@ HEADERS += \
     Model/edt.h \
     definition.h \
     main.h
+
+DISTFILES += \
+    reservations.db
 
 
