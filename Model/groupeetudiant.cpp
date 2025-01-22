@@ -6,7 +6,7 @@ GroupeEtudiant::GroupeEtudiant() : nomGroupe("Inconnu") {}
 GroupeEtudiant::GroupeEtudiant(std::string nomGroupe) : nomGroupe(nomGroupe) {}
 
 
-std::string GroupeEtudiant::getnomGroupe() {
+std::string GroupeEtudiant::getnomGroupe() const {
     return nomGroupe;
 }
 
