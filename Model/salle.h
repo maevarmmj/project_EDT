@@ -1,22 +1,27 @@
 #ifndef SALLE_H
 #define SALLE_H
 #include <iostream>
+#include <iostream>
+#include <fstream>
+#include <vector>
 #include <string>
+#include "definition.h"
+
 class Salle
 {
 private:
     int numero;
-    std::string typeSalle;
+    cours typeSalle;
     bool disponible;
 
 public:
     Salle();
-    Salle(int numero,std::string typeSalle);
+    Salle(int numero,cours typeSalle);
     int getNumero();
-    std::string getTypeSalle();
-    void setTypeSalle();
+    cours getTypeSalle();
+    void setTypeSalle(cours typeSalle);
     bool estdisponible();
-    void setDisponible();
+    void setDisponible(bool disponible);
 
     void deleteSalle();
     void affiche();

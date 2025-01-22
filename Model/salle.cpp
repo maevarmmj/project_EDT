@@ -1,18 +1,14 @@
 #include "Salle.h"
 
 
-Salle::Salle() : numero(0), typeSalle("")
+Salle::Salle() : numero(0), typeSalle(CM), disponible(true)
 {
-    this->numero=0;
-    this->typeSalle="";
 
 }
 
 
-Salle::Salle(int numero, std::string typeSalle) : numero(numero), typeSalle(typeSalle)
+Salle::Salle(int numero, cours typeSalle) : numero(numero), typeSalle(typeSalle), disponible(true)
 {
-    this->numero=numero;
-    this->typeSalle=typeSalle;
 }
 
 int Salle::getNumero()
@@ -21,19 +17,19 @@ int Salle::getNumero()
 }
 
 
-std::string Salle::getTypeSalle()
+cours Salle::getTypeSalle()
 {
     return typeSalle;
 }
 
-void Salle::setTypeSalle()
+void Salle::setTypeSalle(cours typeSalle)
 {
     this->typeSalle=typeSalle;
 }
 
 void Salle::deleteSalle() {
     numero = 0;
-    typeSalle = "";
+    typeSalle = CM;
 }
 
 bool Salle::estdisponible()
@@ -41,7 +37,8 @@ bool Salle::estdisponible()
     return disponible;
 }
 
-void Salle::setDisponible()
+void Salle::setDisponible(bool disponible)
 {
     this->disponible=disponible;
 }
+

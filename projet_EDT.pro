@@ -7,6 +7,7 @@ QT += widgets
 QT += sql
 
 SOURCES += \
+        Controleur/SalleControl.cpp \
         Model/creneau.cpp \
         Model/enseignant.cpp \
         Model/groupeetudiant.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
         main.cpp
 
 HEADERS += \
+    Controleur/SalleControl.h \
     Model/creneau.h \
     Model/enseignant.h \
     Model/groupeetudiant.h \
