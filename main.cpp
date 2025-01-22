@@ -1,7 +1,6 @@
 #include "main.h"
 #include <iostream>
 
-#include <iostream>
 
 int main() {
     EcueControleur ecue;
@@ -22,7 +21,14 @@ int main() {
 
     int heuresTP = ecue.getNombreHeure(TP_ELEC);
     std::cout << "Nombre d'heures pour TP_ELEC : " << heuresTP << std::endl;
+    
+    ajouterSalleCSV(213, CM);
+    ajouterSalleCSV(200, TP_INFO);
+    ajouterSalleCSV(213, EXAMEN);
+    ajouterSalleCSV(103, CM);
+    retirerSalleCSV(213);
+    ajouterSalleCSV(213, EXAMEN);
+    retirerSalleCSV(551);
+    retirerSalleCSV(103);
 
-
-    return 0;
 }

@@ -12,7 +12,6 @@ class Salle
 private:
     int numero;
     cours typeSalle;
-    bool disponible;
 
 public:
     Salle();
@@ -20,8 +19,6 @@ public:
     int getNumero() const;
     cours getTypeSalle() const;
     void setTypeSalle(cours typeSalle);
-    bool estdisponible();
-    void setDisponible(bool disponible);
 
     void deleteSalle();
     void affiche();
