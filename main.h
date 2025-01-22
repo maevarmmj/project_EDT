@@ -1,6 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "Controlleur/CreneauControl.h"
+#include "Controleur/CreneauControl.h"
+#include "Controleur/SalleControl.h"
 
 #endif // MAIN_H

@@ -3,11 +3,10 @@ CONFIG += c++17
 CONFIG -= app_bundle
 CONFIG += qt
 
-QT += widgets
-QT += sql
+QT += core widgets
 
 SOURCES += \
-        Controlleur/CreneauControl.cpp \
+        Controleur/SalleControl.cpp \
         Model/creneau.cpp \
         Model/enseignant.cpp \
         Model/groupeetudiant.cpp \
@@ -15,11 +14,13 @@ SOURCES += \
         Model/ecue.cpp \
         Model/semaine.cpp \
         Model/edt.cpp \
+        Controleur/CreneauControl.cpp \
         controleur/grpeetudiantcontrolleur.cpp \
+    controleur/ecuecontroleur.cpp \
         main.cpp
 
 HEADERS += \
-    Controlleur/CreneauControl.h \
+    Controleur/SalleControl.h \
     Model/creneau.h \
     Model/enseignant.h \
     Model/groupeetudiant.h \
@@ -27,11 +28,8 @@ HEADERS += \
     Model/ecue.h \
     Model/semaine.h \
     Model/edt.h \
-    controleur/grpeetudiantcontrolleur.h \
     definition.h \
+    Controleur/CreneauControl.h \
+    controleur/grpeetudiantcontrolleur.h \
+    controleur/ecuecontroleur.h \
     main.h
-
-DISTFILES += \
-    reservations.db
-
-
