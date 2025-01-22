@@ -7,6 +7,7 @@ class Salle
 private:
     int numero;
     std::string typeSalle;
+    bool disponible;
 
 public:
     Salle();
@@ -14,6 +15,9 @@ public:
     int getNumero();
     std::string getTypeSalle();
     void setTypeSalle();
+    bool estdisponible();
+    void setDisponible();
+
     void deleteSalle();
     void affiche();
 };
