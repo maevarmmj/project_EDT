@@ -35,3 +35,5 @@
 *.idx
 *.user
 *.json
+/build
+*.15294e6
