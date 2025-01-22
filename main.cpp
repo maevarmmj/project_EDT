@@ -9,12 +9,20 @@ int main() {
     std::string nomECUE = "Blabla";
     std::string nomEnseignant = "Trenchant";
     std::string prenomEnseignant = "Vincent";
-    int numeroSalle = 103;
-    cours typeSalle = TD;
+    int numeroSalle = 101;
+    cours typeSalle = CM;
     std::string groupeEtudiant = "E4";
 
-    std::cout << "Creation de l'ECUE en cours...\n";
-    ecue.creerECUE(nomECUE, nomEnseignant, prenomEnseignant, numeroSalle, typeSalle, groupeEtudiant);
+    std::vector<cours> types = {CM, TD, TP_INFO};
+    std::vector<int> heures = {10, 20, 15};
+    ecue.creerECUE(nomECUE, nomEnseignant, prenomEnseignant, numeroSalle, types, heures, groupeEtudiant);
+
+    int heuresCM = ecue.getNombreHeure(CM);
+    std::cout << "Nombre d'heures pour CM : " << heuresCM << std::endl;
+
+    int heuresTP = ecue.getNombreHeure(TP_ELEC);
+    std::cout << "Nombre d'heures pour TP_ELEC : " << heuresTP << std::endl;
+
 
     return 0;
 }

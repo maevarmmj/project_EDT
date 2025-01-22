@@ -12,8 +12,10 @@ private:
     GroupeEtudiant etudiants;
     Enseignant enseignant;
     cours typeSalle;
-    uint32 heureTotal[5];
-    uint32 heureRest[5];
+    std::vector<cours> typesCours;
+    std::vector<int> heuresParCours;
+
+
 
 public:
     EcueControleur();
@@ -30,9 +32,8 @@ public:
     boolean ajouterSalleCSV(int numero, const cours typeSalle);
     boolean ajouterGroupeCSV(const std::string& groupe);
 
-    // Fonction pour créer un ECUE avec les informations provenant des fichiers CSV
-    void creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, int numero, const cours& typeSalle, const std::string& groupe);
-
+    void creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, int numero, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe);
+    int getNombreHeure(const cours& typeCours) const;
 
 
 };
