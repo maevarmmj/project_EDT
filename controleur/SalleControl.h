@@ -10,6 +10,7 @@
 #include "Model/salle.h"
 #include "definition.h"
 
-bool addSalleCSV(int numero, cours cours);
+bool ajouterSalleCSV(int numero, cours cours);
+bool retirerSalleCSV(int numero);
 
 #endif // SALLECONTROL_H

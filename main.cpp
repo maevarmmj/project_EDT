@@ -4,8 +4,12 @@
 
 int main()
 {
-    addSalleCSV(213, CM);
-    addSalleCSV(200, TP_INFO);
-    addSalleCSV(213, EXAMEN);
-    addSalleCSV(103, CM);
+    ajouterSalleCSV(213, CM);
+    ajouterSalleCSV(200, TP_INFO);
+    ajouterSalleCSV(213, EXAMEN);
+    ajouterSalleCSV(103, CM);
+    retirerSalleCSV(213);
+    ajouterSalleCSV(213, EXAMEN);
+    retirerSalleCSV(551);
+    retirerSalleCSV(103);
 }
