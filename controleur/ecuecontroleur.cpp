@@ -18,7 +18,7 @@ EcueControleur::EcueControleur(std::string nom, int nbHeure, GroupeEtudiant etud
 std::vector<GroupeEtudiant> EcueControleur::lireGroupesEtudiantCSV(QString& cheminFichier){
     std::vector<GroupeEtudiant> groupes;
 
-    QFile file(QDir::currentPath() + "/../../csv/" + cheminFichier );
+    QFile file(QDir::currentPath() + "/../../CSV/" + cheminFichier );
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         std::cerr << "Impossible d'ouvrir le fichier" << std::endl;
         return groupes;
@@ -43,7 +43,7 @@ std::vector<GroupeEtudiant> EcueControleur::lireGroupesEtudiantCSV(QString& chem
 std::vector<Salle> EcueControleur::lireSallesCSV(QString& cheminFichier) {
     std::vector<Salle> salles;
 
-    QFile file(QDir::currentPath() + "/../../csv/" + cheminFichier);
+    QFile file(QDir::currentPath() + "/../../CSV/" + cheminFichier);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         std::cerr << "Impossible d'ouvrir le fichier " << cheminFichier.toStdString() << std::endl;
         return salles;
@@ -88,7 +88,7 @@ std::vector<Enseignant> EcueControleur::lireEnseignantCSV(QString& cheminFichier
     std::vector<Enseignant> enseignants;
 
     // Ouvre le fichier CSV
-    QFile file(QDir::currentPath() + "/../../csv/" + cheminFichier);
+    QFile file(QDir::currentPath() + "/../../CSV/" + cheminFichier);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         std::cerr << "Impossible d'ouvrir le fichier " << cheminFichier.toStdString() << std::endl;
         return enseignants;

@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG += qt
 
 QT += core widgets
+QT += sql
 
 SOURCES += \
         Controleur/SalleControl.cpp \
