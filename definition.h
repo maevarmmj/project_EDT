@@ -2,6 +2,8 @@
 #define DEFINITION_H
 
 typedef enum cours {CM, TD, TP_INFO, TP_ELEC, EXAMEN} cours;
+typedef enum boolean {FALSE, TRUE} boolean;
+
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
