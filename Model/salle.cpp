@@ -1,4 +1,4 @@
-#include "Salle.h"
+#include "salle.h"
 
 
 Salle::Salle() : numero(0), typeSalle(CM), disponible(true)
@@ -11,13 +11,13 @@ Salle::Salle(int numero, cours typeSalle) : numero(numero), typeSalle(typeSalle)
 {
 }
 
-int Salle::getNumero()
+int Salle::getNumero() const
 {
     return numero;
 }
 
 
-cours Salle::getTypeSalle()
+cours Salle::getTypeSalle() const
 {
     return typeSalle;
 }

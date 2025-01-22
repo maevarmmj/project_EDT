@@ -1,15 +1,17 @@
 #ifndef ECUE_H
 #define ECUE_H
 
-#include <fstream>
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
 #include <vector>
-#include <iostream>
-#include <string>
 
 #include "definition.h"
 #include <string>
 #include "enseignant.h"
 #include "groupeetudiant.h"
+#include "salle.h"
+
 
 class Ecue
 {
@@ -41,15 +43,9 @@ public:
     void setHeureTotal(const uint32 heures[5]);
     void setHeureRest(const uint32 heures[5]);
 
-    std::vector<GroupeEtudiant> lireGroupesDepuisCSV(const std::string& cheminFichier);
-    GroupeEtudiant choisirGroupe(std::vector<GroupeEtudiant>& groupes);
-
-    void ajouterECUE();
-
-
-
-
 };
+
+
 
 #endif // ECUE_H
 
