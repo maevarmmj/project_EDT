@@ -7,7 +7,6 @@ QT += widgets
 QT += sql
 
 SOURCES += \
-        Controlleur/CreneauControl.cpp \
         Model/creneau.cpp \
         Model/enseignant.cpp \
         Model/groupeetudiant.cpp \
@@ -15,11 +14,11 @@ SOURCES += \
         Model/ecue.cpp \
         Model/semaine.cpp \
         Model/edt.cpp \
+        Controleur/CreneauControl.cpp \
         controleur/grpeetudiantcontrolleur.cpp \
         main.cpp
 
 HEADERS += \
-    Controlleur/CreneauControl.h \
     Model/creneau.h \
     Model/enseignant.h \
     Model/groupeetudiant.h \
@@ -27,6 +26,7 @@ HEADERS += \
     Model/ecue.h \
     Model/semaine.h \
     Model/edt.h \
+    Controleur/CreneauControl.h \
     controleur/grpeetudiantcontrolleur.h \
     definition.h \
     main.h
