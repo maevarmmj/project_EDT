@@ -13,7 +13,7 @@ public:
     GroupeEtudiant();
     GroupeEtudiant(std::string nomGroupe);
 
-    std::string getnomGroupe();
+    std::string getnomGroupe() const;
     void deleteGroupe();
 };
 

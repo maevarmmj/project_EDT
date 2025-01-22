@@ -1,7 +1,12 @@
 #ifndef ECUE_H
 #define ECUE_H
 
-#include "main.h"
+#include <fstream>
+#include <vector>
+#include <iostream>
+#include <string>
+
+#include "definition.h"
 #include <string>
 #include "enseignant.h"
 #include "groupeetudiant.h"
@@ -20,11 +25,11 @@ private:
 public:
     Ecue();
     Ecue(std::string nom, int nbHeure, GroupeEtudiant etudiants, Enseignant enseignant);
-    std::string getNom();
-    uint32 getNbHeure();
-    GroupeEtudiant getEtudiants();
-    Enseignant getEnseignant();
-    cours getTypeSalle();
+    std::string getNom() const;
+    uint32 getNbHeure() const;
+    GroupeEtudiant getEtudiants() const;
+    Enseignant getEnseignant() const;
+    cours getTypeSalle() const;
     uint32* getHeureTotal();
     uint32* getHeureRest();
 
@@ -35,6 +40,12 @@ public:
     void setTypeSalle(cours typeSalle);
     void setHeureTotal(const uint32 heures[5]);
     void setHeureRest(const uint32 heures[5]);
+
+    std::vector<GroupeEtudiant> lireGroupesDepuisCSV(const std::string& cheminFichier);
+    GroupeEtudiant choisirGroupe(std::vector<GroupeEtudiant>& groupes);
+
+    void ajouterECUE();
+
 
 
 
