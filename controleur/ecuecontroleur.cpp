@@ -113,7 +113,7 @@ std::vector<Enseignant> EcueControleur::lireEnseignantCSV(QString& cheminFichier
 
 
 boolean EcueControleur::ajouterEnseignantCSV(const std::string& nom, const std::string& prenom) {
-    QString fichier = "Enseignant.csv";
+    QString fichier = "Enseignants.csv";
     std::vector<Enseignant> enseignants = lireEnseignantCSV(fichier);
     for (const Enseignant& enseignant : enseignants) {
         if (enseignant.getNom() == nom && enseignant.getPrenom() == prenom) {
@@ -126,7 +126,7 @@ boolean EcueControleur::ajouterEnseignantCSV(const std::string& nom, const std::
 
 
 boolean EcueControleur::ajouterSalleCSV(int numero, const cours typeSalle) {
-    QString fichier = "salles.csv";
+    QString fichier = "Salles.csv";
     std::vector<Salle> salles = lireSallesCSV(fichier);
     for (const Salle& salle : salles) {
         if (salle.getNumero() == numero && salle.getTypeSalle() == typeSalle) {
@@ -139,7 +139,7 @@ boolean EcueControleur::ajouterSalleCSV(int numero, const cours typeSalle) {
 
 
 boolean EcueControleur::ajouterGroupeCSV(const std::string& groupe) {
-    QString fichier = "groupes.csv";
+    QString fichier = "Groupes.csv";
     std::vector<GroupeEtudiant> groupes = lireGroupesEtudiantCSV(fichier);
     for (const GroupeEtudiant& grp : groupes) {
         if (grp.getnomGroupe() == groupe) {
