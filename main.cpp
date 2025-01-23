@@ -16,7 +16,7 @@ int main() {
     std::vector<int> heures = {10, 20, 15};
     ecue.creerECUE(nomECUE, nomEnseignant, prenomEnseignant, numeroSalle, types, heures, groupeEtudiant);
 
-    int heuresCM = ecue.getNombreHeure(CM);
+    int heuresCM = ecue.getNombreHeure(typeSalle);
     std::cout << "Nombre d'heures pour CM : " << heuresCM << std::endl;
 
     int heuresTP = ecue.getNombreHeure(TP_ELEC);
@@ -30,5 +30,24 @@ int main() {
     ajouterSalleCSV(213, EXAMEN);
     retirerSalleCSV(551);
     retirerSalleCSV(103);
+
+    retirerEnseignantCSV("Trenchant", "Vincent");
+    retirerEnseignantCSV("Schlinquer", "Thomas");
+
+    ajouterEnseignantCSV("Bertolim", "M-A");
+    ajouterEnseignantCSV("Trenchant", "Vincent");
+
+
+
+    ajouterGroupeEtudiantCSV("E1");
+    ajouterGroupeEtudiantCSV("E2");
+    ajouterGroupeEtudiantCSV("E3");
+    ajouterGroupeEtudiantCSV("E4");
+    ajouterGroupeEtudiantCSV("E5");
+
+
+
+
+
 
 }
