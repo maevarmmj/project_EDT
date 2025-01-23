@@ -163,26 +163,26 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     this->heuresParCours = heuresParCours;
 
     if (!ajouterEnseignantCSV(nom, prenom)) {
-        std::cerr << "Erreur : Enseignant introuvable dans le fichier enseignant.csv." << std::endl;
+        std::cerr << "Erreur : Enseignant introuvable dans le fichier Enseignants.csv." << std::endl;
         return;
     }
 
     if (!ajouterSalleCSV(numero, typesCours[0])) { // Vérification avec le premier type seulement
-        std::cerr << "Erreur : Salle introuvable dans le fichier salles.csv." << std::endl;
+        std::cerr << "Erreur : Salle introuvable dans le fichier Salles.csv." << std::endl;
         return;
     }
 
     if (!ajouterGroupeCSV(groupe)) {
-        std::cerr << "Erreur : Groupe d'étudiants introuvable dans le fichier groupes.csv." << std::endl;
+        std::cerr << "Erreur : Groupe d'étudiants introuvable dans le fichier Groupes.csv." << std::endl;
         return;
     }
 
-    QString fichier = QDir::currentPath() + "/../../csv/ecue.csv";
+    QString fichier = QDir::currentPath() + "/../../csv/Ecue.csv";
     QFile file(fichier);
     bool fileExists = file.exists();
 
     if (!file.open(QIODevice::Append | QIODevice::Text)) {
-        std::cerr << "Erreur : Impossible d'ouvrir ou de creer le fichier ecue.csv." << std::endl;
+        std::cerr << "Erreur : Impossible d'ouvrir ou de creer le fichier Ecue.csv." << std::endl;
         return;
     }
 

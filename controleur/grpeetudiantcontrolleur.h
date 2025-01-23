@@ -1,15 +1,19 @@
-#ifndef GRPEETUDIANTCONTROLLEUR_H
 #define GRPEETUDIANTCONTROLLEUR_H
 #include <Model/groupeetudiant.h>
 #include <fstream>
 #include <iostream>
 #include <string>
 
-class grpeetudiantcontrolleur
-{
-public:
-    grpeetudiantcontrolleur();
-    static void enregistrerDansCSV(const GroupeEtudiant groupe, const std::string cheminFichier);
-};
 
-#endif // GRPEETUDIANTCONTROLLEUR_H
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <QStringList>
+#include <QDir>
+
+#include "Model/groupeetudiant.h"
+#include "definition.h"
+
+bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe);
+bool retirerGroupeEtudiantCSV(const std::string& nomGroupe);
+
