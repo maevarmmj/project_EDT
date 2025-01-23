@@ -17,8 +17,8 @@ QString getCoursName(cours cours) {
     }
 }
 
-bool addSalleCSV(int numero, cours cours){
-    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salle.csv");
+bool ajouterSalleCSV(int numero, cours cours){
+    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salles.csv");
     QFile file(csv);
     bool fileExists = file.exists();
 
@@ -49,6 +49,56 @@ bool addSalleCSV(int numero, cours cours){
         out << "Numero,Cours" << "\n";
     }
     out << numero << "," << getCoursName(cours) << "\n";
+
+    file.close();
+    return true;
+}
+
+
+bool retirerSalleCSV(int numero){
+    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salles.csv");
+    QFile file(csv);
+
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        qDebug() << "Error opening file:" << file.errorString();
+        return false;
+    }
+
+    QTextStream in(&file);
+    QStringList lines;
+    bool found = false;
+    bool isFirstLine = true;
+
+
+
+    QString line;
+    while (in.readLineInto(&line)) {
+        if (isFirstLine) {
+            isFirstLine = false;
+            lines.append(line);
+            continue;
+        }
+        QStringList data = line.split(",");
+        if (!data.isEmpty() && data.first() == QString::number(numero)) {
+            found = true;
+            continue;
+        }
+        lines.append(line);
+    }
+
+    if (!found) {
+        qDebug() << "Error: Numero" << QString::number(numero) << "not found in CSV.";
+        file.close();
+        return false;
+    }
+
+    file.seek(0);
+    file.resize(0);
+
+    QTextStream out(&file);
+    for (const QString& updatedLine : lines) {
+        out << updatedLine << "\n";
+    }
 
     file.close();
     return true;
