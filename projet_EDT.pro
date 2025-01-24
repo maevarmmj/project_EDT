@@ -16,12 +16,14 @@ SOURCES += \
         Model/semaine.cpp \
         Model/edt.cpp \
         Controleur/CreneauControl.cpp \
+        controleur/enseignantControl.cpp \
         controleur/grpeetudiantcontrolleur.cpp \
-    controleur/ecuecontroleur.cpp \
+        controleur/ecuecontroleur.cpp \
         main.cpp
 
 HEADERS += \
     Controleur/SalleControl.h \
+    Controleur/enseignantControl.h \
     Model/creneau.h \
     Model/enseignant.h \
     Model/groupeetudiant.h \
