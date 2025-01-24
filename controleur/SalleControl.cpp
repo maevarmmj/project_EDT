@@ -1,5 +1,7 @@
 #import "SalleControl.h"
 
+QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salles.csv");
+
 QString getCoursName(cours cours) {
     switch (cours) {
     case CM:
@@ -18,7 +20,6 @@ QString getCoursName(cours cours) {
 }
 
 bool ajouterSalleCSV(int numero, cours cours){
-    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salles.csv");
     QFile file(csv);
     bool fileExists = file.exists();
 
@@ -56,7 +57,6 @@ bool ajouterSalleCSV(int numero, cours cours){
 
 
 bool retirerSalleCSV(int numero){
-    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salles.csv");
     QFile file(csv);
 
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
@@ -102,4 +102,35 @@ bool retirerSalleCSV(int numero){
 
     file.close();
     return true;
+}
+
+// Function to read room numbers from the CSV file
+QList<int> readRoomNumbersFromCSV(const QString& typeCours) {
+    QList<int> roomNumbers;
+    QFile file(csv);
+
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Error: Could not open CSV file:" << file.errorString();
+        return roomNumbers;
+    }
+
+    QTextStream in(&file);
+    in.readLine(); // Skip header line (Numero,Cours)
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList fields = line.split(',');
+        if (fields.size() >= 2) { // Ensure we have at least Numero and Cours
+            bool ok;
+            int roomNumber = fields[0].toInt(&ok);
+            QString cours = fields[1];
+            if (ok && cours == typeCours) { // Check if course type matches
+                roomNumbers.append(roomNumber);
+            }
+        }
+    }
+
+    file.close();
+    return roomNumbers;
 }
