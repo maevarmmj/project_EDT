@@ -2,17 +2,12 @@
 
 EcueControleur::EcueControleur() : etudiants(), enseignant() {
     this->nom = "";
-    this->nbHeure = 0;
+    this->nbHeuresTotales = 0;
+    this->nbHeuresTotalesAPlacer = 0;
+    this->typesCours = {};
+    this->heuresParCours = {};
+    this->heuresAPlacer = {};
 }
-
-EcueControleur::EcueControleur(std::string nom, int nbHeure, GroupeEtudiant etudiants, Enseignant enseignant)
-{
-    this->nom = nom;
-    this->nbHeure = nbHeure;
-    this->etudiants = etudiants;
-    this->enseignant = enseignant;
-}
-
 
 
 std::vector<GroupeEtudiant> EcueControleur::lireGroupesEtudiantCSV(QString& cheminFichier){
@@ -151,51 +146,49 @@ boolean EcueControleur::ajouterGroupeCSV(const std::string& groupe) {
 }
 
 
-
-void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, int numero, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe) {
+void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe) {
     if (typesCours.size() != heuresParCours.size()) {
         std::cerr << "Erreur : Le nombre de types de cours et le nombre d'heures ne correspondent pas." << std::endl;
         return;
     }
 
+    // Initialisation des membres
     this->nom = nomECUE;
     this->typesCours = typesCours;
     this->heuresParCours = heuresParCours;
+    this->heuresAPlacer = heuresParCours;
 
+    // Vérification des CSV externes
     if (!ajouterEnseignantCSV(nom, prenom)) {
         std::cerr << "Erreur : Enseignant introuvable dans le fichier Enseignants.csv." << std::endl;
         return;
     }
-
-    if (!ajouterSalleCSV(numero, typesCours[0])) { // Vérification avec le premier type seulement
-        std::cerr << "Erreur : Salle introuvable dans le fichier Salles.csv." << std::endl;
-        return;
-    }
-
     if (!ajouterGroupeCSV(groupe)) {
         std::cerr << "Erreur : Groupe d'étudiants introuvable dans le fichier Groupes.csv." << std::endl;
         return;
     }
 
-    QString fichier = QDir::currentPath() + "/../../csv/Ecue.csv";
+    // Chemin vers le fichier CSV
+    QString fichier = QDir::currentPath() + "/../../CSV/Ecue.csv";
     QFile file(fichier);
     bool fileExists = file.exists();
 
+    // Ouvrir le fichier en mode ajout
     if (!file.open(QIODevice::Append | QIODevice::Text)) {
-        std::cerr << "Erreur : Impossible d'ouvrir ou de creer le fichier Ecue.csv." << std::endl;
+        std::cerr << "Erreur : Impossible d'ouvrir ou de créer le fichier Ecue.csv." << std::endl;
         return;
     }
 
     QTextStream out(&file);
 
-    // En-tête si fichier n'existait pas
     if (!fileExists) {
-        out << "NomECUE,Enseignant,Groupe,TypesCours,HeuresCours\n";
+        out << "NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlacer\n";
     }
 
-    // Construction des listes pour types de cours et heures
     QStringList typesCoursStrList;
     QStringList heuresCoursStrList;
+    QStringList heuresRestantesCoursStrList;
+
     for (size_t i = 0; i < typesCours.size(); ++i) {
         switch (typesCours[i]) {
         case CM: typesCoursStrList << "CM"; break;
@@ -206,29 +199,34 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
         default: break;
         }
         heuresCoursStrList << QString::number(heuresParCours[i]);
+        heuresRestantesCoursStrList << QString::number(heuresAPlacer[i]);
     }
 
     QString typesCoursStr = typesCoursStrList.join("/");
     QString heuresCoursStr = heuresCoursStrList.join("/");
+    QString heuresRestantesCoursStr = heuresRestantesCoursStrList.join("/");
 
     QString enseignant = QString::fromStdString(nom + "," + prenom);
     QString groupeStr = QString::fromStdString(groupe);
 
-    // Fichier CSV + 1 ligne
     out << QString::fromStdString(nomECUE) << ","
         << enseignant << ","
         << groupeStr << ","
         << typesCoursStr << ","
-        << heuresCoursStr << "\n";
+        << heuresCoursStr << ","
+        << heuresRestantesCoursStr << "\n";
 
     file.close();
 
-    std::cout << "ECUE creee : " << nomECUE << std::endl;
+    std::cout << "ECUE créée : " << nomECUE << std::endl;
     std::cout << "Enseignant : " << nom << " " << prenom << std::endl;
     std::cout << "Types de cours : " << typesCoursStr.toStdString() << std::endl;
     std::cout << "Heures de cours : " << heuresCoursStr.toStdString() << std::endl;
+    std::cout << "Heures restantes : " << heuresRestantesCoursStr.toStdString() << std::endl;
     std::cout << "Groupe : " << groupe << std::endl;
 }
+
+
 
 
 int EcueControleur::getNombreHeure(const cours& typeCours) const {
@@ -240,5 +238,173 @@ int EcueControleur::getNombreHeure(const cours& typeCours) const {
     return 0;
 }
 
+uint32 EcueControleur::decrementerHeuresCours(const cours& typeCours, uint32 nbHeuresADecrementer) {
+    for (size_t i = 0; i < typesCours.size(); ++i) {
+        if (typesCours[i] == typeCours) {
+            heuresAPlacer[i] -= nbHeuresADecrementer;
+            if (heuresAPlacer[i] < 0) {
+                heuresAPlacer[i] = 0;
+            }
+
+            QString fichier = QDir::currentPath() + "/../../CSV/Ecue.csv";
+            QFile file(fichier);
+
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                std::cerr << "Erreur : Impossible d'ouvrir le fichier Ecue.csv." << std::endl;
+                return heuresAPlacer[i];
+            }
+
+            QTextStream in(&file);
+            QStringList lignes;
+            bool modifie = false;
+
+            while (!in.atEnd()) {
+                QString ligne = in.readLine();
+                QStringList data = ligne.split(",");
+
+                if (data.size() >= 7) {
+                    QString existingNomECUE = data[0].trimmed();
+                    QStringList existingTypesCours = data[4].split("/");
+                    QStringList existingHeuresRestantesCours = data[6].split("/");
+
+                    if (existingNomECUE == QString::fromStdString(this->nom)) {
+                        for (int j = 0; j < existingTypesCours.size(); ++j) {
+                            if (existingTypesCours[j] == QString::fromStdString(coursToString(typeCours))) {
+                                existingHeuresRestantesCours[j] = QString::number(heuresAPlacer[i]);
+                                modifie = true;
+                                break;
+                            }
+                        }
+                        data[6] = existingHeuresRestantesCours.join("/"); // Met à jour la 7e colonne
+                        ligne = data.join(",");
+                    }
+                }
+
+                lignes.append(ligne);
+            }
+
+            file.close();
+
+            if (modifie) {
+                if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+                    std::cerr << "Erreur : Impossible de reecrire le fichier Ecue.csv." << std::endl;
+                    return heuresAPlacer[i];
+                }
+
+                QTextStream out(&file);
+                for (const QString& ligne : lignes) {
+                    out << ligne << "\n";
+                }
+
+                file.close();
+                std::cout << "MAJ reussie du fichier Ecue.csv pour le type de cours "
+                          << coursToString(typeCours) << " avec " << heuresAPlacer[i] << " heures restantes." << std::endl;
+            } else {
+                std::cerr << "Erreur : Aucune modification dans le fichier Ecue.csv." << std::endl;
+            }
+
+            return heuresAPlacer[i];
+        }
+    }
+
+    std::cerr << "Erreur : Type de cours introuvable" << std::endl;
+    return 0;
+}
+
+
+
+std::string EcueControleur::coursToString(const cours& typeCours) const {
+    switch (typeCours) {
+    case CM: return "CM";
+    case TD: return "TD";
+    case TP_INFO: return "TP_INFO";
+    case TP_ELEC: return "TP_ELEC";
+    case EXAMEN: return "EXAMEN";
+    default: return "";
+    }
+}
+
+
+uint32 EcueControleur::getNombreHeureTotalAPlacer() {
+    for (size_t i = 0; i < heuresAPlacer.size(); ++i) {
+        nbHeuresTotalesAPlacer += heuresAPlacer[i];
+    }
+    return nbHeuresTotalesAPlacer;
+}
+
+
+uint32 EcueControleur::getNombreHeureTotal() {
+
+    for (size_t i = 0; i < heuresParCours.size(); ++i) {
+        this->nbHeuresTotales += heuresParCours[i];
+    }
+
+    return nbHeuresTotales;
+}
+
+
+
+
+bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe) {
+    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Ecue.csv");
+    QFile file(csv);
+
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        qDebug() << "Erreur : impossible d'ouvrir le fichier:" << file.errorString();
+        return false;
+    }
+
+    QTextStream in(&file);
+    QStringList lines;
+    bool found = false;
+    bool isFirstLine = true;
+
+    QString line;
+    while (in.readLineInto(&line)) {
+        if (isFirstLine) {
+            isFirstLine = false;
+            lines.append(line);
+            continue;
+        }
+
+        QStringList data = line.split(",");
+        if (!data.isEmpty() && data.size() > 1) {
+            QString existingNomECUE = data.first().trimmed();
+            QString existingNomEnseignant = data.at(1).trimmed();
+            QString existingPrenomEnseignant = data.at(2).trimmed();
+            QString existingGroupeEtudiant = data.at(3).trimmed();
+
+
+            if (existingNomECUE == QString::fromStdString(nomECUE).trimmed() &&
+                existingNomEnseignant == QString::fromStdString(nom).trimmed() &&
+                existingPrenomEnseignant == QString::fromStdString(prenom).trimmed() &&
+                existingGroupeEtudiant == QString::fromStdString(groupe).trimmed()) {
+                found = true;
+                continue;
+            }
+        }
+
+        lines.append(line);
+    }
+
+    if (!found) {
+        qDebug() << "Erreur : ECUE " << QString::fromStdString(nom)
+        << " " << QString::fromStdString(nomECUE)
+        << " non trouvé dans le fichier CSV.";
+        file.close();
+        return false;
+    }
+
+    file.seek(0);
+    file.resize(0);
+
+    QTextStream out(&file);
+    for (const QString& updatedLine : lines) {
+        out << updatedLine << "\n";
+    }
+
+    file.close();
+    return true;
+}
 
 
