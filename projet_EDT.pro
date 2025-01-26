@@ -16,9 +16,10 @@ SOURCES += \
         Model/semaine.cpp \
         Model/edt.cpp \
         Controleur/CreneauControl.cpp \
-        controleur/enseignantControl.cpp \
-        controleur/grpeetudiantcontrolleur.cpp \
-        controleur/ecuecontroleur.cpp \
+        Vue/popupEdt.cpp \
+        Controleur/enseignantControl.cpp \
+        Controleur/grpeetudiantcontrolleur.cpp \
+        Controleur/ecuecontroleur.cpp \
         main.cpp
 
 HEADERS += \
@@ -31,8 +32,9 @@ HEADERS += \
     Model/ecue.h \
     Model/semaine.h \
     Model/edt.h \
+    Vue/popupEdt.h \
     definition.h \
     Controleur/CreneauControl.h \
-    controleur/grpeetudiantcontrolleur.h \
-    controleur/ecuecontroleur.h \
+    Controleur/grpeetudiantcontrolleur.h \
+    Controleur/ecuecontroleur.h \
     main.h
