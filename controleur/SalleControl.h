@@ -12,5 +12,6 @@
 
 bool ajouterSalleCSV(int numero, cours cours);
 bool retirerSalleCSV(int numero);
+QList<int> readRoomNumbersFromCSV(const QString& typeCours);
 
 #endif // SALLECONTROL_H

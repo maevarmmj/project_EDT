@@ -17,6 +17,18 @@
 #include "Model/creneau.h"
 
 tm setJourHeure(int jourSemaine, int heure);
-int addreservation();
+int ajouterreservation();
+
+bool initDatabase(QSqlDatabase db);
+bool isRoomAvailable(int NumeroSalle, int Semaine, const QString& Debut, const QString& Fin);
+void salleLibreSemaine(int Semaine, const QList<int>& roomNumbers);
+bool insertReservation(
+    int NumeroSalle, const QString& NomECUE, const QString& NomEnseignant, const QString& PrenomEnseignant,const QString& Groupe,
+    const QString& TypeCours, const QString& HeuresCours, const QString& HeuresAPlacer,
+    int Semaine, const QString& Debut, const QString& Fin);
+QList<QVariantMap> getAllReservations();
+QList<QVariantMap> getReservationsByRoom(const QString& NumeroSalle);
+QList<QVariantMap> getReservationsByTeacher(const QString& Enseignant);
+bool deleteReservation(int reservationID);
 
 #endif // CRENEAUCONTROL_H
