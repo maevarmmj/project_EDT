@@ -301,6 +301,6 @@ void MainWindow::remECUE() {
     QMessageBox::information(this, "Suppression ECUE", "Fonctionnalité Supprimer ECUE appelée !");
 }
 
-void MainWindow::updateTimetable() {
+void MainWindow::updateEdt() {
     QMessageBox::information(this, "Mise à jour", "Fonctionnalité MAJ EDT appelée !");
 }

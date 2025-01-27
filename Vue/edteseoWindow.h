@@ -46,7 +46,7 @@ private slots:
     void toggleRemButtonsVisibility();
 
 
-    void updateTimetable();      // Action pour mettre à jour l'emploi du temps
+    void updateEdt();      // Action pour mettre à jour l'emploi du temps
     void onComboBoxSelectionChanged(const QString &selectedText);
 
 
