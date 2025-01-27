@@ -11,6 +11,7 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
 
     resize(600, 300);
     setWindowTitle("Supprimer un groupe d'étudiants");
+    setWindowModality(Qt::ApplicationModal);
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);

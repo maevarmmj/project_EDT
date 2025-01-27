@@ -10,6 +10,7 @@ SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)
 
     resize(600, 300);
     setWindowTitle("Supprimer un enseignant");
+    setWindowModality(Qt::ApplicationModal);
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);

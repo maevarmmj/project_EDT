@@ -14,6 +14,7 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
+    setWindowModality(Qt::ApplicationModal);
 
     // Ajout d'un style général pour la fenêtre
     // this->setStyleSheet(

@@ -297,24 +297,26 @@ void MainWindow::loadGroups() {
 
 
 void MainWindow::addGroup() {
-    QMessageBox::information(this, "Ajout Élement", "Fonctionnalité Ajouter Élement appelée !");
+    AjouterGroupeWindow *addgroup = new AjouterGroupeWindow();
+    addgroup->show();
 }
+
 
 void MainWindow::addECUE() {
-    QMessageBox::information(this, "Ajout ECUE", "Fonctionnalité Ajouter ECUE appelée !");
-}
+    AjoutEcueWindow *addecue = new AjoutEcueWindow();
+    addecue->show();}
 
 void MainWindow::remGroup() {
-    QMessageBox::information(this, "Suppression Groupe étudiants", "Fonctionnalité Supprimer Groupe appelée !");
-}
+    SupprimerGroupeWindow *remgroup = new SupprimerGroupeWindow();
+    remgroup->show();}
 
 void MainWindow::remEnseignant() {
-    QMessageBox::information(this, "Suppression Enseignant", "Fonctionnalité Supprimer Enseignant appelée !");
-}
+    SupprimerEnseignantWindow *remenseignant = new SupprimerEnseignantWindow();
+    remenseignant->show();}
 
 void MainWindow::remSalle() {
-    QMessageBox::information(this, "Suppression Salle", "Fonctionnalité Supprimer Salle appelée !");
-}
+    SupprimerSalleWindow *remsalle = new SupprimerSalleWindow();
+    remsalle->show();}
 
 void MainWindow::remECUE() {
     QMessageBox::information(this, "Suppression ECUE", "Fonctionnalité Supprimer ECUE appelée !");

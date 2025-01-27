@@ -16,6 +16,12 @@
 #include <QStringList>
 #include <QDir>
 
+#include "Vue/ajouterGroupeWindow.h"
+#include "Vue/ajoutecueWindow.h"
+#include "Vue/supprimerGroupeWindow.h"
+#include "Vue/supprimerEnseignantWindow.h"
+#include "Vue/supprimerSalleWindow.h"
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 private:
@@ -37,6 +43,7 @@ private:
     void setupTable();            // Méthode pour configurer la table
     void setupActions();          // Méthode pour configurer les actions
     void hideButtons();
+
 
 private slots:
     void loadGroups();

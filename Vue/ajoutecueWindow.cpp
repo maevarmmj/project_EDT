@@ -12,6 +12,8 @@
 AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Ajout d'ECUE");
     resize(600, 500);
+    setWindowModality(Qt::ApplicationModal);
+
 
     // Appliquer un style pour rendre la fenêtre plus esthétique
     // setStyleSheet(

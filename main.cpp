@@ -10,25 +10,25 @@ int main(int argc, char *argv[]) {
     mainWind->show();
 
 
-    // Fenetre Ajout Groupe
-    AjouterGroupeWindow w;
-    w.show();
+    // // Fenetre Ajout Groupe
+    // AjouterGroupeWindow w;
+    // w.show();
 
-    // Fenetre Ajout ECUE
-    AjoutEcueWindow E;
-    E.show();
+    // // Fenetre Ajout ECUE
+    // AjoutEcueWindow E;
+    // E.show();
 
-    // Fenetre Supprimer Groupe
-    SupprimerGroupeWindow s;
-    s.show();
+    // // Fenetre Supprimer Groupe
+    // SupprimerGroupeWindow s;
+    // s.show();
 
-    // Fenetre Supprimer Enseignant
-    SupprimerEnseignantWindow d;
-    d.show();
+    // // Fenetre Supprimer Enseignant
+    // SupprimerEnseignantWindow d;
+    // d.show();
 
-    // Fenetre Supprimer Salle
-    SupprimerSalleWindow p;
-    p.show();
+    // // Fenetre Supprimer Salle
+    // SupprimerSalleWindow p;
+    // p.show();
 
     // Fenetre Supprimer ECUE
     // EN COURS
