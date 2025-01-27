@@ -1,41 +1,44 @@
 #include "popupEdt.h"
 
-popupEdt::popupEdt() {
+popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
+    // Initialize the database
+    initDatabase(db);
+
     // Fenêtre principale
     this->setWindowTitle("Matrice de Boutons");
 
     // Widget central
-    QWidget *centralWidget = new QWidget(this);
+    centralWidget = new QWidget(this);
     this->setCentralWidget(centralWidget);
 
     // Layout principal
-    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
+    mainLayout = new QVBoxLayout(centralWidget);
 
     // ---------------- Bandeau du Haut --------------------
-    QWidget *bandeauWidget = new QWidget(centralWidget);
-    QHBoxLayout *bandeauLayout = new QHBoxLayout(bandeauWidget);
+    bandeauWidget = new QWidget(centralWidget);
+    bandeauLayout = new QHBoxLayout(bandeauWidget);
 
     // Label et SpinBox pour la semaine
-    QLabel *semaineLabel = new QLabel("Semaine:", bandeauWidget);
-    QSpinBox *semaineSpinBox = new QSpinBox(bandeauWidget);
+    semaineLabel = new QLabel("Semaine:", bandeauWidget);
+    semaineSpinBox = new QSpinBox(bandeauWidget);
     semaineSpinBox->setRange(1, 52);
     bandeauLayout->addWidget(semaineLabel);
     bandeauLayout->addWidget(semaineSpinBox);
 
     // Label et ComboBox pour l'ECUE
-    QLabel *ecueLabel = new QLabel("ECUE:", bandeauWidget);
-    QComboBox *ecueComboBox = new QComboBox(bandeauWidget);
+    ecueLabel = new QLabel("ECUE:", bandeauWidget);
+    ecueComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(ecueLabel);
     bandeauLayout->addWidget(ecueComboBox);
 
     // Label et ComboBox pour le type de cours
-    QLabel *typeCoursLabel = new QLabel("Type de cours:", bandeauWidget);
-    QComboBox *typeCoursComboBox = new QComboBox(bandeauWidget);
+    typeCoursLabel = new QLabel("Type de cours:", bandeauWidget);
+    typeCoursComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(typeCoursLabel);
     bandeauLayout->addWidget(typeCoursComboBox);
 
     // Bouton Valider
-    QPushButton *validerButton = new QPushButton("Valider", bandeauWidget);
+    validerButton = new QPushButton("Valider", bandeauWidget);
     bandeauLayout->addWidget(validerButton);
 
     // Ajout du bandeau au layout principal
@@ -46,14 +49,14 @@ popupEdt::popupEdt() {
     lectureCsvEcue(ecueComboBox, typeCoursComboBox);
 
     // ---------------- Bandeau du Bas --------------------
-    QWidget *infoWidget = new QWidget(centralWidget);
+    infoWidget = new QWidget(centralWidget);
     infoWidget->hide();
-    QHBoxLayout *infoLayout = new QHBoxLayout(infoWidget);
+    infoLayout = new QHBoxLayout(infoWidget);
 
-    QLabel *groupeValueLabel = new QLabel("");
-    QLabel *enseignantValueLabel = new QLabel("");
-    QLabel *ecueInfoValueLabel = new QLabel("");
-    QLabel *typeCoursInfoValueLabel = new QLabel("");
+    groupeValueLabel = new QLabel("");
+    enseignantValueLabel = new QLabel("");
+    ecueInfoValueLabel = new QLabel("");
+    typeCoursInfoValueLabel = new QLabel("");
 
     groupeValueLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     enseignantValueLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -73,12 +76,12 @@ popupEdt::popupEdt() {
     // ---------------- Fin Bandeau du Bas --------------------
 
     // ---------------- Grille de boutons --------------------
-    QGridLayout *gridLayout = new QGridLayout();
+    gridLayout = new QGridLayout();
 
     // Jours de la semaine
     QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
     for (int col = 0; col < 5; ++col) {
-        QLabel *dayLabel = new QLabel(days[col]);
+        dayLabel = new QLabel(days[col]);
         dayLabel->setAlignment(Qt::AlignCenter);
         dayLabel->setStyleSheet("font-weight: bold;");
         gridLayout->addWidget(dayLabel, 0, col + 1);
@@ -86,7 +89,7 @@ popupEdt::popupEdt() {
 
     // Horaires
     for (int row = 0; row < 10; ++row) {
-        QLabel *hourLabel = new QLabel(QString("%1-%2h").arg(row + 8).arg(row + 9));
+        hourLabel = new QLabel(QString("%1-%2h").arg(row + 8).arg(row + 9));
         hourLabel->setAlignment(Qt::AlignCenter);
         gridLayout->addWidget(hourLabel, row + 1, 0);
     }
@@ -107,7 +110,7 @@ popupEdt::popupEdt() {
     }
 
     // Widget pour la grille (pour la cacher/afficher facilement)
-    QWidget *gridWidget = new QWidget();
+    gridWidget = new QWidget();
     gridWidget->setLayout(gridLayout);
     gridWidget->hide(); // Cacher la grille au démarrage
     mainLayout->addWidget(gridWidget); // Ajouter le widget au layout principal
@@ -118,23 +121,30 @@ popupEdt::popupEdt() {
     mainLayout->setContentsMargins(10, 10, 10, 10);
 
     // ----------- Connexion du bouton Valider ----------------
-    QObject::connect(validerButton, &QPushButton::clicked, [&]() {
-        // Mettre à jour les labels du bandeau du bas
-        mettreAJourBandeauBas(groupeValueLabel, enseignantValueLabel, ecueInfoValueLabel, typeCoursInfoValueLabel, ecueComboBox->currentText(), typeCoursComboBox->currentText());
+    QObject::connect(validerButton, SIGNAL(clicked()), this, SLOT(validerEtAfficher()));
 
-        // Afficher le bandeau du bas
-        infoWidget->show();
+    // Bloquer les boutons indisponibles pour la semaine en cours
+    bloquerBoutonsIndisponibles(semaineSpinBox->value());
+}
 
-        // Afficher la grille
-        gridWidget->show();
-    });
+void popupEdt::validerEtAfficher( )
+{
+    // Mettre à jour les labels du bandeau du bas
+    mettreAJourBandeauBas(groupeValueLabel, enseignantValueLabel, ecueInfoValueLabel, typeCoursInfoValueLabel, ecueComboBox->currentText(), typeCoursComboBox->currentText());
 
-    //mainWindow.show();
+    // Afficher le bandeau du bas
+    infoWidget->show();
+
+    // Afficher la grille
+    gridWidget->show();
+
+    // Bloquer les boutons indisponibles
+    bloquerBoutonsIndisponibles(semaineSpinBox->value());
 }
 
 // Fonction pour lire le CSV et mettre à jour les ComboBox ECUE et Type de Cours
 void popupEdt::lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox) {
-    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
+    QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv";
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -195,7 +205,7 @@ void popupEdt::lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursCombo
 
 // Fonction pour mettre à jour les informations du bandeau du bas
 void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours) {
-    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
+    QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv"; // Assurez-vous que le chemin est correct
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -239,7 +249,7 @@ void popupEdt::afficherInfosBouton(const QString &ecueLabel, int semaine, int ro
 
     // Récupérer le nom et le prénom de l'enseignant à partir du CSV
     QString nomEnseignant, prenomEnseignant;
-    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
+    QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv"; // Assurez-vous que le chemin est correct
     QFile file(filePath);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
@@ -268,4 +278,56 @@ void popupEdt::afficherInfosBouton(const QString &ecueLabel, int semaine, int ro
     qDebug() << "Semaine:" << semaine;
     qDebug() << "Date de début:" << QString("%1 %2h").arg(jour).arg(heureDebut);
     qDebug() << "--------------------";
+}
+
+// Fonction pour bloquer les boutons des créneaux où aucune salle n'est disponible
+void popupEdt::bloquerBoutonsIndisponibles(int semaine) {
+    // Jours de la semaine
+    days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
+
+    // Heures de début et de fin
+    QTime startTime(8, 0);
+    QTime endTime(18, 0);
+
+    // Récupérer le type de cours sélectionné
+    QString typeCours = typeCoursComboBox->currentText();
+
+    // Liste de toutes les salles
+    QList<int> roomNumbers = readRoomNumbersFromCSV(typeCours);
+
+    // Parcourir la grille de boutons
+    for (int row = 0; row < 10; ++row) {
+        for (int col = 0; col < 5; ++col) {
+            if (row != 4){
+                // Calculer l'heure de début et de fin pour ce bouton
+                QTime heureDebut(row + 8, 0);
+                QTime heureFin = heureDebut.addSecs(3600);
+
+                // Construire le créneau horaire
+                QString jour = days[col];
+                QString debut = QString("%1 %2").arg(jour).arg(heureDebut.toString("HH:mm"));
+                QString fin = QString("%1 %2").arg(jour).arg(heureFin.toString("HH:mm"));
+
+                // Vérifier la disponibilité des salles pour ce créneau
+                bool salleDisponible = false;
+                for (int roomNumber : roomNumbers) {
+                    if (isRoomAvailable(roomNumber, semaine, debut, fin)) {
+                        salleDisponible = true;
+                        break;
+                    }
+                }
+
+                // Désactiver le bouton si aucune salle n'est disponible
+                QPushButton *button = qobject_cast<QPushButton*>(gridLayout->itemAtPosition(row + 1, col + 1)->widget());
+                if (button) {
+                    button->setEnabled(salleDisponible);
+                }
+            }
+        }
+    }
+}
+
+// Slot pour mettre à jour les boutons lorsque la semaine change
+void popupEdt::onSemaineChanged(int semaine) {
+    bloquerBoutonsIndisponibles(semaine);
 }

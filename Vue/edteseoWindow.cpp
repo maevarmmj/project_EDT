@@ -112,7 +112,7 @@ void MainWindow::setupActions() {
     connect(remGroupButton, &QPushButton::clicked, this, &MainWindow::remGroup);
     connect(remECUEButton, &QPushButton::clicked, this, &MainWindow::remECUE);
 
-    connect(updateButton, &QPushButton::clicked, this, &MainWindow::updateTimetable);
+    connect(updateButton, &QPushButton::clicked, this, &MainWindow::updateEdt);
 }
 
 void MainWindow::onComboBoxSelectionChanged(const QString &selectedText) {
@@ -301,6 +301,7 @@ void MainWindow::remECUE() {
     QMessageBox::information(this, "Suppression ECUE", "Fonctionnalité Supprimer ECUE appelée !");
 }
 
-void MainWindow::updateTimetable() {
-    QMessageBox::information(this, "Mise à jour", "Fonctionnalité MAJ EDT appelée !");
+void MainWindow::updateEdt() {
+    popupEdt *popup = new popupEdt();
+    popup->show();
 }
