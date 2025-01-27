@@ -48,6 +48,11 @@ private:
     QLabel *dayLabel;
     QLabel *hourLabel;
     QWidget *gridWidget;
+    // --------------- selection de boutons ------------------
+    QList<QPushButton*> selectedButtons;
+    QList<QVariantMap> selectedButtonInfos;
+    QPushButton *validerButtonGrid;
+    QPushButton *annulerButtonGrid;
 
     QStringList days;
 public:
@@ -60,6 +65,10 @@ private slots :
     void afficherInfosBouton(const QString &ecueLabel, int semaine, int row, int col);
     void validerEtAfficher();
     void bloquerBoutonsIndisponibles(int semaine, const QString& enseignant, const QString& groupe);
+    void validerSelection();
+    void annulerSelection();
+    void onButtonClicked();
+    void resetSelection();
 };
 
 #endif // POPUPEDT_H

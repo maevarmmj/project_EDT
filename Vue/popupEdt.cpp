@@ -1,7 +1,7 @@
 #include "popupEdt.h"
 
 popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
-    this->setFixedSize(750, 350);
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     // Initialize the database
     initDatabase(db);
 
@@ -42,6 +42,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     validerButton = new QPushButton("Valider", bandeauWidget);
     bandeauLayout->addWidget(validerButton);
 
+    bandeauWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     // Ajout du bandeau au layout principal
     mainLayout->addWidget(bandeauWidget);
     // ---------------- Fin Bandeau du Haut ----------------
@@ -73,6 +74,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     infoLayout->addWidget(typeCoursInfoValueLabel);
     infoLayout->addStretch();
 
+    infoWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     mainLayout->addWidget(infoWidget);
     // ---------------- Fin Bandeau du Bas --------------------
 
@@ -95,30 +97,49 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
         gridLayout->addWidget(hourLabel, row + 1, 0);
     }
 
+
     // Boutons
     for (int row = 0; row < 10; ++row) {
         if (row != 4){
             for (int col = 0; col < 5; ++col) {
                 QPushButton *button = new QPushButton();
+                button->setCheckable(true);
                 // Connecter le signal clicked() du bouton à un slot (à définir plus tard)
-                QObject::connect(button, &QPushButton::clicked, [=]() {
-                    // Récupérer les informations associées au bouton (à implémenter plus tard)
-                    afficherInfosBouton(ecueComboBox->currentText(), semaineSpinBox->value(), row, col);
-                });
+                connect(button, &QPushButton::clicked, this, &popupEdt::onButtonClicked);
                 gridLayout->addWidget(button, row + 1, col + 1);
             }
         }
     }
 
+
     // Widget pour la grille (pour la cacher/afficher facilement)
     gridWidget = new QWidget();
     gridWidget->setLayout(gridLayout);
     gridWidget->hide(); // Cacher la grille au démarrage
+    gridWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     mainLayout->addWidget(gridWidget); // Ajouter le widget au layout principal
+
+    // Boutons Valider et Annuler
+    annulerButtonGrid = new QPushButton("Annuler", this);
+    validerButtonGrid = new QPushButton("Valider", this);
+
+    // Layout pour les boutons Valider et Annuler
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+    buttonsLayout->addWidget(annulerButtonGrid);
+    buttonsLayout->addWidget(validerButtonGrid);
+    mainLayout->addLayout(buttonsLayout);
+
+    // Connecter les signaux des boutons Valider et Annuler
+    connect(validerButtonGrid, &QPushButton::clicked, this, &popupEdt::validerSelection);
+    connect(annulerButtonGrid, &QPushButton::clicked, this, &popupEdt::annulerSelection);
+
+    validerButtonGrid->hide();
+    annulerButtonGrid->hide();
 
     // Ajustements
     gridLayout->setSpacing(0);
     mainLayout->setSpacing(10);
+    mainLayout->addStretch();
     mainLayout->setContentsMargins(10, 10, 10, 10);
 
     // ----------- Connexion du bouton Valider ----------------
@@ -352,5 +373,103 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignan
             }
         }
     }
+}
+
+void popupEdt::onButtonClicked() {
+    QPushButton *clickedButton = qobject_cast<QPushButton*>(sender());
+    if (!clickedButton) return;
+
+    // Retrieve the row and column of the clicked button
+    int row = -1, col = -1;
+    for (int r = 0; r < gridLayout->rowCount(); ++r) {
+        for (int c = 0; c < gridLayout->columnCount(); ++c) {
+            if (gridLayout->itemAtPosition(r, c) && gridLayout->itemAtPosition(r, c)->widget() == clickedButton) {
+                row = r - 1;
+                col = c - 1;
+                break;
+            }
+        }
+        if (row != -1) break;
+    }
+
+    if (clickedButton->isChecked()) {
+        // Bouton sélectionné
+        if (row != -1 && col != -1) {
+            // Stocker les informations du bouton sélectionné
+            QVariantMap buttonInfo;
+            buttonInfo["row"] = row;
+            buttonInfo["col"] = col;
+            buttonInfo["ecue"] = ecueComboBox->currentText();
+            buttonInfo["semaine"] = semaineSpinBox->value();
+            selectedButtonInfos.append(buttonInfo);
+            selectedButtons.append(clickedButton);
+
+            // Mettre à jour l'apparence du bouton sélectionné
+            clickedButton->setStyleSheet("background-color: yellow");
+        }
+
+        // Afficher les boutons de validation et d'annulation
+        validerButtonGrid->show();
+        annulerButtonGrid->show();
+    } else {
+        // Bouton désélectionné
+        if (row != -1 && col != -1) {
+            // Trouver et supprimer les informations du bouton désélectionné
+            for (int i = 0; i < selectedButtonInfos.size(); ++i) {
+                if (selectedButtonInfos[i]["row"] == row && selectedButtonInfos[i]["col"] == col) {
+                    selectedButtonInfos.removeAt(i);
+                    break;
+                }
+            }
+            selectedButtons.removeOne(clickedButton);
+
+            // Réinitialiser l'apparence du bouton
+            clickedButton->setStyleSheet(""); // Ou remettre le style par défaut si nécessaire
+        }
+
+        // Cacher les boutons de validation et d'annulation si aucun bouton n'est sélectionné
+        if (selectedButtons.isEmpty()) {
+            validerButtonGrid->hide();
+            annulerButtonGrid->hide();
+        }
+    }
+}
+
+void popupEdt::validerSelection() {
+    // Afficher les informations des boutons sélectionnés
+    for (const QVariantMap &buttonInfo : selectedButtonInfos) {
+        QString ecueLabel = buttonInfo["ecue"].toString();
+        int semaine = buttonInfo["semaine"].toInt();
+        int row = buttonInfo["row"].toInt();
+        int col = buttonInfo["col"].toInt();
+
+        afficherInfosBouton(ecueLabel, semaine, row, col);
+    }
+
+    // Réinitialiser la sélection
+    resetSelection();
+
+    // Cacher les boutons de validation et d'annulation
+    validerButtonGrid->hide();
+    annulerButtonGrid->hide();
+}
+
+void popupEdt::annulerSelection() {
+    // Réinitialiser la sélection
+    resetSelection();
+
+    // Cacher les boutons de validation et d'annulation
+    validerButtonGrid->hide();
+    annulerButtonGrid->hide();
+}
+
+void popupEdt::resetSelection() {
+    // Désélectionner tous les boutons sélectionnés
+    for (QPushButton *button : selectedButtons) {
+        button->setChecked(false);
+        button->setStyleSheet(""); // Réinitialiser le style
+    }
+    selectedButtons.clear();
+    selectedButtonInfos.clear();
 }
 
