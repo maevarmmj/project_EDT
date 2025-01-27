@@ -59,8 +59,7 @@ private slots :
     void mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours);
     void afficherInfosBouton(const QString &ecueLabel, int semaine, int row, int col);
     void validerEtAfficher();
-    void bloquerBoutonsIndisponibles(int semaine);
-    void onSemaineChanged(int semaine);
+    void bloquerBoutonsIndisponibles(int semaine, const QString& enseignant, const QString& groupe);
 };
 
 #endif // POPUPEDT_H

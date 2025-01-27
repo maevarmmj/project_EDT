@@ -1,6 +1,7 @@
 #include "popupEdt.h"
 
 popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
+    this->setFixedSize(750, 350);
     // Initialize the database
     initDatabase(db);
 
@@ -122,13 +123,24 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
 
     // ----------- Connexion du bouton Valider ----------------
     QObject::connect(validerButton, SIGNAL(clicked()), this, SLOT(validerEtAfficher()));
-
-    // Bloquer les boutons indisponibles pour la semaine en cours
-    bloquerBoutonsIndisponibles(semaineSpinBox->value());
 }
 
 void popupEdt::validerEtAfficher( )
 {
+    // Parcourir la grille de boutons
+    for (int row = 0; row < 10; ++row) {
+        for (int col = 0; col < 5; ++col) {
+            if (row != 4){
+                QPushButton *button = qobject_cast<QPushButton*>(gridLayout->itemAtPosition(row + 1, col + 1)->widget());
+                if (button) {
+                    button->setStyleSheet("");
+                    button->setText("");
+                    button->setEnabled(true);
+                }
+            }
+        }
+    }
+
     // Mettre à jour les labels du bandeau du bas
     mettreAJourBandeauBas(groupeValueLabel, enseignantValueLabel, ecueInfoValueLabel, typeCoursInfoValueLabel, ecueComboBox->currentText(), typeCoursComboBox->currentText());
 
@@ -137,9 +149,6 @@ void popupEdt::validerEtAfficher( )
 
     // Afficher la grille
     gridWidget->show();
-
-    // Bloquer les boutons indisponibles
-    bloquerBoutonsIndisponibles(semaineSpinBox->value());
 }
 
 // Fonction pour lire le CSV et mettre à jour les ComboBox ECUE et Type de Cours
@@ -232,8 +241,11 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
                 // Mettre à jour les labels du bandeau du bas
                 groupeValueLabel->setText(QString("Groupe: %1").arg(groupe));
                 enseignantValueLabel->setText(QString("Enseignant: %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
+                enseignantValueLabel->setStyleSheet("QLabel { color : blue;font-weight: bold;}");
                 ecueInfoValueLabel->setText(QString("ECUE: %1").arg(nomECUE));
                 typeCoursInfoValueLabel->setText(QString("Type de cours: %1").arg(typeCours));
+                // Bloquer les boutons indisponibles
+                bloquerBoutonsIndisponibles(semaineSpinBox->value(), nomEnseignant, groupe);
                 break; // On a trouvé la ligne correspondante, pas besoin de continuer
             }
         }
@@ -267,7 +279,7 @@ void popupEdt::afficherInfosBouton(const QString &ecueLabel, int semaine, int ro
     }
 
     // Déterminer le jour et l'heure de début à partir de row et col
-    QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
+    days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
     QString jour = days[col];
     int heureDebut = row + 8; // +8 car les horaires commencent à 8h
 
@@ -281,7 +293,7 @@ void popupEdt::afficherInfosBouton(const QString &ecueLabel, int semaine, int ro
 }
 
 // Fonction pour bloquer les boutons des créneaux où aucune salle n'est disponible
-void popupEdt::bloquerBoutonsIndisponibles(int semaine) {
+void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignant, const QString& groupe) {
     // Jours de la semaine
     days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
 
@@ -319,15 +331,26 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine) {
 
                 // Désactiver le bouton si aucune salle n'est disponible
                 QPushButton *button = qobject_cast<QPushButton*>(gridLayout->itemAtPosition(row + 1, col + 1)->widget());
-                if (button) {
-                    button->setEnabled(salleDisponible);
+                if (button && !salleDisponible) {
+                    button->setStyleSheet("QPushButton {color: red;}");
+                    button->setText("No room available");
+                    button->setEnabled(false);
                 }
+
+                // Vérifier si l'enseignant est disponible pour ce créneau
+                if (button && !isTeacherAvailable(enseignant, semaine, debut, fin)) {
+                    button->setStyleSheet("background-color: blue");
+                    button->setEnabled(false);
+                }
+
+                // Vérifier si le groupe est disponible pour ce créneau
+                if (button && !isGroupAvailable(groupe, semaine, debut, fin)) {
+                    button->setStyleSheet("background-color: green");
+                    button->setEnabled(false);
+                }
+
             }
         }
     }
 }
 
-// Slot pour mettre à jour les boutons lorsque la semaine change
-void popupEdt::onSemaineChanged(int semaine) {
-    bloquerBoutonsIndisponibles(semaine);
-}
