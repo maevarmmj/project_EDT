@@ -21,6 +21,9 @@ SOURCES += \
         Controleur/ecuecontroleur.cpp \
         Vue/popupEdt.cpp \
         Vue/edteseoWindow.cpp \
+        Vue/supprimerEnseignantWindow.cpp \
+        Vue/supprimerGroupeWindow.cpp \
+        Vue/ajouterGroupeWindow.cpp \
         main.cpp
 
 HEADERS += \
@@ -35,8 +38,12 @@ HEADERS += \
     Model/edt.h \
     Vue/popupEdt.h \
     Vue/edteseoWindow.h \
+    Vue/ajouterGroupeWindow.h \
+    Vue/supprimerEnseignantWindow.h \
+    Vue/supprimerGroupeWindow.h
     definition.h \
     Controleur/CreneauControl.h \
     Controleur/grpeetudiantcontrolleur.h \
     Controleur/ecuecontroleur.h \
+    
     main.h
