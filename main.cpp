@@ -95,6 +95,14 @@ int main() {
     // ajouterGroupeEtudiantCSV("E5");
 
 
+    salleLibreSemaine(3, roomNumbers);
+
+    db.close();
+
+    popupEdt *popup = new popupEdt();
+
+    popup->show();
+
 
 
 
