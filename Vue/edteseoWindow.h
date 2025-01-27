@@ -21,6 +21,7 @@
 #include "Vue/supprimerGroupeWindow.h"
 #include "Vue/supprimerEnseignantWindow.h"
 #include "Vue/supprimerSalleWindow.h"
+#include "Vue/popupEdt.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

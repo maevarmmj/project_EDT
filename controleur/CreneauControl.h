@@ -27,8 +27,8 @@ bool insertReservation(
     const QString& TypeCours, const QString& HeuresCours, const QString& HeuresAPlacer,
     int Semaine, const QString& Debut, const QString& Fin);
 QList<QVariantMap> getAllReservations();
-QList<QVariantMap> getReservationsByRoom(const QString& NumeroSalle);
-QList<QVariantMap> getReservationsByTeacher(const QString& Enseignant);
 bool deleteReservation(int reservationID);
+bool isTeacherAvailable(const QString& NomEnseignant, int Semaine, const QString& Debut, const QString& Fin);
+bool isGroupAvailable(const QString& Groupe, int Semaine, const QString& Debut, const QString& Fin);
 
 #endif // CRENEAUCONTROL_H

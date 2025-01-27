@@ -323,5 +323,6 @@ void MainWindow::remECUE() {
 }
 
 void MainWindow::updateEdt() {
-    QMessageBox::information(this, "Mise à jour", "Fonctionnalité MAJ EDT appelée !");
+    popupEdt *popup = new popupEdt();
+    popup->show();
 }
