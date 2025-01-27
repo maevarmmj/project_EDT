@@ -1,7 +1,7 @@
 #include "main.h"
 #include <iostream>
 
-
+// TEST : EDT WINDOW
 // int main(int argc, char *argv[]) {
 //     QApplication a(argc, argv);
 //     MainWindow *mainWind = new MainWindow();
@@ -9,15 +9,27 @@
 //     return a.exec();
 // }
 
+// TEST : FENETRES 1
+// int main(int argc, char *argv[]) {
+//     QApplication a(argc, argv);
+//     AjouterGroupeWindow w;
+//     w.show();
+
+//     SupprimerGroupeWindow s;
+//     s.show();
+
+//     SupprimerEnseignantWindow d;
+//    d.show();
+//     return a.exec();
+// }
+
+// TEST : FENETRES 2
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    AjouterGroupeWindow w;
-    w.show();
+    AjoutEcueWindow E;
+    SupprimerSalleWindow p;
 
-    SupprimerGroupeWindow s;
-    s.show();
-
-    SupprimerEnseignantWindow d;
-   d.show();
+    p.show();
+    E.show();
     return a.exec();
 }
