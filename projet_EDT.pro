@@ -40,7 +40,7 @@ HEADERS += \
     Vue/edteseoWindow.h \
     Vue/ajouterGroupeWindow.h \
     Vue/supprimerEnseignantWindow.h \
-    Vue/supprimerGroupeWindow.h
+    Vue/supprimerGroupeWindow.h \
     definition.h \
     Controleur/CreneauControl.h \
     Controleur/grpeetudiantcontrolleur.h \
