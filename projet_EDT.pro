@@ -16,10 +16,10 @@ SOURCES += \
         Model/semaine.cpp \
         Model/edt.cpp \
         Controleur/CreneauControl.cpp \
-        Vue/popupEdt.cpp \
         Controleur/enseignantControl.cpp \
         Controleur/grpeetudiantcontrolleur.cpp \
         Controleur/ecuecontroleur.cpp \
+        Vue/popupEdt.cpp \
         main.cpp
 
 HEADERS += \

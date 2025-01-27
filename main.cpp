@@ -20,138 +20,147 @@ void afficherQMap(const QMap<QString, QVariant>& map) {
 void creerReservation(){
     // Semaine 1
     // Lundi
-    insertReservation(101, "Mathématiques", "Dupont", "Jean", "E1", "CM", "20/0/0", "18/0/0", 1, "Mon 08:00", "Mon 09:30");
-    insertReservation(201, "Physique", "Bertolim", "Maria", "E2", "TP", "0/20/0", "0/17/0", 1, "Mon 08:00", "Mon 10:00");
-    insertReservation(301, "Informatique", "Martin", "Sophie", "E3", "TD", "0/0/20", "0/0/18", 1, "Mon 09:00", "Mon 10:30");
-    insertReservation(102, "Anglais", "Lefevre", "Pierre", "E4", "CM", "15/0/0", "13/0/0", 1, "Mon 10:00", "Mon 11:30");
-    insertReservation(202, "Economie", "Garcia", "Carlos", "E5", "TP", "0/15/0", "0/13/0", 1, "Mon 10:30", "Mon 12:00");
-    insertReservation(103, "Mathématiques", "Durand", "Michel", "E2", "CM", "20/0/0", "18/0/0", 1, "Mon 13:00", "Mon 14:30");
-    insertReservation(302, "Informatique", "Moreau", "Isabelle", "E1", "TD", "0/0/20", "0/0/17", 1, "Mon 14:00", "Mon 15:30");
-    insertReservation(203, "Physique", "Dupont", "Jean", "E3", "TP", "0/20/0", "0/17/0", 1, "Mon 15:00", "Mon 17:00");
+    insertReservation(101, "Analyse de Données", "Dupont", "Jean", "E2", "CM", "20/10", "15/5", 1, "Mon 08:00", "Mon 09:00");
+    insertReservation(201, "Algorithmique", "Martin", "Sophie", "E2", "TP", "25/15", "20/10", 1, "Mon 08:00", "Mon 09:00");
+    insertReservation(301, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 1, "Mon 09:00", "Mon 10:00");
+    insertReservation(102, "Réseaux", "Bertolim", "Maria", "E4", "CM", "15/10", "10/5", 1, "Mon 10:00", "Mon 11:00");
+    insertReservation(202, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "TP", "18/12", "12/8", 1, "Mon 10:00", "Mon 11:00");
+    insertReservation(101, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "CM", "30/20", "25/15", 1, "Mon 11:00", "Mon 12:00");
+    insertReservation(302, "Intelligence Artificielle", "Durand", "Michel", "E4", "TD", "22/11", "18/8", 1, "Mon 11:00", "Mon 12:00");
+    insertReservation(201, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 1, "Mon 13:00", "Mon 14:00");
+    insertReservation(102, "Théorie des Langages", "Martin", "Sophie", "E2", "CM", "16/8", "12/4", 1, "Mon 14:00", "Mon 15:00");
+    insertReservation(301, "Sécurité Informatique", "Bertolim", "Maria", "E3", "TD", "14/7/2", "10/3/1", 1, "Mon 14:00", "Mon 15:00");
 
     // Mardi
-    insertReservation(101, "Informatique", "Martin", "Sophie", "E1", "CM", "25/0/0", "23/0/0", 1, "Tue 08:30", "Tue 10:00");
-    insertReservation(301, "Anglais", "Lefevre", "Pierre", "E2", "TD", "0/0/15", "0/0/13", 1, "Tue 09:00", "Tue 10:30");
-    insertReservation(201, "Economie", "Garcia", "Carlos", "E3", "TP", "0/15/0", "0/11/0", 1, "Tue 10:00", "Tue 12:00");
-    insertReservation(102, "Mathématiques", "Durand", "Michel", "E4", "CM", "20/0/0", "16/0/0", 1, "Tue 13:30", "Tue 15:00");
-    insertReservation(302, "Physique", "Bertolim", "Maria", "E5", "TD", "0/0/20", "0/0/16", 1, "Tue 14:00", "Tue 15:30");
-    insertReservation(202, "Informatique", "Moreau", "Isabelle", "E1", "TP", "0/25/0", "0/23/0", 1, "Tue 15:30", "Tue 17:30");
+    insertReservation(202, "Analyse de Données", "Dupont", "Jean", "E2", "TP", "20/10", "15/5", 1, "Tue 08:00", "Tue 09:00");
+    insertReservation(101, "Algorithmique", "Martin", "Sophie", "E2", "CM", "25/15", "20/10", 1, "Tue 09:00", "Tue 10:00");
+    insertReservation(302, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 1, "Tue 09:00", "Tue 10:00");
+    insertReservation(201, "Réseaux", "Bertolim", "Maria", "E4", "TP", "15/10", "10/5", 1, "Tue 10:00", "Tue 11:00");
+    insertReservation(102, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "CM", "18/12", "12/8", 1, "Tue 11:00", "Tue 12:00");
+    insertReservation(301, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "TD", "30/20", "25/15", 1, "Tue 11:00", "Tue 12:00");
+    insertReservation(101, "Intelligence Artificielle", "Durand", "Michel", "E4", "CM", "22/11", "18/8", 1, "Tue 13:00", "Tue 14:00");
+    insertReservation(202, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 1, "Tue 14:00", "Tue 15:00");
+    insertReservation(302, "Théorie des Langages", "Martin", "Sophie", "E2", "TD", "16/8", "12/4", 1, "Tue 14:00", "Tue 15:00");
+    insertReservation(401, "Sécurité Informatique", "Bertolim", "Maria", "E3", "EXAMEN", "14/7/2", "10/3/1", 1, "Tue 15:00", "Tue 16:00");
 
     // Mercredi
-    insertReservation(103, "Anglais", "Lefevre", "Pierre", "E3", "CM", "15/0/0", "11/0/0", 1, "Wed 08:00", "Wed 09:30");
-    insertReservation(203, "Economie", "Garcia", "Carlos", "E4", "TP", "0/15/0", "0/11/0", 1, "Wed 09:00", "Wed 11:00");
-    insertReservation(303, "Mathématiques", "Dupont", "Jean", "E5", "TD", "0/0/20", "0/0/16", 1, "Wed 10:00", "Wed 11:30");
-    insertReservation(101, "Physique", "Bertolim", "Maria", "E1", "CM", "20/0/0", "16/0/0", 1, "Wed 13:00", "Wed 14:30");
-    insertReservation(201, "Informatique", "Martin", "Sophie", "E2", "TP", "0/25/0", "0/21/0", 1, "Wed 14:00", "Wed 16:00");
-    insertReservation(301, "Anglais", "Moreau", "Isabelle", "E3", "TD", "0/0/15", "0/0/11", 1, "Wed 15:00", "Wed 16:30");
+    insertReservation(101, "Analyse de Données", "Dupont", "Jean", "E2", "CM", "20/10", "15/5", 1, "Wed 08:00", "Wed 09:00");
+    insertReservation(201, "Algorithmique", "Martin", "Sophie", "E2", "TP", "25/15", "20/10", 1, "Wed 08:00", "Wed 09:00");
+    insertReservation(301, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 1, "Wed 09:00", "Wed 10:00");
+    insertReservation(102, "Réseaux", "Bertolim", "Maria", "E4", "CM", "15/10", "10/5", 1, "Wed 10:00", "Wed 11:00");
+    insertReservation(202, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "TP", "18/12", "12/8", 1, "Wed 10:00", "Wed 11:00");
+    insertReservation(101, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "CM", "30/20", "25/15", 1, "Wed 11:00", "Wed 12:00");
+    insertReservation(302, "Intelligence Artificielle", "Durand", "Michel", "E4", "TD", "22/11", "18/8", 1, "Wed 11:00", "Wed 12:00");
+    insertReservation(201, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 1, "Wed 13:00", "Wed 14:00");
+    insertReservation(102, "Théorie des Langages", "Martin", "Sophie", "E2", "CM", "16/8", "12/4", 1, "Wed 14:00", "Wed 15:00");
+    insertReservation(301, "Sécurité Informatique", "Bertolim", "Maria", "E3", "TD", "14/7/2", "10/3/1", 1, "Wed 14:00", "Wed 15:00");
 
     // Jeudi
-    insertReservation(102, "Economie", "Garcia", "Carlos", "E1", "CM", "10/0/0", "8/0/0", 1, "Thu 08:30", "Thu 10:00");
-    insertReservation(202, "Mathématiques", "Durand", "Michel", "E2", "TP", "0/20/0", "0/16/0", 1, "Thu 09:00", "Thu 11:00");
-    insertReservation(302, "Physique", "Bertolim", "Maria", "E3", "TD", "0/0/20", "0/0/16", 1, "Thu 10:30", "Thu 12:00");
-    insertReservation(103, "Informatique", "Martin", "Sophie", "E4", "CM", "25/0/0", "21/0/0", 1, "Thu 13:30", "Thu 15:00");
-    insertReservation(203, "Anglais", "Lefevre", "Pierre", "E5", "TP", "0/15/0", "0/11/0", 1, "Thu 14:00", "Thu 16:00");
-    insertReservation(303, "Economie", "Garcia", "Carlos", "E1", "TD", "0/0/10", "0/0/8", 1, "Thu 15:30", "Thu 17:00");
+    insertReservation(202, "Analyse de Données", "Dupont", "Jean", "E2", "TP", "20/10", "15/5", 1, "Thu 08:00", "Thu 09:00");
+    insertReservation(101, "Algorithmique", "Martin", "Sophie", "E2", "CM", "25/15", "20/10", 1, "Thu 09:00", "Thu 10:00");
+    insertReservation(302, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 1, "Thu 09:00", "Thu 10:00");
+    insertReservation(201, "Réseaux", "Bertolim", "Maria", "E4", "TP", "15/10", "10/5", 1, "Thu 10:00", "Thu 11:00");
+    insertReservation(102, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "CM", "18/12", "12/8", 1, "Thu 11:00", "Thu 12:00");
+    insertReservation(301, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "TD", "30/20", "25/15", 1, "Thu 11:00", "Thu 12:00");
+    insertReservation(101, "Intelligence Artificielle", "Durand", "Michel", "E4", "CM", "22/11", "18/8", 1, "Thu 13:00", "Thu 14:00");
+    insertReservation(202, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 1, "Thu 14:00", "Thu 15:00");
+    insertReservation(302, "Théorie des Langages", "Martin", "Sophie", "E2", "TD", "16/8", "12/4", 1, "Thu 14:00", "Thu 15:00");
+    insertReservation(401, "Sécurité Informatique", "Bertolim", "Maria", "E3", "EXAMEN", "14/7/2", "10/3/1", 1, "Thu 15:00", "Thu 16:00");
 
     // Vendredi
-    insertReservation(101, "Physique", "Dupont", "Jean", "E2", "CM", "20/0/0", "16/0/0", 1, "Fri 08:00", "Fri 09:30");
-    insertReservation(201, "Informatique", "Moreau", "Isabelle", "E3", "TP", "0/25/0", "0/21/0", 1, "Fri 08:30", "Fri 10:30");
-    insertReservation(301, "Mathématiques", "Durand", "Michel", "E4", "TD", "0/0/20", "0/0/16", 1, "Fri 09:00", "Fri 10:30");
-    insertReservation(102, "Anglais", "Lefevre", "Pierre", "E5", "CM", "15/0/0", "11/0/0", 1, "Fri 10:00", "Fri 11:30");
-    insertReservation(202, "Economie", "Bertolim", "Maria", "E1", "TP", "0/10/0", "0/8/0", 1, "Fri 11:00", "Fri 13:00");
-    insertReservation(103, "Informatique", "Martin", "Sophie", "E2", "CM", "25/0/0", "21/0/0", 1, "Fri 13:30", "Fri 15:00");
-    insertReservation(302, "Physique", "Dupont", "Jean", "E3", "TD", "0/0/20", "0/0/16", 1, "Fri 14:00", "Fri 15:30");
-    insertReservation(203, "Mathématiques", "Moreau", "Isabelle", "E4", "TP", "0/20/0", "0/16/0", 1, "Fri 15:00", "Fri 17:00");
+    insertReservation(101, "Analyse de Données", "Dupont", "Jean", "E2", "CM", "20/10", "15/5", 1, "Fri 08:00", "Fri 09:00");
+    insertReservation(201, "Algorithmique", "Martin", "Sophie", "E2", "TP", "25/15", "20/10", 1, "Fri 08:00", "Fri 09:00");
+    insertReservation(301, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 1, "Fri 09:00", "Fri 10:00");
+    insertReservation(102, "Réseaux", "Bertolim", "Maria", "E4", "CM", "15/10", "10/5", 1, "Fri 10:00", "Fri 11:00");
+    insertReservation(202, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "TP", "18/12", "12/8", 1, "Fri 10:00", "Fri 11:00");
+    insertReservation(101, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "CM", "30/20", "25/15", 1, "Fri 11:00", "Fri 12:00");
+    insertReservation(302, "Intelligence Artificielle", "Durand", "Michel", "E4", "TD", "22/11", "18/8", 1, "Fri 11:00", "Fri 12:00");
+    insertReservation(201, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 1, "Fri 13:00", "Fri 14:00");
+    insertReservation(102, "Théorie des Langages", "Martin", "Sophie", "E2", "CM", "16/8", "12/4", 1, "Fri 14:00", "Fri 15:00");
+    insertReservation(301, "Sécurité Informatique", "Bertolim", "Maria", "E3", "TD", "14/7/2", "10/3/1", 1, "Fri 14:00", "Fri 15:00");
 
     // Semaine 2
     // Lundi
-    insertReservation(101, "Mathématiques", "Dupont", "Jean", "E1", "CM", "20/0/0", "16/0/0", 2, "Mon 08:00", "Mon 09:30");
-    insertReservation(201, "Physique", "Bertolim", "Maria", "E2", "TP", "0/20/0", "0/15/0", 2, "Mon 08:00", "Mon 10:00");
-    insertReservation(301, "Informatique", "Martin", "Sophie", "E3", "TD", "0/0/25", "0/0/20", 2, "Mon 09:00", "Mon 10:30");
-    insertReservation(102, "Anglais", "Lefevre", "Pierre", "E4", "CM", "15/0/0", "10/0/0", 2, "Mon 10:00", "Mon 11:30");
-    insertReservation(202, "Economie", "Garcia", "Carlos", "E5", "TP", "0/15/0", "0/10/0", 2, "Mon 10:30", "Mon 12:00");
-    insertReservation(103, "Mathématiques", "Durand", "Michel", "E2", "CM", "20/0/0", "14/0/0", 2, "Mon 13:00", "Mon 14:30");
-    insertReservation(302, "Informatique", "Moreau", "Isabelle", "E1", "TD", "0/0/25", "0/0/19", 2, "Mon 14:00", "Mon 15:30");
-    insertReservation(203, "Physique", "Dupont", "Jean", "E3", "TP", "0/20/0", "0/13/0", 2, "Mon 15:00", "Mon 17:00");
+    insertReservation(101, "Analyse de Données", "Dupont", "Jean", "E2", "CM", "20/10", "15/5", 2, "Mon 08:00", "Mon 09:00");
+    insertReservation(201, "Algorithmique", "Martin", "Sophie", "E2", "TP", "25/15", "20/10", 2, "Mon 08:00", "Mon 09:00");
+    insertReservation(301, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 2, "Mon 09:00", "Mon 10:00");
+    insertReservation(102, "Réseaux", "Bertolim", "Maria", "E4", "CM", "15/10", "10/5", 2, "Mon 10:00", "Mon 11:00");
+    insertReservation(202, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "TP", "18/12", "12/8", 2, "Mon 10:00", "Mon 11:00");
+    insertReservation(101, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "CM", "30/20", "25/15", 2, "Mon 11:00", "Mon 12:00");
+    insertReservation(302, "Intelligence Artificielle", "Durand", "Michel", "E4", "TD", "22/11", "18/8", 2, "Mon 11:00", "Mon 12:00");
+    insertReservation(201, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 2, "Mon 13:00", "Mon 14:00");
+    insertReservation(102, "Théorie des Langages", "Martin", "Sophie", "E2", "CM", "16/8", "12/4", 2, "Mon 14:00", "Mon 15:00");
+    insertReservation(301, "Sécurité Informatique", "Bertolim", "Maria", "E3", "TD", "14/7/2", "10/3/1", 2, "Mon 14:00", "Mon 15:00");
 
     // Mardi
-    insertReservation(101, "Informatique", "Martin", "Sophie", "E1", "CM", "25/0/0", "20/0/0", 2, "Tue 08:30", "Tue 10:00");
-    insertReservation(301, "Anglais", "Lefevre", "Pierre", "E2", "TD", "0/0/15", "0/0/10", 2, "Tue 09:00", "Tue 10:30");
-    insertReservation(201, "Economie", "Garcia", "Carlos", "E3", "TP", "0/15/0", "0/8/0", 2, "Tue 10:00", "Tue 12:00");
-    insertReservation(102, "Mathématiques", "Durand", "Michel", "E4", "CM", "20/0/0", "12/0/0", 2, "Tue 13:30", "Tue 15:00");
-    insertReservation(302, "Physique", "Bertolim", "Maria", "E5", "TD", "0/0/20", "0/0/13", 2, "Tue 14:00", "Tue 15:30");
-    insertReservation(202, "Informatique", "Moreau", "Isabelle", "E1", "TP", "0/25/0", "0/20/0", 2, "Tue 15:30", "Tue 17:30");
+    insertReservation(202, "Analyse de Données", "Dupont", "Jean", "E2", "TP", "20/10", "15/5", 2, "Tue 08:00", "Tue 09:00");
+    insertReservation(101, "Algorithmique", "Martin", "Sophie", "E2", "CM", "25/15", "20/10", 2, "Tue 09:00", "Tue 10:00");
+    insertReservation(302, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 2, "Tue 09:00", "Tue 10:00");
+    insertReservation(201, "Réseaux", "Bertolim", "Maria", "E4", "TP", "15/10", "10/5", 2, "Tue 10:00", "Tue 11:00");
+    insertReservation(102, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "CM", "18/12", "12/8", 2, "Tue 11:00", "Tue 12:00");
+    insertReservation(301, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "TD", "30/20", "25/15", 2, "Tue 11:00", "Tue 12:00");
+    insertReservation(101, "Intelligence Artificielle", "Durand", "Michel", "E4", "CM", "22/11", "18/8", 2, "Tue 13:00", "Tue 14:00");
+    insertReservation(202, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 2, "Tue 14:00", "Tue 15:00");
+    insertReservation(302, "Théorie des Langages", "Martin", "Sophie", "E2", "TD", "16/8", "12/4", 2, "Tue 14:00", "Tue 15:00");
+    insertReservation(401, "Sécurité Informatique", "Bertolim", "Maria", "E3", "EXAMEN", "14/7/2", "10/3/1", 2, "Tue 15:00", "Tue 16:00");
 
     // Mercredi
-    insertReservation(103, "Anglais", "Lefevre", "Pierre", "E3", "CM", "15/0/0", "8/0/0", 2, "Wed 08:00", "Wed 09:30");
-    insertReservation(203, "Economie", "Garcia", "Carlos", "E4", "TP", "0/15/0", "0/6/0", 2, "Wed 09:00", "Wed 11:00");
-    insertReservation(303, "Mathématiques", "Dupont", "Jean", "E5", "TD", "0/0/20", "0/0/12", 2, "Wed 10:00", "Wed 11:30");
-    insertReservation(101, "Physique", "Bertolim", "Maria", "E1", "CM", "20/0/0", "14/0/0", 2, "Wed 13:00", "Wed 14:30");
-    insertReservation(201, "Informatique", "Martin", "Sophie", "E2", "TP", "0/25/0", "0/18/0", 2, "Wed 14:00", "Wed 16:00");
-    insertReservation(301, "Anglais", "Moreau", "Isabelle", "E3", "TD", "0/0/15", "0/0/8", 2, "Wed 15:00", "Wed 16:30");
+    insertReservation(101, "Analyse de Données", "Dupont", "Jean", "E2", "CM", "20/10", "15/5", 2, "Wed 08:00", "Wed 09:00");
+    insertReservation(201, "Algorithmique", "Martin", "Sophie", "E2", "TP", "25/15", "20/10", 2, "Wed 08:00", "Wed 09:00");
+    insertReservation(301, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 2, "Wed 09:00", "Wed 10:00");
+    insertReservation(102, "Réseaux", "Bertolim", "Maria", "E4", "CM", "15/10", "10/5", 2, "Wed 10:00", "Wed 11:00");
+    insertReservation(202, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "TP", "18/12", "12/8", 2, "Wed 10:00", "Wed 11:00");
+    insertReservation(101, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "CM", "30/20", "25/15", 2, "Wed 11:00", "Wed 12:00");
+    insertReservation(302, "Intelligence Artificielle", "Durand", "Michel", "E4", "TD", "22/11", "18/8", 2, "Wed 11:00", "Wed 12:00");
+    insertReservation(201, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 2, "Wed 13:00", "Wed 14:00");
+    insertReservation(102, "Théorie des Langages", "Martin", "Sophie", "E2", "CM", "16/8", "12/4", 2, "Wed 14:00", "Wed 15:00");
+    insertReservation(301, "Sécurité Informatique", "Bertolim", "Maria", "E3", "TD", "14/7/2", "10/3/1", 2, "Wed 14:00", "Wed 15:00");
 
     // Jeudi
-    insertReservation(102, "Economie", "Garcia", "Carlos", "E1", "CM", "10/0/0", "6/0/0", 2, "Thu 08:30", "Thu 10:00");
-    insertReservation(202, "Mathématiques", "Durand", "Michel", "E2", "TP", "0/20/0", "0/14/0", 2, "Thu 09:00", "Thu 11:00");
-    insertReservation(302, "Physique", "Bertolim", "Maria", "E3", "TD", "0/0/20", "0/0/11", 2, "Thu 10:30", "Thu 12:00");
-    insertReservation(103, "Informatique", "Martin", "Sophie", "E4", "CM", "25/0/0", "18/0/0", 2, "Thu 13:30", "Thu 15:00");
-    insertReservation(203, "Anglais", "Lefevre", "Pierre", "E5", "TP", "0/15/0", "0/6/0", 2, "Thu 14:00", "Thu 16:00");
-    insertReservation(303, "Economie", "Garcia", "Carlos", "E1", "TD", "0/0/10", "0/0/6", 2, "Thu 15:30", "Thu 17:00");
+    insertReservation(202, "Analyse de Données", "Dupont", "Jean", "E2", "TP", "20/10", "15/5", 2, "Thu 08:00", "Thu 09:00");
+    insertReservation(101, "Algorithmique", "Martin", "Sophie", "E2", "CM", "25/15", "20/10", 2, "Thu 09:00", "Thu 10:00");
+    insertReservation(302, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 2, "Thu 09:00", "Thu 10:00");
+    insertReservation(201, "Réseaux", "Bertolim", "Maria", "E4", "TP", "15/10", "10/5", 2, "Thu 10:00", "Thu 11:00");
+    insertReservation(102, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "CM", "18/12", "12/8", 2, "Thu 11:00", "Thu 12:00");
+    insertReservation(301, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "TD", "30/20", "25/15", 2, "Thu 11:00", "Thu 12:00");
+    insertReservation(101, "Intelligence Artificielle", "Durand", "Michel", "E4", "CM", "22/11", "18/8", 2, "Thu 13:00", "Thu 14:00");
+    insertReservation(202, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 2, "Thu 14:00", "Thu 15:00");
+    insertReservation(302, "Théorie des Langages", "Martin", "Sophie", "E2", "TD", "16/8", "12/4", 2, "Thu 14:00", "Thu 15:00");
+    insertReservation(401, "Sécurité Informatique", "Bertolim", "Maria", "E3", "EXAMEN", "14/7/2", "10/3/1", 2, "Thu 15:00", "Thu 16:00");
 
     // Vendredi
-    insertReservation(101, "Physique", "Dupont", "Jean", "E2", "CM", "20/0/0", "12/0/0", 2, "Fri 08:00", "Fri 09:30");
-    insertReservation(201, "Informatique", "Moreau", "Isabelle", "E3", "TP", "0/25/0", "0/16/0", 2, "Fri 08:30", "Fri 10:30");
-    insertReservation(301, "Mathématiques", "Durand", "Michel", "E4", "TD", "0/0/20", "0/0/10", 2, "Fri 09:00", "Fri 10:30");
-    insertReservation(102, "Anglais", "Lefevre", "Pierre", "E5", "CM", "15/0/0", "6/0/0", 2, "Fri 10:00", "Fri 11:30");
-    insertReservation(202, "Economie", "Bertolim", "Maria", "E1", "TP", "0/10/0", "0/6/0", 2, "Fri 11:00", "Fri 13:00");
-    insertReservation(103, "Informatique", "Martin", "Sophie", "E2", "CM", "25/0/0", "16/0/0", 2, "Fri 13:30", "Fri 15:00");
-    insertReservation(302, "Physique", "Dupont", "Jean", "E3", "TD", "0/0/20", "0/0/8", 2, "Fri 14:00", "Fri 15:30");
-    insertReservation(203, "Mathématiques", "Moreau", "Isabelle", "E4", "TP", "0/20/0", "0/12/0", 2, "Fri 15:00", "Fri 17:00");
+    insertReservation(101, "Analyse de Données", "Dupont", "Jean", "E2", "CM", "20/10", "15/5", 2, "Fri 08:00", "Fri 09:00");
+    insertReservation(201, "Algorithmique", "Martin", "Sophie", "E2", "TP", "25/15", "20/10", 2, "Fri 08:00", "Fri 09:00");
+    insertReservation(301, "Bases de Données", "Lefevre", "Pierre", "E3", "TD", "20/10/5", "15/5/2", 2, "Fri 09:00", "Fri 10:00");
+    insertReservation(102, "Réseaux", "Bertolim", "Maria", "E4", "CM", "15/10", "10/5", 2, "Fri 10:00", "Fri 11:00");
+    insertReservation(202, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "TP", "18/12", "12/8", 2, "Fri 10:00", "Fri 11:00");
+    insertReservation(101, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "CM", "30/20", "25/15", 2, "Fri 11:00", "Fri 12:00");
+    insertReservation(302, "Intelligence Artificielle", "Durand", "Michel", "E4", "TD", "22/11", "18/8", 2, "Fri 11:00", "Fri 12:00");
+    insertReservation(201, "Compilation", "Dupont", "Jean", "E4", "TP", "15/10", "10/7", 2, "Fri 13:00", "Fri 14:00");
+    insertReservation(102, "Théorie des Langages", "Martin", "Sophie", "E2", "CM", "16/8", "12/4", 2, "Fri 14:00", "Fri 15:00");
+    insertReservation(301, "Sécurité Informatique", "Bertolim", "Maria", "E3", "TD", "14/7/2", "10/3/1", 2, "Fri 14:00", "Fri 15:00");
 
     // Semaine 3
     // Lundi
-    insertReservation(401, "Mathématiques", "Dupont", "Jean", "E1", "EXAMEN", "20/0/2", "0/0/2", 3, "Mon 08:00", "Mon 10:00");
-    insertReservation(402, "Physique", "Bertolim", "Maria", "E2", "EXAMEN", "20/5/2", "0/0/2", 3, "Mon 08:00", "Mon 10:00");
-    insertReservation(401, "Informatique", "Martin", "Sophie", "E3", "EXAMEN", "25/0/2", "0/0/2", 3, "Mon 10:00", "Mon 12:00");
-    insertReservation(402, "Anglais", "Lefevre", "Pierre", "E4", "EXAMEN", "15/0/2", "0/0/2", 3, "Mon 10:00", "Mon 12:00");
-    insertReservation(401, "Economie", "Garcia", "Carlos", "E5", "EXAMEN", "10/15/2", "0/0/2", 3, "Mon 13:00", "Mon 15:00");
+    insertReservation(401, "Analyse de Données", "Dupont", "Jean", "E2", "EXAMEN", "20/10", "15/5", 3, "Mon 08:00", "Mon 09:00");
+    insertReservation(402, "Algorithmique", "Martin", "Sophie", "E2", "EXAMEN", "25/15", "20/10", 3, "Mon 09:00", "Mon 10:00");
+    insertReservation(401, "Bases de Données", "Lefevre", "Pierre", "E3", "EXAMEN", "20/10/5", "15/5/2", 3, "Mon 10:00", "Mon 11:00");
+    insertReservation(402, "Réseaux", "Bertolim", "Maria", "E4", "EXAMEN", "15/10", "10/5", 3, "Mon 11:00", "Mon 12:00");
+    insertReservation(401, "Systèmes d'Exploitation", "Garcia", "Carlos", "E4", "EXAMEN", "18/12", "12/8", 3, "Mon 13:00", "Mon 14:00");
+    insertReservation(402, "Programmation Orientée Objet", "Moreau", "Isabelle", "E3", "EXAMEN", "30/20", "25/15", 3, "Mon 14:00", "Mon 15:00");
 
     // Mardi
-    insertReservation(402, "Mathématiques", "Durand", "Michel", "E4", "EXAMEN", "20/0/2", "0/0/2", 3, "Tue 13:30", "Tue 15:30");
-    insertReservation(401, "Physique", "Bertolim", "Maria", "E5", "EXAMEN", "20/5/2", "0/0/2", 3, "Tue 15:30", "Tue 17:30");
+    insertReservation(401, "Intelligence Artificielle", "Durand", "Michel", "E4", "EXAMEN", "22/11", "18/8", 3, "Tue 08:00", "Tue 09:00");
+    insertReservation(402, "Compilation", "Dupont", "Jean", "E4", "EXAMEN", "15/10", "10/7", 3, "Tue 09:00", "Tue 10:00");
+    insertReservation(401, "Théorie des Langages", "Martin", "Sophie", "E2", "EXAMEN", "16/8", "12/4", 3, "Tue 10:00", "Tue 11:00");
 
     // Mercredi
-    insertReservation(401, "Anglais", "Lefevre", "Pierre", "E3", "EXAMEN", "15/0/2", "0/0/2", 3, "Wed 10:00", "Wed 12:00");
-
-    // Jeudi
-    insertReservation(402, "Informatique", "Martin", "Sophie", "E4", "EXAMEN", "25/0/2", "0/0/2", 3, "Thu 13:30", "Thu 15:30");
-
-    // Vendredi
-    insertReservation(401, "Physique", "Dupont", "Jean", "E2", "EXAMEN", "20/0/2", "0/0/2", 3, "Fri 08:00", "Fri 10:00");
-    insertReservation(402, "Informatique", "Moreau", "Isabelle", "E3", "EXAMEN", "25/0/2", "0/0/2", 3, "Fri 10:00", "Fri 12:00");
+    insertReservation(402, "Sécurité Informatique", "Bertolim", "Maria", "E3", "EXAMEN", "14/7/2", "10/3/1", 3, "Wed 08:00", "Wed 09:00");
 }
 
 int main(int argc, char *argv[]) {
-    EcueControleur ecue;
 
-    std::string nomECUE = "Blabla";
-    std::string nomEnseignant = "Trenchant";
-    std::string prenomEnseignant = "Vincent";
-    int numeroSalle = 101;
-    cours typeSalle = CM;
-    std::string groupeEtudiant = "E4";
-
-    std::vector<cours> types = {CM, TD, TP_INFO};
-    std::vector<int> heures = {10, 20, 15};
-    ecue.creerECUE(nomECUE, nomEnseignant, prenomEnseignant, numeroSalle, types, heures, groupeEtudiant);
-
-    int heuresCM = ecue.getNombreHeure(typeSalle);
-    std::cout << "Nombre d'heures pour CM : " << heuresCM << std::endl;
-
-    int heuresTP = ecue.getNombreHeure(TP_ELEC);
-    std::cout << "Nombre d'heures pour TP_ELEC : " << heuresTP << std::endl;
-
-    QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
 
     // Global Database Object (Alternatively, you can pass this to functions)
     QSqlDatabase db;
@@ -159,7 +168,7 @@ int main(int argc, char *argv[]) {
     // Initialize the database
     initDatabase(db);
 
-    creerReservation();
+    //creerReservation();
 
     QList<int> roomNumbers = readRoomNumbersFromCSV(QString::fromStdString("EXAMEN"));
     for (int roomNumber : roomNumbers) {
@@ -167,6 +176,14 @@ int main(int argc, char *argv[]) {
     }
 
     salleLibreSemaine(3, roomNumbers);
+
+    db.close();
+
+    popupEdt *popup = new popupEdt();
+
+    popup->show();
+
+
 /*
     // Input start and finish times
     int targetSemaine = 2;
@@ -202,5 +219,5 @@ int main(int argc, char *argv[]) {
         afficherQMap(reservation);
     }
 */
-    return 0;
+    return a.exec();
 }

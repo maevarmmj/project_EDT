@@ -1,166 +1,12 @@
-#include <QApplication>
-#include <QMainWindow>
-#include <QLabel>
-#include <QGridLayout>
-#include <QPushButton>
-#include <QWidget>
-#include <QHBoxLayout>
-#include <QSpinBox>
-#include <QComboBox>
-#include <QVBoxLayout>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
+#include "popupEdt.h"
 
-// Fonction pour lire le CSV et mettre à jour les ComboBox ECUE et Type de Cours
-void lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox) {
-    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
-    QFile file(filePath);
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV" << filePath;
-        return;
-    }
-
-    QTextStream in(&file);
-
-    // Vider les ComboBox existants
-    ecueComboBox->clear();
-    typeCoursComboBox->clear();
-
-    // Ignorer la première ligne (en-têtes)
-    in.readLine();
-
-    // Map pour stocker les types de cours par ECUE
-    QMap<QString, QStringList> ecueTypesCoursMap;
-
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList fields = line.split(",");
-
-        if (fields.size() >= 5) {
-            QString nomECUE = fields[0];
-            QString groupe = fields[3];
-            QString typesCours = fields[4];
-
-            QString ecueLabel = QString("%1 - %2").arg(groupe, nomECUE);
-
-            // Stocker les types de cours pour cette ECUE
-            QStringList types = typesCours.split("/");
-            ecueTypesCoursMap[ecueLabel] = types;
-
-            // Ajouter l'ECUE au ComboBox s'il n'y est pas déjà
-            if (ecueComboBox->findText(ecueLabel) == -1) {
-                ecueComboBox->addItem(ecueLabel);
-            }
-        }
-    }
-
-    file.close();
-
-    // Connecter le signal currentTextChanged du ComboBox ECUE pour mettre à jour le ComboBox Type de Cours
-    QObject::connect(ecueComboBox, &QComboBox::currentTextChanged, [=](const QString &ecue) {
-        typeCoursComboBox->clear();
-        if (ecueTypesCoursMap.contains(ecue)) {
-            typeCoursComboBox->addItems(ecueTypesCoursMap[ecue]);
-        }
-    });
-
-    // Sélectionner le premier élément et déclencher manuellement le signal pour mettre à jour le ComboBox Type de Cours au démarrage
-    if (ecueComboBox->count() > 0) {
-        ecueComboBox->setCurrentIndex(0); // Sélectionner le premier élément
-        emit ecueComboBox->currentTextChanged(ecueComboBox->currentText()); // Déclencher le signal manuellement
-    }
-}
-
-// Fonction pour mettre à jour les informations du bandeau du bas
-void mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours) {
-    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
-    QFile file(filePath);
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV" << filePath;
-        return;
-    }
-
-    QTextStream in(&file);
-    in.readLine(); // Ignorer la première ligne
-
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList fields = line.split(",");
-
-        if (fields.size() >= 5) {
-            QString nomECUE = fields[0];
-            QString nomEnseignant = fields[1];
-            QString prenomEnseignant = fields[2];
-            QString groupe = fields[3];
-            QString typesCours = fields[4];
-
-            // Vérifier si la ligne correspond à l'ECUE et au type de cours sélectionnés
-            if (QString("%1 - %2").arg(groupe, nomECUE) == ecueLabel && typesCours.contains(typeCours)) {
-                // Mettre à jour les labels du bandeau du bas
-                groupeValueLabel->setText(QString("Groupe: %1").arg(groupe));
-                enseignantValueLabel->setText(QString("Enseignant: %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
-                ecueInfoValueLabel->setText(QString("ECUE: %1").arg(nomECUE));
-                typeCoursInfoValueLabel->setText(QString("Type de cours: %1").arg(typeCours));
-                break; // On a trouvé la ligne correspondante, pas besoin de continuer
-            }
-        }
-    }
-
-    file.close();
-}
-
-void afficherInfosBouton(const QString &ecueLabel, int semaine, int row, int col) {
-    // Extraire le nom de l'ECUE et le groupe à partir de ecueLabel
-    QString groupe = ecueLabel.split(" - ").at(0);
-    QString nomECUE = ecueLabel.split(" - ").at(1);
-
-    // Récupérer le nom et le prénom de l'enseignant à partir du CSV
-    QString nomEnseignant, prenomEnseignant;
-    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
-    QFile file(filePath);
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&file);
-        in.readLine(); // Ignorer la première ligne
-        while (!in.atEnd()) {
-            QString line = in.readLine();
-            QStringList fields = line.split(",");
-            if (fields.size() >= 3 && fields[0] == nomECUE && fields[3] == groupe) {
-                nomEnseignant = fields[1];
-                prenomEnseignant = fields[2];
-                break;
-            }
-        }
-        file.close();
-    }
-
-    // Déterminer le jour et l'heure de début à partir de row et col
-    QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
-    QString jour = days[col];
-    int heureDebut = row + 8; // +8 car les horaires commencent à 8h
-
-    // Afficher les informations dans la console
-    qDebug() << "ECUE:" << nomECUE;
-    qDebug() << "Enseignant:" << nomEnseignant << prenomEnseignant;
-    qDebug() << "Groupe:" << groupe;
-    qDebug() << "Semaine:" << semaine;
-    qDebug() << "Date de début:" << QString("%1 %2h").arg(jour).arg(heureDebut);
-    qDebug() << "--------------------";
-}
-
-int vueEdt(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-
+popupEdt::popupEdt() {
     // Fenêtre principale
-    QMainWindow mainWindow;
-    mainWindow.setWindowTitle("Matrice de Boutons");
+    this->setWindowTitle("Matrice de Boutons");
 
     // Widget central
-    QWidget *centralWidget = new QWidget(&mainWindow);
-    mainWindow.setCentralWidget(centralWidget);
+    QWidget *centralWidget = new QWidget(this);
+    this->setCentralWidget(centralWidget);
 
     // Layout principal
     QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
@@ -283,6 +129,143 @@ int vueEdt(int argc, char *argv[])
         gridWidget->show();
     });
 
-    mainWindow.show();
-    return a.exec();
+    //mainWindow.show();
+}
+
+// Fonction pour lire le CSV et mettre à jour les ComboBox ECUE et Type de Cours
+void popupEdt::lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox) {
+    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV" << filePath;
+        return;
+    }
+
+    QTextStream in(&file);
+
+    // Vider les ComboBox existants
+    ecueComboBox->clear();
+    typeCoursComboBox->clear();
+
+    // Ignorer la première ligne (en-têtes)
+    in.readLine();
+
+    // Map pour stocker les types de cours par ECUE
+    QMap<QString, QStringList> ecueTypesCoursMap;
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList fields = line.split(",");
+
+        if (fields.size() >= 5) {
+            QString nomECUE = fields[0];
+            QString groupe = fields[3];
+            QString typesCours = fields[4];
+
+            QString ecueLabel = QString("%1 - %2").arg(groupe, nomECUE);
+
+            // Stocker les types de cours pour cette ECUE
+            QStringList types = typesCours.split("/");
+            ecueTypesCoursMap[ecueLabel] = types;
+
+            // Ajouter l'ECUE au ComboBox s'il n'y est pas déjà
+            if (ecueComboBox->findText(ecueLabel) == -1) {
+                ecueComboBox->addItem(ecueLabel);
+            }
+        }
+    }
+
+    file.close();
+
+    // Connecter le signal currentTextChanged du ComboBox ECUE pour mettre à jour le ComboBox Type de Cours
+    QObject::connect(ecueComboBox, &QComboBox::currentTextChanged, [=](const QString &ecue) {
+        typeCoursComboBox->clear();
+        if (ecueTypesCoursMap.contains(ecue)) {
+            typeCoursComboBox->addItems(ecueTypesCoursMap[ecue]);
+        }
+    });
+
+    // Sélectionner le premier élément et déclencher manuellement le signal pour mettre à jour le ComboBox Type de Cours au démarrage
+    if (ecueComboBox->count() > 0) {
+        ecueComboBox->setCurrentIndex(0); // Sélectionner le premier élément
+        emit ecueComboBox->currentTextChanged(ecueComboBox->currentText()); // Déclencher le signal manuellement
+    }
+}
+
+// Fonction pour mettre à jour les informations du bandeau du bas
+void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours) {
+    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV" << filePath;
+        return;
+    }
+
+    QTextStream in(&file);
+    in.readLine(); // Ignorer la première ligne
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList fields = line.split(",");
+
+        if (fields.size() >= 5) {
+            QString nomECUE = fields[0];
+            QString nomEnseignant = fields[1];
+            QString prenomEnseignant = fields[2];
+            QString groupe = fields[3];
+            QString typesCours = fields[4];
+
+            // Vérifier si la ligne correspond à l'ECUE et au type de cours sélectionnés
+            if (QString("%1 - %2").arg(groupe, nomECUE) == ecueLabel && typesCours.contains(typeCours)) {
+                // Mettre à jour les labels du bandeau du bas
+                groupeValueLabel->setText(QString("Groupe: %1").arg(groupe));
+                enseignantValueLabel->setText(QString("Enseignant: %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
+                ecueInfoValueLabel->setText(QString("ECUE: %1").arg(nomECUE));
+                typeCoursInfoValueLabel->setText(QString("Type de cours: %1").arg(typeCours));
+                break; // On a trouvé la ligne correspondante, pas besoin de continuer
+            }
+        }
+    }
+
+    file.close();
+}
+
+void popupEdt::afficherInfosBouton(const QString &ecueLabel, int semaine, int row, int col) {
+    // Extraire le nom de l'ECUE et le groupe à partir de ecueLabel
+    QString groupe = ecueLabel.split(" - ").at(0);
+    QString nomECUE = ecueLabel.split(" - ").at(1);
+
+    // Récupérer le nom et le prénom de l'enseignant à partir du CSV
+    QString nomEnseignant, prenomEnseignant;
+    QString filePath = "C:/Users/mathi/Documents/GitHub/project_EDT/CSV/ecue.csv"; // Assurez-vous que le chemin est correct
+    QFile file(filePath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        in.readLine(); // Ignorer la première ligne
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            QStringList fields = line.split(",");
+            if (fields.size() >= 3 && fields[0] == nomECUE && fields[3] == groupe) {
+                nomEnseignant = fields[1];
+                prenomEnseignant = fields[2];
+                break;
+            }
+        }
+        file.close();
+    }
+
+    // Déterminer le jour et l'heure de début à partir de row et col
+    QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
+    QString jour = days[col];
+    int heureDebut = row + 8; // +8 car les horaires commencent à 8h
+
+    // Afficher les informations dans la console
+    qDebug() << "ECUE:" << nomECUE;
+    qDebug() << "Enseignant:" << nomEnseignant << prenomEnseignant;
+    qDebug() << "Groupe:" << groupe;
+    qDebug() << "Semaine:" << semaine;
+    qDebug() << "Date de début:" << QString("%1 %2h").arg(jour).arg(heureDebut);
+    qDebug() << "--------------------";
 }
