@@ -24,6 +24,8 @@ SOURCES += \
         Vue/supprimerEnseignantWindow.cpp \
         Vue/supprimerGroupeWindow.cpp \
         Vue/ajouterGroupeWindow.cpp \
+        Vue/ajoutecueWindow.cpp \
+        Vue/supprimerSalleWindow.cpp \
         main.cpp
 
 HEADERS += \
@@ -41,6 +43,8 @@ HEADERS += \
     Vue/ajouterGroupeWindow.h \
     Vue/supprimerEnseignantWindow.h \
     Vue/supprimerGroupeWindow.h \
+    Vue/ajoutecueWindow.h \
+    Vue/supprimerSalleWindow.h \
     definition.h \
     Controleur/CreneauControl.h \
     Controleur/grpeetudiantcontrolleur.h \

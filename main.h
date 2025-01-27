@@ -11,6 +11,8 @@
 #include "Vue/ajouterGroupeWindow.h"
 #include "Vue/supprimerEnseignantWindow.h"
 #include "Vue/supprimerGroupeWindow.h"
+#include "Vue/ajoutecueWindow.h"
+#include "Vue/supprimerSalleWindow.h"
 
 
 #endif // MAIN_H
