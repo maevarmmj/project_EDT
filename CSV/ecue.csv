@@ -2,3 +2,13 @@ NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlac
 TNS,Trenchant,Vincent,E4,CM/TD/TP_INFO,10/20/15,3/0/15
 Maths,Bertolim,M-A,E4,CM/EXAMEN/TP_INFO,30/10/14,23/0/0
 ERTF,Trenchant,Vincent,E3,CM/TD/TP_INFO,10/20/15,3/0/15
+Analyse de Données,Dupont,Jean,G1,CM/TD,20/10,15/5
+Algorithmique,Martin,Sophie,G2,CM/TP,25/15,20/10
+Bases de Données,Lefevre,Pierre,G3,CM/TP/TD,20/10/5,15/5/2
+Réseaux,Bertolim,Maria,G4,CM/TP,15/10,10/5
+Systèmes d'Exploitation,Garcia,Carlos,G5,CM/TD,18/12,12/8
+Programmation Orientée Objet,Moreau,Isabelle,G6,CM/TP,30/20,25/15
+Intelligence Artificielle,Durand,Michel,G7,CM/TD,22/11,18/8
+Compilation,Dupont,Jean,G8,CM/TP,15/10,10/7
+Théorie des Langages,Martin,Sophie,G9,CM/TD,16/8,12/4
+Sécurité Informatique,Bertolim,Maria,G10,CM/TD/EXAMEN,14/7/2,10/3/1
