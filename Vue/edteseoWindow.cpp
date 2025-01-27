@@ -112,7 +112,7 @@ void MainWindow::setupActions() {
     connect(remGroupButton, &QPushButton::clicked, this, &MainWindow::remGroup);
     connect(remECUEButton, &QPushButton::clicked, this, &MainWindow::remECUE);
 
-    connect(updateButton, &QPushButton::clicked, this, &MainWindow::updateTimetable);
+    connect(updateButton, &QPushButton::clicked, this, &MainWindow::updateEdt);
 }
 
 void MainWindow::onComboBoxSelectionChanged(const QString &selectedText) {
