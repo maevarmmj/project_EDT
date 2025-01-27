@@ -91,12 +91,15 @@ void AjouterGroupeWindow::onCategoryChanged(const QString &category) {
 }
 
 void AjouterGroupeWindow::clearForm() {
-    QLayoutItem *item;
-    while ((item = formLayout->takeAt(0)) != nullptr) {
-        delete item->widget();
-        delete item;
+    while (formLayout->count() > 0) {
+        QLayoutItem *item = formLayout->takeAt(0);
+        if (item != nullptr) {
+            delete item->widget();
+            delete item;
+        }
     }
 }
+
 
 void AjouterGroupeWindow::onSaveClicked() {
     QString category = categoryComboBox->currentText();

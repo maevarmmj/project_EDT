@@ -18,6 +18,8 @@ public:
 private slots:
     void toggleCM(int state);
     void toggleTP(int state);
+    void toggleElec(int state);
+    void toggleInfo(int state);
     void toggleTD(int state);
     void toggleExam(int state);
     void enregistrer();
@@ -28,7 +30,7 @@ private slots:
 private:
     QLineEdit *ecueLineEdit;
     QComboBox *groupComboBox;
-    QComboBox *teacherComboBox; // Nouveau menu déroulant
+    QComboBox *teacherComboBox;
     QCheckBox *cmCheckBox;
     QSpinBox *cmSpinBox;
     QCheckBox *tpCheckBox;
@@ -38,10 +40,12 @@ private:
     QCheckBox *examCheckBox;
     QSpinBox *examSpinBox;
     QCheckBox *elecCheckBox;
+    QSpinBox *elecSpinBox;
+
     QCheckBox *infoCheckBox;
+    QSpinBox *infoSpinBox;
 
-    void loadTeachersFromCSV(); // Nouvelle méthode pour charger le fichier CSV
-
+    void loadTeachersFromCSV();
 };
 
 #endif // AJOUT_ECUE_H
