@@ -8,6 +8,11 @@
 #include "Controleur/grpeetudiantcontrolleur.h"
 #include "Vue/popupEdt.h"
 #include "Vue/edteseoWindow.h"
-//Bonjour c'est un commentaire <3 bisou bb jtm + que tt bae je te marie demain mdr lol
+#include "Vue/ajouterGroupeWindow.h"
+#include "Vue/supprimerEnseignantWindow.h"
+#include "Vue/supprimerGroupeWindow.h"
+#include "Vue/ajoutecueWindow.h"
+#include "Vue/supprimerSalleWindow.h"
+
 
 #endif // MAIN_H

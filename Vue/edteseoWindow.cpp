@@ -21,7 +21,7 @@ void MainWindow::setupUI() {
 
     QHBoxLayout *topBarLayout = new QHBoxLayout();
 
-    QLabel *groupLabel = new QLabel("Groupe :", this);
+    QLabel *groupLabel = new QLabel("Personnel :", this);
     topBarLayout->addWidget(groupLabel);
 
     // Menu déroulant pour les groupes
@@ -36,12 +36,19 @@ void MainWindow::setupUI() {
     topBarLayout->addWidget(remButton);
 
     remGroupButton = new QPushButton("Groupe", this);
+    remEnseignantButton = new QPushButton("Enseignant", this);
+    remSalleButton = new QPushButton("Salle", this);
     remECUEButton = new QPushButton("ECUE", this);
 
+
     remGroupButton->setVisible(false);
+    remEnseignantButton->setVisible(false);
+    remSalleButton->setVisible(false);
     remECUEButton->setVisible(false);
 
     topBarLayout->addWidget(remGroupButton);
+    topBarLayout->addWidget(remEnseignantButton);
+    topBarLayout->addWidget(remSalleButton);
     topBarLayout->addWidget(remECUEButton);
 
 
@@ -50,7 +57,7 @@ void MainWindow::setupUI() {
     addButton->setFixedSize(25, 25);
     topBarLayout->addWidget(addButton);
 
-    addGroupButton = new QPushButton("Groupe", this);
+    addGroupButton = new QPushButton("Élement", this);
     addECUEButton = new QPushButton("ECUE", this);
 
     addGroupButton->setVisible(false);
@@ -82,7 +89,7 @@ void MainWindow::setupUI() {
 
 // Configuration de la table
 void MainWindow::setupTable() {
-    table = new QTableWidget(9, 8, this); // 5 lignes, 8 colonnes
+    table = new QTableWidget(9, 8, this);
     table->setHorizontalHeaderLabels({
         "Matière", "Enseignant", "H. totales", "H. CM",
         "H. TD", "H. Elec", "H. Info", "H. Exam"
@@ -110,6 +117,8 @@ void MainWindow::setupActions() {
 
     connect(remButton, &QPushButton::clicked, this, &MainWindow::toggleRemButtonsVisibility);
     connect(remGroupButton, &QPushButton::clicked, this, &MainWindow::remGroup);
+    connect(remEnseignantButton, &QPushButton::clicked, this, &MainWindow::remEnseignant);
+    connect(remSalleButton, &QPushButton::clicked, this, &MainWindow::remSalle);
     connect(remECUEButton, &QPushButton::clicked, this, &MainWindow::remECUE);
 
     connect(updateButton, &QPushButton::clicked, this, &MainWindow::updateEdt);
@@ -243,6 +252,8 @@ void MainWindow::toggleButtonsVisibility() {
 void MainWindow::toggleRemButtonsVisibility() {
     bool isVisible = remGroupButton->isVisible();
     remGroupButton->setVisible(!isVisible);
+    remEnseignantButton->setVisible(!isVisible);
+    remSalleButton->setVisible(!isVisible);
     remECUEButton->setVisible(!isVisible);
 }
 
@@ -286,7 +297,7 @@ void MainWindow::loadGroups() {
 
 
 void MainWindow::addGroup() {
-    QMessageBox::information(this, "Ajout Groupe", "Fonctionnalité Ajouter Groupe appelée !");
+    QMessageBox::information(this, "Ajout Élement", "Fonctionnalité Ajouter Élement appelée !");
 }
 
 void MainWindow::addECUE() {
@@ -294,7 +305,15 @@ void MainWindow::addECUE() {
 }
 
 void MainWindow::remGroup() {
-    QMessageBox::information(this, "Suppression Groupe", "Fonctionnalité Supprimer Groupe appelée !");
+    QMessageBox::information(this, "Suppression Groupe étudiants", "Fonctionnalité Supprimer Groupe appelée !");
+}
+
+void MainWindow::remEnseignant() {
+    QMessageBox::information(this, "Suppression Enseignant", "Fonctionnalité Supprimer Enseignant appelée !");
+}
+
+void MainWindow::remSalle() {
+    QMessageBox::information(this, "Suppression Salle", "Fonctionnalité Supprimer Salle appelée !");
 }
 
 void MainWindow::remECUE() {
