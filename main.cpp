@@ -3,12 +3,10 @@
 
 
 int main(int argc, char *argv[]) {
+    qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
     QApplication a(argc, argv);
-
-    // Fenetre principale EDT
     MainWindow *mainWind = new MainWindow();
     mainWind->show();
-
 
     // Fenetre Ajout Groupe
     AjouterGroupeWindow w;
@@ -33,5 +31,6 @@ int main(int argc, char *argv[]) {
     // Fenetre Supprimer ECUE
     // EN COURS
 
+    
     return a.exec();
 }

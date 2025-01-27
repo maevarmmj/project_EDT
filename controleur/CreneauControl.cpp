@@ -133,69 +133,6 @@ QList<QVariantMap> getAllReservations() {
     return reservations;
 }
 
-// Function to fetch reservations for a specific room
-QList<QVariantMap> getReservationsByRoom(const QString& NumeroSalle) {
-    QList<QVariantMap> reservations;
-    QSqlQuery query;
-    query.prepare("SELECT * FROM Reservations WHERE NumeroSalle = :NumeroSalle");
-    query.bindValue(":NumeroSalle", NumeroSalle);
-
-    if (!query.exec()) {
-        qDebug() << "Error fetching reservations by room:" << query.lastError().text();
-        return reservations;
-    }
-
-    while (query.next()) {
-        QVariantMap reservation;
-        reservation["ReservationID"] = query.value("ReservationID");
-        reservation["NumeroSalle"] = query.value("NumeroSalle");
-        reservation["NomECUE"] = query.value("NomECUE");
-        reservation["NomEnseignant"] = query.value("NomEnseignant");
-        reservation["PrenomEnseignant"] = query.value("PrenomEnseignant");
-        reservation["Groupe"] = query.value("Groupe");
-        reservation["TypeCours"] = query.value("TypeCours");
-        reservation["HeuresCours"] = query.value("HeuresCours");
-        reservation["HeuresAPlacer"] = query.value("HeuresAPlacer");
-        reservation["Semaine"] = query.value("Semaine");
-        reservation["Debut"] = query.value("Debut");
-        reservation["Fin"] = query.value("Fin");
-        reservations.append(reservation);
-    }
-
-    return reservations;
-}
-
-// Function to fetch reservations for a specific teacher
-QList<QVariantMap> getReservationsByTeacher(const QString& NomEnseignant) {
-    QList<QVariantMap> reservations;
-    QSqlQuery query;
-    query.prepare("SELECT * FROM Reservations WHERE NomEnseignant = :NomEnseignant");
-    query.bindValue(":NomEnseignant", NomEnseignant);
-
-    if (!query.exec()) {
-        qDebug() << "Error fetching reservations by teacher:" << query.lastError().text();
-        return reservations;
-    }
-
-    while (query.next()) {
-        QVariantMap reservation;
-        reservation["ReservationID"] = query.value("ReservationID");
-        reservation["NumeroSalle"] = query.value("NumeroSalle");
-        reservation["NomECUE"] = query.value("NomECUE");
-        reservation["NomEnseignant"] = query.value("NomEnseignant");
-        reservation["PrenomEnseignant"] = query.value("PrenomEnseignant");
-        reservation["Groupe"] = query.value("Groupe");
-        reservation["TypeCours"] = query.value("TypeCours");
-        reservation["HeuresCours"] = query.value("HeuresCours");
-        reservation["HeuresAPlacer"] = query.value("HeuresAPlacer");
-        reservation["Semaine"] = query.value("Semaine");
-        reservation["Debut"] = query.value("Debut");
-        reservation["Fin"] = query.value("Fin");
-        reservations.append(reservation);
-    }
-
-    return reservations;
-}
 
 // Function to delete a reservation by ID
 bool deleteReservation(int reservationID) {
@@ -245,4 +182,41 @@ void salleLibreSemaine(int Semaine, const QList<int>& roomNumbers) {
             }
         }
     }
+}
+
+
+// Function to check if a teacher is available at a given time slot
+bool isTeacherAvailable(const QString& NomEnseignant, int Semaine, const QString& Debut, const QString& Fin) {
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Reservations WHERE NomEnseignant = :NomEnseignant AND Semaine = :Semaine "
+                  "AND ((Debut <= :Debut AND Fin > :Debut) OR (Debut < :Fin AND Fin >= :Fin) OR (Debut >= :Debut AND Fin <= :Fin))");
+    query.bindValue(":NomEnseignant", NomEnseignant);
+    query.bindValue(":Semaine", Semaine);
+    query.bindValue(":Debut", Debut);
+    query.bindValue(":Fin", Fin);
+
+    if (!query.exec()) {
+        qDebug() << "Error checking teacher availability:" << query.lastError().text();
+        return false;
+    }
+
+    return !query.next(); // Teacher is available if no matching reservation is found
+}
+
+// Function to check if a group is available at a given time slot
+bool isGroupAvailable(const QString& Groupe, int Semaine, const QString& Debut, const QString& Fin) {
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Reservations WHERE Groupe = :Groupe AND Semaine = :Semaine "
+                  "AND ((Debut <= :Debut AND Fin > :Debut) OR (Debut < :Fin AND Fin >= :Fin) OR (Debut >= :Debut AND Fin <= :Fin))");
+    query.bindValue(":Groupe", Groupe);
+    query.bindValue(":Semaine", Semaine);
+    query.bindValue(":Debut", Debut);
+    query.bindValue(":Fin", Fin);
+
+    if (!query.exec()) {
+        qDebug() << "Error checking group availability:" << query.lastError().text();
+        return false;
+    }
+
+    return !query.next(); // Group is available if no matching reservation is found
 }

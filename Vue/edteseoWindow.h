@@ -16,6 +16,8 @@
 #include <QStringList>
 #include <QDir>
 
+#include "Vue/popupEdt.h"
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 private:
