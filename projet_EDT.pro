@@ -20,6 +20,7 @@ SOURCES += \
         Controleur/grpeetudiantcontrolleur.cpp \
         Controleur/ecuecontroleur.cpp \
         Vue/popupEdt.cpp \
+        Vue/edteseoWindow.cpp \
         main.cpp
 
 HEADERS += \
@@ -33,6 +34,7 @@ HEADERS += \
     Model/semaine.h \
     Model/edt.h \
     Vue/popupEdt.h \
+    Vue/edteseoWindow.h \
     definition.h \
     Controleur/CreneauControl.h \
     Controleur/grpeetudiantcontrolleur.h \
