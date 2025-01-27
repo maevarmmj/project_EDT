@@ -49,5 +49,4 @@ HEADERS += \
     Controleur/CreneauControl.h \
     Controleur/grpeetudiantcontrolleur.h \
     Controleur/ecuecontroleur.h \
-    
     main.h

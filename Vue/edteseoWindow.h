@@ -28,19 +28,23 @@ private:
     QPushButton *addGroupButton;
     QPushButton *addECUEButton;
     QPushButton *remGroupButton;
+    QPushButton *remEnseignantButton;
+    QPushButton *remSalleButton;
     QPushButton *remECUEButton;
     QPushButton *updateButton;
 
     void setupUI();               // Méthode pour initialiser l'interface
     void setupTable();            // Méthode pour configurer la table
     void setupActions();          // Méthode pour configurer les actions
-    void hideButtons();      // Méthode pour cacher les boutons "Groupe" et "ECUE"
+    void hideButtons();
 
 private slots:
-    void loadGroups();           // Charger les groupes depuis le fichier CSV
-    void addGroup();             // Action pour ajouter un groupe
-    void addECUE();              // Action pour ajouter une ECUE
+    void loadGroups();
+    void addGroup();
+    void addECUE();
     void remGroup();
+    void remEnseignant();
+    void remSalle();
     void remECUE();
     void toggleButtonsVisibility();
     void toggleRemButtonsVisibility();
