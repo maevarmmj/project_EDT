@@ -36,6 +36,8 @@ private:
     QMap<QString, QStringList> enseignantsData;
 
     void loadTeachersFromCSV();
+    void loadGroupsFromCSV();
+
 
 
 private slots:
@@ -51,6 +53,9 @@ private slots:
 
 public:
     explicit AjoutEcueWindow(QWidget *parent = nullptr);
+
+signals:
+    void windowClosed();
 
 };
 

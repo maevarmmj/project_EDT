@@ -16,7 +16,6 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     resize(600, 500);
     setWindowModality(Qt::ApplicationModal);
 
-
     // Appliquer un style pour rendre la fenêtre plus esthétique
     // setStyleSheet(
     //     "QWidget { background-color: #f4f4f4; }"
@@ -50,7 +49,6 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QLabel *groupLabel = new QLabel("Groupe étudiant:");
     groupComboBox = new QComboBox();
-    groupComboBox->addItems({"E1", "E2", "E3", "E4", "E5"});
 
     QLabel *nomLabel = new QLabel("Nom enseignant", this);
     nomComboBox = new QComboBox(this);
@@ -61,6 +59,8 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
 
     loadTeachersFromCSV();
+    loadGroupsFromCSV();
+
     groupTeacherLayout->addWidget(groupLabel);
     groupTeacherLayout->addWidget(groupComboBox);
     groupTeacherLayout->addSpacing(20);
@@ -368,3 +368,28 @@ void AjoutEcueWindow::enregistrer() {
     QMessageBox::information(this, "Données sauvegardées", "Les données ont été sauvegardées avec succès !");
 }
 
+void AjoutEcueWindow::loadGroupsFromCSV() {
+    QFile file(QDir::currentPath() + "/../../CSV/" + "Groupes.csv");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Erreur", "Impossible de lire le fichier Groupes.csv.");
+        return;
+    }
+
+    QTextStream in(&file);
+    bool isFirstLine = true;
+
+    while (!in.atEnd()) {
+        QString line = in.readLine().trimmed();
+
+        if (isFirstLine) {
+            isFirstLine = false;
+            continue; // Ignorer l'en-tête
+        }
+
+        if (!line.isEmpty()) {
+            groupComboBox->addItem(line);
+        }
+    }
+
+    file.close();
+}

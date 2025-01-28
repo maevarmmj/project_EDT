@@ -46,6 +46,7 @@ private:
     void setupTable();
     void setupActions();
     void hideButtons();
+    bool checkEnseignantsGroupesFiles();
 
 private slots:
     void loadGroups();

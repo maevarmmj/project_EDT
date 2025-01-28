@@ -20,6 +20,16 @@ QString getCoursName(cours cours) {
 }
 
 bool ajouterSalleCSV(int numero, cours cours){
+    QString csvDirPath = QDir::currentPath() + "/../../CSV";
+    QDir csvDir(csvDirPath);
+
+    if (!csvDir.exists()) {
+        if (!csvDir.mkpath(".")) {
+            qDebug() << "Erreur : impossible de créer le dossier CSV:" << csvDir.path();
+            return false;
+        }
+    }
+
     QFile file(csv);
     bool fileExists = file.exists();
 

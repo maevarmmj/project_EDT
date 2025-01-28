@@ -2,6 +2,16 @@
 
 
 bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
+    QString csvDirPath = QDir::currentPath() + "/../../CSV";
+    QDir csvDir(csvDirPath);
+
+    if (!csvDir.exists()) {
+        if (!csvDir.mkpath(".")) {
+            qDebug() << "Erreur : impossible de créer le dossier CSV:" << csvDir.path();
+            return false;
+        }
+    }
+
     QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Groupes.csv");
     QFile file(csv);
     bool fileExists = file.exists();
