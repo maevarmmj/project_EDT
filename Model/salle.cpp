@@ -1,47 +1,33 @@
-#include "Salle.h"
+#include "salle.h"
 
 
-Salle::Salle() : numero(0), typeSalle("")
+Salle::Salle() : numero(0), typeSalle(CM)
 {
-    this->numero=0;
-    this->typeSalle="";
 
 }
 
 
-Salle::Salle(int numero, std::string typeSalle) : numero(numero), typeSalle(typeSalle)
+Salle::Salle(int numero, cours typeSalle) : numero(numero), typeSalle(typeSalle)
 {
-    this->numero=numero;
-    this->typeSalle=typeSalle;
 }
 
-int Salle::getNumero()
+int Salle::getNumero() const
 {
     return numero;
 }
 
 
-std::string Salle::getTypeSalle()
+cours Salle::getTypeSalle() const
 {
     return typeSalle;
 }
 
-void Salle::setTypeSalle()
+void Salle::setTypeSalle(cours typeSalle)
 {
     this->typeSalle=typeSalle;
 }
 
 void Salle::deleteSalle() {
     numero = 0;
-    typeSalle = "";
-}
-
-bool Salle::estdisponible()
-{
-    return disponible;
-}
-
-void Salle::setDisponible()
-{
-    this->disponible=disponible;
+    typeSalle = CM;
 }
