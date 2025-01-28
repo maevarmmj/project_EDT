@@ -10,7 +10,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUI();
     setupActions();
-    loadGroups();
+    loadGroups(TRUE);
     this->setFixedSize(880, 400);
     this->setWindowTitle("Emploi du temps");
 }
@@ -67,7 +67,6 @@ void MainWindow::setupUI() {
     topBarLayout->addWidget(addGroupButton);
     topBarLayout->addWidget(addECUEButton);
 
-    // Ajouter la barre supérieure au layout principal
     mainLayout->addLayout(topBarLayout);
 
     updateButton = new QPushButton("Mettre à jour l'emploi du temps", this);
@@ -79,6 +78,7 @@ void MainWindow::setupUI() {
 
     // Ajouter ce layout au layout principal
     mainLayout->addLayout(updateLayout);
+
 
     // Table
     setupTable();
@@ -131,10 +131,9 @@ void MainWindow::onComboBoxSelectionChanged(const QString &selectedText) {
     }
 
     QFile file(QDir::currentPath() + "/../../CSV/" + "Ecue.csv");
-    // if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    //     QMessageBox::warning(this, "Erreur", "Impossible de charger le fichier Ecue.csv");
-    //     return;
-    // }
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
 
     QTextStream in(&file);
     if (!in.atEnd()) {
@@ -241,7 +240,6 @@ void MainWindow::onComboBoxSelectionChanged(const QString &selectedText) {
     file.close();
 }
 
-
 void MainWindow::toggleButtonsVisibility() {
     bool isVisible = addGroupButton->isVisible();
     addGroupButton->setVisible(!isVisible);
@@ -257,15 +255,19 @@ void MainWindow::toggleRemButtonsVisibility() {
 }
 
 
-void MainWindow::loadGroups() {
+void MainWindow::loadGroups(boolean firstTime) {
     QStringList filePaths = {
         QDir::currentPath() + "/../../CSV/" + "Groupes.csv",
         QDir::currentPath() + "/../../CSV/" + "Enseignants.csv"
     };
 
-    groupComboBox->clear();
-    groupComboBox->addItem("Sélectionner");
-
+    if (firstTime){
+        groupComboBox->clear();
+        groupComboBox->addItem("Sélectionner");
+    }
+    else{
+        groupComboBox->clear();
+    }
     for (const QString &filePath : filePaths) {
         QFile file(filePath);
 
@@ -295,12 +297,15 @@ void MainWindow::loadGroups() {
 }
 
 
+
+// FENETRE AJOUT GROUPE
 void MainWindow::addGroup() {
     AjouterGroupeWindow *addgroup = new AjouterGroupeWindow();
     connect(addgroup, &AjouterGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     addgroup->show();
 }
 
+// FENETRE AJOUT ECUE
 void MainWindow::addECUE() {
     if (!checkEnseignantsGroupesFiles()) {
         QMessageBox::warning(this, "Erreur", "Veuillez créer un enseignant et des étudiants avant de créer une ECUE.");
@@ -311,38 +316,42 @@ void MainWindow::addECUE() {
     addecue->show();
 }
 
+// FENETRE SUPPRESSION GROUPE ETUDIANT
 void MainWindow::remGroup() {
     SupprimerGroupeWindow *remgroup = new SupprimerGroupeWindow();
     connect(remgroup, &SupprimerGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remgroup->show();}
 
+// FENETRE SUPPRESSION ENSEIGNANT
 void MainWindow::remEnseignant() {
     SupprimerEnseignantWindow *remenseignant = new SupprimerEnseignantWindow();
     connect(remenseignant, &SupprimerEnseignantWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remenseignant->show();
 }
 
+// FENETRE SUPPRESSION SALLE
 void MainWindow::remSalle() {
     SupprimerSalleWindow *remsalle = new SupprimerSalleWindow();
     remsalle->show();}
 
-// ????
+// FENETRE SUPPRESSION ECUE
 void MainWindow::remECUE() {
     SupprimerEcueWindow *suppEcue = new SupprimerEcueWindow();
     connect(suppEcue, &SupprimerEcueWindow::ecueWindowClosed, this, &MainWindow::refreshMainWindow);
     suppEcue->show();
 }
 
+// FENETRE UPDATE EDT
 void MainWindow::updateEdt() {
     popupEdt *popup = new popupEdt();
     popup->show();
 }
 
-
 void MainWindow::refreshMainWindow() {
-    loadGroups();
+    loadGroups(FALSE);
     onComboBoxSelectionChanged(groupComboBox->currentText());
 }
+
 
 bool MainWindow::checkEnseignantsGroupesFiles() {
     // Vérifier Enseignants.csv

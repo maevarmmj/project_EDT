@@ -41,6 +41,9 @@ private:
     QPushButton *remSalleButton;
     QPushButton *remECUEButton;
     QPushButton *updateButton;
+    QPushButton *refreshButton;
+
+    QList<QString> rooms;
 
     void setupUI();
     void setupTable();
@@ -49,7 +52,7 @@ private:
     bool checkEnseignantsGroupesFiles();
 
 private slots:
-    void loadGroups();
+    void loadGroups(boolean firstTime);
     void addGroup();
     void addECUE();
     void remGroup();
@@ -59,6 +62,7 @@ private slots:
     void toggleButtonsVisibility();
     void toggleRemButtonsVisibility();
     void refreshMainWindow();
+
     void updateEdt();
     void onComboBoxSelectionChanged(const QString &selectedText);
 
