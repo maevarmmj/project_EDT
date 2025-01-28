@@ -1,19 +1,21 @@
 #include "definition.h"
 
+// TRANSFORME LES STR EN TYPE COURS
 cours StrToCours(std::string coursStr){
     if (coursStr == "CM") {
         return CM;
     } else if (coursStr == "TD") {
         return TD;
-    } else if (coursStr == "TP_INFO") {
+    } else if ((coursStr == "TP_INFO") || (coursStr == "TP Informatique")) {
         return TP_INFO;
-    } else if (coursStr == "TP_ELEC") {
+    } else if ((coursStr == "TP_INFO") || (coursStr == "TP Electronique")) {
         return TP_ELEC;
     } else {
         return EXAMEN;
     }
 }
 
+// TRANSFORME LES TYPES COURS EN STR
 std::string  CoursToStr(cours cours){
     switch (cours) {
     case CM: return "CM";

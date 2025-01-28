@@ -40,24 +40,24 @@ bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
 
 
 bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
-    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Enseignants.csv");
-    QFile file(csv);
+    QString csvEnseignants = QDir::currentPath() + QString::fromStdString("/../../CSV/Enseignants.csv");
+    QFile fileEnseignants(csvEnseignants);
 
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        qDebug() << "Erreur : impossible d'ouvrir le fichier:" << file.errorString();
+    if (!fileEnseignants.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        qDebug() << "Erreur : impossible d'ouvrir le fichier:" << fileEnseignants.errorString();
         return false;
     }
 
-    QTextStream in(&file);
-    QStringList lines;
+    QTextStream inEnseignants(&fileEnseignants);
+    QStringList linesEnseignants;
     bool found = false;
     bool isFirstLine = true;
 
     QString line;
-    while (in.readLineInto(&line)) {
+    while (inEnseignants.readLineInto(&line)) {
         if (isFirstLine) {
             isFirstLine = false;
-            lines.append(line);
+            linesEnseignants.append(line);
             continue;
         }
 
@@ -69,29 +69,86 @@ bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
             if (existingNom == QString::fromStdString(nom).trimmed() &&
                 existingPrenom == QString::fromStdString(prenom).trimmed()) {
                 found = true;
-                continue;
+                continue;  // Ne pas réécrire cette ligne (supprime l'enseignant)
             }
         }
 
-        lines.append(line);
+        linesEnseignants.append(line);
     }
 
     if (!found) {
         qDebug() << "Erreur : Enseignant " << QString::fromStdString(nom)
         << " " << QString::fromStdString(prenom)
         << " non trouvé dans le fichier CSV.";
-        file.close();
+        fileEnseignants.close();
         return false;
     }
 
-    file.seek(0);
-    file.resize(0);
+    // Réécrire le fichier Enseignants.csv sans l'enseignant supprimé
+    fileEnseignants.seek(0);
+    fileEnseignants.resize(0);
 
-    QTextStream out(&file);
-    for (const QString& updatedLine : lines) {
-        out << updatedLine << "\n";
+    QTextStream outEnseignants(&fileEnseignants);
+    for (const QString& updatedLine : linesEnseignants) {
+        outEnseignants << updatedLine << "\n";
     }
 
-    file.close();
+    fileEnseignants.close();
+
+    // Supprimer les lignes associées dans Ecue.csv
+    QString csvEcue = QDir::currentPath() + QString::fromStdString("/../../CSV/Ecue.csv");
+    QFile fileEcue(csvEcue);
+
+    if (!fileEcue.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        qDebug() << "Erreur : impossible d'ouvrir le fichier:" << fileEcue.errorString();
+        return false;
+    }
+
+    QTextStream inEcue(&fileEcue);
+    QStringList linesEcue;
+    isFirstLine = true;
+    found = false;  // Réinitialiser le flag pour Ecue.csv
+
+    while (inEcue.readLineInto(&line)) {
+        if (isFirstLine) {
+            isFirstLine = false;
+            linesEcue.append(line);
+            continue;
+        }
+
+        QStringList data = line.split(",");
+        if (!data.isEmpty() && data.size() > 3) {
+            QString existingNom = data.at(1).trimmed();  // Nom enseignant (2e colonne)
+            QString existingPrenom = data.at(2).trimmed();  // Prénom enseignant (3e colonne)
+
+            if (existingNom == QString::fromStdString(nom).trimmed() &&
+                existingPrenom == QString::fromStdString(prenom).trimmed()) {
+                found = true;
+                continue;  // Ne pas réécrire cette ligne (supprime les ECUE associées)
+            }
+        }
+
+        linesEcue.append(line);
+    }
+
+    // Réécrire le fichier Ecue.csv sans les lignes associées à l'enseignant
+    fileEcue.seek(0);
+    fileEcue.resize(0);
+
+    QTextStream outEcue(&fileEcue);
+    for (const QString& updatedLine : linesEcue) {
+        outEcue << updatedLine << "\n";
+    }
+
+    fileEcue.close();
+
+    if (!found) {
+        qDebug() << "Aucune ECUE associée à l'enseignant " << QString::fromStdString(nom)
+                 << " " << QString::fromStdString(prenom) << " trouvée dans le fichier Ecue.csv.";
+    } else {
+        qDebug() << "Toutes les ECUE associées à l'enseignant " << QString::fromStdString(nom)
+                 << " " << QString::fromStdString(prenom) << " ont été supprimées.";
+    }
+
     return true;
 }

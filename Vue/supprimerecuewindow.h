@@ -8,38 +8,44 @@
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QComboBox>
+#include "Controleur/ecuecontroleur.h"
 
 class SupprimerEcueWindow : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit SupprimerEcueWindow(QWidget *parent = nullptr);
-    ~SupprimerEcueWindow();
-
-private slots:
-    void onSupprimerClicked();    // Slot appelé lorsqu'on clique sur "Supprimer"
-    void onAnnulerClicked();      // Slot appelé lorsqu'on clique sur "Annuler"
-    void onEcueSelectionChanged(const QString& ecueName);    // Changement de l'ECUE sélectionnée
-    void onEnseignantNomChanged(const QString& enseignantNom); // Changement du nom de l'enseignant
-    void onEnseignantPrenomChanged(const QString& enseignantPrenom); // Changement du prénom de l'enseignant
-    void onGroupeChanged(const QString& nomGroupe);
-
 private:
     QPushButton *deleteButton;
     QPushButton *cancelButton;
 
-    QComboBox *ecueComboBox;           // Menu déroulant pour le nom de l'ECUE
-    QComboBox *enseignantNomComboBox;  // Menu déroulant pour le nom de l'enseignant
-    QComboBox *enseignantPrenomComboBox; // Menu déroulant pour le prénom de l'enseignant
-    QComboBox *groupeComboBox;         // Menu déroulant pour le groupe étudiant
+    QComboBox *ecueComboBox;
+    QComboBox *enseignantNomComboBox;
+    QComboBox *enseignantPrenomComboBox;
+    QComboBox *groupeComboBox;
+    EcueControleur ecue;
 
-
-    void populateEcueComboBox();                      // Remplir le menu déroulant des ECUE
-    void updateEnseignantNomComboBox(const QString& ecueName);  // Mettre à jour les noms des enseignants
-    void updateEnseignantPrenomComboBox(const QString& enseignantNom); // Mettre à jour les prénoms
-    void updateGroupeComboBox(const QString& enseignantPrenom);        // Mettre à jour les groupes étudiants
+    void populateEcueComboBox();
+    void updateEnseignantNomComboBox(const QString& ecueName);
+    void updateEnseignantPrenomComboBox(const QString& enseignantNom);
+    void updateGroupeComboBox(const QString& enseignantPrenom);
     void chargerEcueDepuisCSV();
+
+private slots:
+    void onSupprimerClicked();
+    void onAnnulerClicked();
+    void onEcueSelectionChanged(const QString& ecueName);
+    void onEnseignantNomChanged(const QString& enseignantNom);
+    void onEnseignantPrenomChanged(const QString& enseignantPrenom);
+    void onGroupeChanged(const QString& nomGroupe);
+    void updateEcueComboBoxes();
+
+
+public:
+    explicit SupprimerEcueWindow(QWidget *parent = nullptr);
+    ~SupprimerEcueWindow();
+
+signals:
+    void ecueWindowClosed();
 };
 
 #endif // SUPPRIMERECUEWINDOW_H

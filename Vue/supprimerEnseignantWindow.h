@@ -9,18 +9,10 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QDir>
+#include "Controleur/enseignantControl.h"
 
 class SupprimerEnseignantWindow : public QMainWindow {
     Q_OBJECT
-
-public:
-    explicit SupprimerEnseignantWindow(QWidget *parent = nullptr);
-    ~SupprimerEnseignantWindow();
-
-private slots:
-    void onDeleteClicked();
-    void onCancelClicked();
-    void updatePrenomComboBox(const QString &selectedName);
 
 private:
     QWidget *centralWidget;
@@ -32,8 +24,22 @@ private:
     QPushButton *cancelButton;
 
     QMap<QString, QStringList> teacherData; // Structure pour stocker les noms et prénoms
-
     void loadTeachersFromCSV(); // Méthode pour charger les enseignants depuis le fichier CSV
+
+private slots:
+    void onDeleteClicked();
+    void onCancelClicked();
+    void updatePrenomComboBox(const QString &selectedName);
+    void updateEnseignantComboBox();
+
+
+public:
+    explicit SupprimerEnseignantWindow(QWidget *parent = nullptr);
+    ~SupprimerEnseignantWindow();
+
+
+signals:
+    void windowClosed();
 };
 
 

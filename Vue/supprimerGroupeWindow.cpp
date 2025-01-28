@@ -43,9 +43,13 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
 
     connect(deleteButton, &QPushButton::clicked, this, &SupprimerGroupeWindow::onDeleteClicked);
     connect(cancelButton, &QPushButton::clicked, this, &SupprimerGroupeWindow::onCancelClicked);
+
+        connect(this, &SupprimerGroupeWindow::windowClosed, this, &SupprimerGroupeWindow::updateGroupComboBox);
 }
 
-SupprimerGroupeWindow::~SupprimerGroupeWindow() {}
+SupprimerGroupeWindow::~SupprimerGroupeWindow() {
+    emit windowClosed();
+}
 
 void SupprimerGroupeWindow::loadGroupsFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Groupes.csv");
@@ -82,11 +86,18 @@ void SupprimerGroupeWindow::onDeleteClicked() {
         QMessageBox::warning(this, "Erreur", "Aucun groupe sélectionné");
         return;
     }
-
+    retirerGroupeEtudiantCSV(selectedGroup.toStdString());
     QMessageBox::information(this, "Succès", QString("Le groupe '%1' a été supprimé").arg(selectedGroup));
+    emit windowClosed();
 }
 
 void SupprimerGroupeWindow::onCancelClicked() {
     QMessageBox::information(this, "Annulé", "Suppression annulée");
+    emit windowClosed();
     close();
+}
+
+void SupprimerGroupeWindow::updateGroupComboBox() {
+    groupComboBox->clear();
+    loadGroupsFromCSV();
 }

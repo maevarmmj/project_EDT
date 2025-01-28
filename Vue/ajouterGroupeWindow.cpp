@@ -64,7 +64,10 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     onCategoryChanged(categoryComboBox->currentText());
 }
 
-AjouterGroupeWindow::~AjouterGroupeWindow() {}
+AjouterGroupeWindow::~AjouterGroupeWindow() {
+    emit windowClosed(); // Émettre le signal si la fenêtre est fermée par la croix
+
+}
 
 void AjouterGroupeWindow::onCategoryChanged(const QString &category) {
     clearForm();
@@ -106,7 +109,7 @@ void AjouterGroupeWindow::onSaveClicked() {
     QString category = categoryComboBox->currentText();
     QString data;
 
-    if (category == "Étudiant") {
+    if (category == "Étudiants") {
         data = nameLineEdit->text();
         std::cout << "Categorie Étudiant: \nNom du groupe: "
                   << data.toStdString() << std::endl;
@@ -126,19 +129,25 @@ void AjouterGroupeWindow::onSaveClicked() {
     }
 
     else if (category == "Salle") {
-        data = QString::number(salleSpinBox->value()) + ", " + typeComboBox->currentText();
+        QString numero = QString::number(salleSpinBox->value());
+        QString type = typeComboBox->currentText();
+        std::string type_str = type.toStdString();
         std::cout << "Categorie Salle: \nNumero: "
                   << salleSpinBox->value()
                   << ", Type: "
-                  << typeComboBox->currentText().toStdString()
+                  << type.toStdString()
                   << std::endl;
-        ajouterSalleCSV(salleSpinBox->value(), CM);
+        ajouterSalleCSV(salleSpinBox->value(), StrToCours(type_str));
         QMessageBox::information(this, "Succès", "Les données ont été enregistrées.");;
     }
+    emit windowClosed(); // Émettre le signal si la fenêtre est fermée par la croix
 
 }
 
 void AjouterGroupeWindow::onCancelClicked() {
     QMessageBox::information(this, "Annulé", "L'opération a été annulée.");
+    emit windowClosed(); // Émettre le signal avant de fermer
     close();
 }
+
+

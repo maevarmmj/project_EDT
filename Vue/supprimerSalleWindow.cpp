@@ -34,7 +34,12 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     connect(annulerButton, &QPushButton::clicked, this, &SupprimerSalleWindow::annuler);
     connect(supprimerButton, &QPushButton::clicked, this, &SupprimerSalleWindow::supprimer);
 
+    connect(this, &SupprimerSalleWindow::salleWindowClosed, this, &SupprimerSalleWindow::updateSalleComboBox);
+
     setLayout(mainLayout);
+}
+
+SupprimerSalleWindow::~SupprimerSalleWindow() {
 }
 
 bool SupprimerSalleWindow::chargerSallesDepuisCSV() {
@@ -65,18 +70,24 @@ bool SupprimerSalleWindow::chargerSallesDepuisCSV() {
     return true;
 }
 
+void SupprimerSalleWindow::updateSalleComboBox() {
+    salleComboBox->clear();
+    chargerSallesDepuisCSV();
+}
+
 void SupprimerSalleWindow::annuler() {
     QMessageBox::information(this,"Annulation", "L'opération est bien annulée");
+    emit salleWindowClosed();
     close();
 }
+
 void SupprimerSalleWindow::supprimer() {
     QString salleNumber = salleComboBox->currentText();
     if (salleNumber.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Le numéro de la salle n'est pas valide.");
         return;
     }
-
-    // Afficher un message de confirmation
+    retirerSalleCSV(salleComboBox->currentText().toInt());
     QMessageBox::information(this, "Succès", QString("La salle numéro %1 a bien été supprimée.").arg(salleNumber));
-
+    emit salleWindowClosed();
 }

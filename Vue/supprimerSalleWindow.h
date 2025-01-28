@@ -11,21 +11,15 @@
 #include <QSpinBox>
 #include <QFormLayout>
 #include <QDir>
+#include "Controleur/SalleControl.h"
 
 class SupprimerSalleWindow : public QWidget
 {
     Q_OBJECT
 
-public:
-    explicit SupprimerSalleWindow(QWidget *parent = nullptr);
-
-private slots:
-    void annuler();
-    void supprimer();
-
 private:
-    bool chargerSallesDepuisCSV(); // Charge les numéros de salle depuis un fichier CSV
-    QComboBox *salleComboBox;  // Menu déroulant pour sélectionner le numéro de salle
+    bool chargerSallesDepuisCSV();
+    QComboBox *salleComboBox;
     QSpinBox *salleSpinBox;
     QComboBox *categoryComboBox;
     QLineEdit *nameLineEdit;
@@ -38,6 +32,20 @@ private:
     QVBoxLayout *mainLayout;
     QFormLayout *formLayout;
     QComboBox *salleNumberComboBox;
+
+private slots:
+    void annuler();
+    void supprimer();
+    void updateSalleComboBox();
+
+
+public:
+    explicit SupprimerSalleWindow(QWidget *parent = nullptr);
+    ~SupprimerSalleWindow();
+
+
+signals:
+    void salleWindowClosed();
 };
 
 #endif // SUPPRIMERSALLEWINDOW_H

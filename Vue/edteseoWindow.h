@@ -22,9 +22,11 @@
 #include "Vue/supprimerEnseignantWindow.h"
 #include "Vue/supprimerSalleWindow.h"
 #include "Vue/popupEdt.h"
+#include "Vue/supprimerecuewindow.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
+
 private:
     QWidget *centralWidget;
     QVBoxLayout *mainLayout;
@@ -40,11 +42,10 @@ private:
     QPushButton *remECUEButton;
     QPushButton *updateButton;
 
-    void setupUI();               // Méthode pour initialiser l'interface
-    void setupTable();            // Méthode pour configurer la table
-    void setupActions();          // Méthode pour configurer les actions
+    void setupUI();
+    void setupTable();
+    void setupActions();
     void hideButtons();
-
 
 private slots:
     void loadGroups();
@@ -56,9 +57,8 @@ private slots:
     void remECUE();
     void toggleButtonsVisibility();
     void toggleRemButtonsVisibility();
-
-
-    void updateEdt();      // Action pour mettre à jour l'emploi du temps
+    void refreshMainWindow();
+    void updateEdt();
     void onComboBoxSelectionChanged(const QString &selectedText);
 
 
@@ -66,8 +66,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
 
 
-
 };
-
 
 #endif // EDTESEOWINDOW_H

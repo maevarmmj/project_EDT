@@ -47,9 +47,13 @@ SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)
 
     connect(deleteButton, &QPushButton::clicked, this, &SupprimerEnseignantWindow::onDeleteClicked);
     connect(cancelButton, &QPushButton::clicked, this, &SupprimerEnseignantWindow::onCancelClicked);
+
+    connect(this, &SupprimerEnseignantWindow::windowClosed, this, &SupprimerEnseignantWindow::updateEnseignantComboBox);
 }
 
-SupprimerEnseignantWindow::~SupprimerEnseignantWindow() {}
+SupprimerEnseignantWindow::~SupprimerEnseignantWindow() {
+    emit windowClosed();
+}
 
 void SupprimerEnseignantWindow::loadTeachersFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Enseignants.csv");
@@ -76,7 +80,7 @@ void SupprimerEnseignantWindow::loadTeachersFromCSV() {
             if (fields.size() >= 2) {
                 QString nom = fields[0].trimmed();
                 QString prenom = fields[1].trimmed();
-                teacherData[nom].append(prenom); // Associer le prénom au nom
+                teacherData[nom].append(prenom);
             }
         }
     }
@@ -101,11 +105,20 @@ void SupprimerEnseignantWindow::onDeleteClicked() {
         QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un nom et un prénom.");
         return;
     }
-
+    retirerEnseignantCSV(nom.toStdString(), prenom.toStdString());
     QMessageBox::information(this, "Succès", QString("L'enseignant '%1 %2' a été supprimé.").arg(nom, prenom));
+    emit windowClosed();
 }
 
 void SupprimerEnseignantWindow::onCancelClicked() {
     QMessageBox::information(this, "Annulé", "Suppression annulée.");
+    emit windowClosed();
     close();
+}
+
+
+void SupprimerEnseignantWindow::updateEnseignantComboBox() {
+    nameComboBox->clear();
+    prenomComboBox->clear();
+    loadTeachersFromCSV();
 }
