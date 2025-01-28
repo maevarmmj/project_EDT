@@ -6,7 +6,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     initDatabase(db);
 
     // Fenêtre principale
-    this->setWindowTitle("Matrice de Boutons");
+    this->setWindowTitle("Mise à jour edt");
 
     // Widget central
     centralWidget = new QWidget(this);
@@ -20,20 +20,20 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     bandeauLayout = new QHBoxLayout(bandeauWidget);
 
     // Label et SpinBox pour la semaine
-    semaineLabel = new QLabel("Semaine:", bandeauWidget);
+    semaineLabel = new QLabel("Semaine :", bandeauWidget);
     semaineSpinBox = new QSpinBox(bandeauWidget);
     semaineSpinBox->setRange(1, 52);
     bandeauLayout->addWidget(semaineLabel);
     bandeauLayout->addWidget(semaineSpinBox);
 
     // Label et ComboBox pour l'ECUE
-    ecueLabel = new QLabel("ECUE:", bandeauWidget);
+    ecueLabel = new QLabel("ECUE :", bandeauWidget);
     ecueComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(ecueLabel);
     bandeauLayout->addWidget(ecueComboBox);
 
     // Label et ComboBox pour le type de cours
-    typeCoursLabel = new QLabel("Type de cours:", bandeauWidget);
+    typeCoursLabel = new QLabel("Type de cours :", bandeauWidget);
     typeCoursComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(typeCoursLabel);
     bandeauLayout->addWidget(typeCoursComboBox);
@@ -236,7 +236,7 @@ void popupEdt::lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursCombo
 
 // Fonction pour mettre à jour les informations du bandeau du bas
 void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours) {
-    QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv"; // Assurez-vous que le chemin est correct
+    QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv";
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -251,25 +251,43 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
         QString line = in.readLine();
         QStringList fields = line.split(",");
 
-        if (fields.size() >= 5) {
+        if (fields.size() >= 7) {
             QString nomECUE = fields[0];
             QString nomEnseignant = fields[1];
             QString prenomEnseignant = fields[2];
             QString groupe = fields[3];
             QString typesCours = fields[4];
+            QString heuresAPlacer = fields[6];
 
             // Vérifier si la ligne correspond à l'ECUE et au type de cours sélectionnés
-            if (QString("%1 - %2").arg(groupe, nomECUE) == ecueLabel && typesCours.contains(typeCours)) {
+            if (QString("%1 - %2").arg(groupe, nomECUE) == ecueLabel) {
                 // Mettre à jour les labels du bandeau du bas
                 groupeValueLabel->setText(QString("Groupe: %1").arg(groupe));
                 groupeValueLabel->setStyleSheet("QLabel { color : green;font-weight: bold;}");
                 enseignantValueLabel->setText(QString("Enseignant: %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
                 enseignantValueLabel->setStyleSheet("QLabel { color : blue;font-weight: bold;}");
                 ecueInfoValueLabel->setText(QString("ECUE: %1").arg(nomECUE));
-                typeCoursInfoValueLabel->setText(QString("Type de cours: %1").arg(typeCours));
+
+                // Récupérer l'index du type de cours sélectionné
+                QStringList typesCoursList = typesCours.split("/");
+                int typeCoursIndex = typesCoursList.indexOf(typeCours);
+
+                // Récupérer les heures à placer correspondantes
+                if (typeCoursIndex != -1) {
+                    QStringList heuresAPlacerList = heuresAPlacer.split("/");
+                    if (typeCoursIndex < heuresAPlacerList.size()) {
+                        heuresRestantes = heuresAPlacerList[typeCoursIndex];
+                        typeCoursInfoValueLabel->setText(QString("Heures à placer: %1").arg(heuresRestantes));
+                    } else {
+                        typeCoursInfoValueLabel->setText("Heures à placer : N/A");
+                    }
+                } else {
+                    typeCoursInfoValueLabel->setText("Heures à placer : N/A");
+                }
+
                 // Bloquer les boutons indisponibles
                 bloquerBoutonsIndisponibles(semaineSpinBox->value(), nomEnseignant, groupe);
-                break; // On a trouvé la ligne correspondante, pas besoin de continuer
+                break;
             }
         }
     }
@@ -324,7 +342,15 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignan
                         for (int room : availableRooms) {
                             roomLabels << QString::number(room);
                         }
-                        button->setText(roomLabels.join(", "));
+
+                        // Limiter le nombre de caractères affichés sur le bouton
+                        QString roomsText = roomLabels.join(", ");
+                        const int maxChars = 10;
+                        if (roomsText.length() > maxChars) {
+                            roomsText = roomsText.left(maxChars) + "...";
+                        }
+
+                        button->setText(roomsText);
                         button->setToolTip(QString("Salles disponibles : %1").arg(roomLabels.join(", ")));
                     } else {
                         button->setStyleSheet("QPushButton {color: red;}");
@@ -358,6 +384,10 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignan
 void popupEdt::onButtonClicked() {
     QPushButton *clickedButton = qobject_cast<QPushButton*>(sender());
     if (!clickedButton) return;
+    if (selectedButtons.size() > heuresRestantes.toInt()){
+        qDebug() << "trop d'heure selectionner";
+        return;
+    }
 
     // Retrieve the row and column of the clicked button
     int row = -1, col = -1;
@@ -482,7 +512,13 @@ void popupEdt::onButtonClicked() {
 
             // Réinitialiser l'apparence du bouton
             clickedButton->setStyleSheet("");
-            clickedButton->setText(roomLabels.join(", "));
+            // Limiter le nombre de caractères affichés sur le bouton
+            QString roomsText = roomLabels.join(", ");
+            const int maxChars = 10;
+            if (roomsText.length() > maxChars) {
+                roomsText = roomsText.left(maxChars) + "...";
+            }
+            clickedButton->setText(roomsText);
             clickedButton->setCheckable(true);
             clickedButton->setChecked(false);
             clickedButton->show();
