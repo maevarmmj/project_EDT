@@ -10,7 +10,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUI();
     setupActions();
-    loadGroups();
+    loadGroups(TRUE);
     this->setFixedSize(880, 400);
     this->setWindowTitle("Emploi du temps");
 }
@@ -67,7 +67,6 @@ void MainWindow::setupUI() {
     topBarLayout->addWidget(addGroupButton);
     topBarLayout->addWidget(addECUEButton);
 
-    // Ajouter la barre supérieure au layout principal
     mainLayout->addLayout(topBarLayout);
 
     updateButton = new QPushButton("Mettre à jour l'emploi du temps", this);
@@ -79,6 +78,7 @@ void MainWindow::setupUI() {
 
     // Ajouter ce layout au layout principal
     mainLayout->addLayout(updateLayout);
+
 
     // Table
     setupTable();
@@ -255,50 +255,65 @@ void MainWindow::toggleRemButtonsVisibility() {
 }
 
 
-void MainWindow::loadGroups() {
+void MainWindow::loadGroups(boolean firstTime) {
     QStringList filePaths = {
         QDir::currentPath() + "/../../CSV/" + "Groupes.csv",
         QDir::currentPath() + "/../../CSV/" + "Enseignants.csv"
     };
 
+    QString currentGroup = groupComboBox->currentText();
+    bool selectionExists = false;
+
     groupComboBox->clear();
-    groupComboBox->addItem("Sélectionner");
+
+    if (firstTime) {
+        groupComboBox->addItem("Sélectionner");
+    }
 
     for (const QString &filePath : filePaths) {
         QFile file(filePath);
-
-         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        //    QMessageBox::warning(this, "Erreur", "Impossible de charger le fichier : " + filePath);
-           continue;
-         }
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            continue;
+        }
 
         QTextStream in(&file);
-
-        if (!in.atEnd()) {
+        if (!firstTime || (firstTime && !in.atEnd())) {
             in.readLine();
         }
 
         while (!in.atEnd()) {
             QString line = in.readLine().trimmed();
             if (!line.isEmpty()) {
+                QString itemToAdd = line;
                 if (filePath.contains("Enseignants.csv")) {
-                    line.replace(",", " ");
+                    itemToAdd.replace(",", " ");
                 }
-                groupComboBox->addItem(line);
+                groupComboBox->addItem(itemToAdd);
+
+                if (itemToAdd == currentGroup) {
+                    selectionExists = true;
+                }
             }
         }
-
         file.close();
+    }
+
+    if (!firstTime && selectionExists) {
+        groupComboBox->setCurrentText(currentGroup);
+    } else if (firstTime){
+        groupComboBox->setCurrentIndex(0);
     }
 }
 
 
+// FENETRE AJOUT GROUPE
 void MainWindow::addGroup() {
     AjouterGroupeWindow *addgroup = new AjouterGroupeWindow();
     connect(addgroup, &AjouterGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     addgroup->show();
 }
 
+// FENETRE AJOUT ECUE
 void MainWindow::addECUE() {
     if (!checkEnseignantsGroupesFiles()) {
         QMessageBox::warning(this, "Erreur", "Veuillez créer un enseignant et des étudiants avant de créer une ECUE.");
@@ -310,38 +325,42 @@ void MainWindow::addECUE() {
 
 }
 
+// FENETRE SUPPRESSION GROUPE ETUDIANT
 void MainWindow::remGroup() {
     SupprimerGroupeWindow *remgroup = new SupprimerGroupeWindow();
     connect(remgroup, &SupprimerGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remgroup->show();}
 
+// FENETRE SUPPRESSION ENSEIGNANT
 void MainWindow::remEnseignant() {
     SupprimerEnseignantWindow *remenseignant = new SupprimerEnseignantWindow();
     connect(remenseignant, &SupprimerEnseignantWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remenseignant->show();
 }
 
+// FENETRE SUPPRESSION SALLE
 void MainWindow::remSalle() {
     SupprimerSalleWindow *remsalle = new SupprimerSalleWindow();
     remsalle->show();}
 
-// ????
+// FENETRE SUPPRESSION ECUE
 void MainWindow::remECUE() {
     SupprimerEcueWindow *suppEcue = new SupprimerEcueWindow();
     connect(suppEcue, &SupprimerEcueWindow::ecueWindowClosed, this, &MainWindow::refreshMainWindow);
     suppEcue->show();
 }
 
+// FENETRE UPDATE EDT
 void MainWindow::updateEdt() {
     popupEdt *popup = new popupEdt();
     popup->show();
 }
 
-
 void MainWindow::refreshMainWindow() {
-    loadGroups();
+    loadGroups(FALSE);
     onComboBoxSelectionChanged(groupComboBox->currentText());
 }
+
 
 bool MainWindow::checkEnseignantsGroupesFiles() {
     // Vérifier Enseignants.csv
@@ -380,7 +399,7 @@ bool MainWindow::checkEnseignantsGroupesFiles() {
     QTextStream inGroupes(&fileGroupes);
     bool groupesDataFound = false;
     if (!inGroupes.atEnd()) {
-        inGroupes.readLine(); // Ignorer la première ligne (en-têtes)
+        inGroupes.readLine();
     }
     while (!inGroupes.atEnd()) {
         QString line = inGroupes.readLine().trimmed();

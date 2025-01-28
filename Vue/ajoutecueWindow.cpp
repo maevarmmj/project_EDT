@@ -190,6 +190,10 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     setLayout(mainLayout);
 }
 
+AjoutEcueWindow::~AjoutEcueWindow(){
+    emit windowClosed();
+}
+
 void AjoutEcueWindow::toggleCM(int state) {
     cmSpinBox->setVisible(state == Qt::Checked);
 }
@@ -275,6 +279,7 @@ void AjoutEcueWindow::annuler() {
     infoCheckBox->setChecked(false);
 
     QMessageBox::information(this, "Opération annulée", "L'opération a été annulée.");
+    emit windowClosed();
 
     close();
 }
@@ -366,6 +371,8 @@ void AjoutEcueWindow::enregistrer() {
 
     // Confirmation à l'utilisateur
     QMessageBox::information(this, "Données sauvegardées", "Les données ont été sauvegardées avec succès !");
+    emit windowClosed();
+
 }
 
 void AjoutEcueWindow::loadGroupsFromCSV() {

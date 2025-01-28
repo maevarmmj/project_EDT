@@ -53,6 +53,7 @@ private slots:
 
 public:
     explicit AjoutEcueWindow(QWidget *parent = nullptr);
+    ~AjoutEcueWindow();
 
 signals:
     void windowClosed();
