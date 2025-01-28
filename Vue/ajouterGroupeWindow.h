@@ -10,6 +10,10 @@
 #include <QLabel>
 #include <QSpinBox>
 
+#include <Controleur/grpeetudiantcontrolleur.h>
+#include <controleur/SalleControl.h>
+#include <controleur/enseignantControl.h>
+
 class AjouterGroupeWindow : public QMainWindow {
     Q_OBJECT
 
