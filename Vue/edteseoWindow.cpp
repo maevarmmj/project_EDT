@@ -133,7 +133,6 @@ void MainWindow::onComboBoxSelectionChanged(const QString &selectedText) {
 
     QFile file(QDir::currentPath() + "/../../CSV/" + "Ecue.csv");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "Erreur", "Impossible de charger le fichier Ecue.csv");
         return;
     }
 
