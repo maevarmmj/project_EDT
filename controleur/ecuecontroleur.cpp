@@ -226,6 +226,32 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     std::cout << "Groupe : " << groupe << std::endl;
 }
 
+void EcueControleur::creerECUE2(const QString& nomECUE, const QString& nom, const QString& prenom, const QString& groupe, const QString& typesCours, const QString& heuresParCours, const QString& heuresAPlacer) {
+    if (typesCours.size() != heuresParCours.size()) {
+        std::cerr << "Erreur : Le nombre de types de cours et le nombre d'heures ne correspondent pas." << std::endl;
+        return;
+    }
+
+    // Initialisation des membres
+    this->nom = nomECUE.toStdString();
+
+    // Vérification des CSV externes
+    if (!ajouterEnseignantCSV(nom.toStdString(), prenom.toStdString())) {
+        std::cerr << "Erreur : Enseignant introuvable dans le fichier Enseignants.csv." << std::endl;
+        return;
+    }
+    this->enseignant = Enseignant(nom.toStdString(), prenom.toStdString());
+    if (!ajouterGroupeCSV(groupe.toStdString())) {
+        std::cerr << "Erreur : Groupe d'étudiants introuvable dans le fichier Groupes.csv." << std::endl;
+        return;
+    }
+    this->etudiants = GroupeEtudiant(groupe.toStdString());
+
+    this->typesCours = typesCours;
+    this->heuresParCours = heuresParCours;
+    this->heuresAPlacer = heuresParCours;
+}
+
 
 
 
@@ -340,6 +366,10 @@ uint32 EcueControleur::getNombreHeureTotal() {
     }
 
     return nbHeuresTotales;
+}
+
+void EcueControleur::setheuresAPlacer(std::vector<int> heureAPlacer){
+    this->heuresAPlacer = heureAPlacer;
 }
 
 

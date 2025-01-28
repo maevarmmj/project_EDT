@@ -2,6 +2,8 @@
 #define ECUECONTROLEUR_H
 
 #include "Model/ecue.h"
+#include "definition.h"
+#include <QString>
 
 class EcueControleur
 {
@@ -32,6 +34,7 @@ public:
     boolean ajouterGroupeCSV(const std::string& groupe);
 
     void creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe);
+    void creerECUE2(const QString& nomECUE, const QString& nom, const QString& prenom, const QString& groupe, const QString& typesCours, const QString& heuresParCours, const QString& heuresAPlacer);
     int getNombreHeure(const cours& typeCours) const;
     uint32 decrementerHeuresCours(const cours& typeCours, uint32 nbHeuresADecrementer);
     uint32 getNombreHeureTotal();

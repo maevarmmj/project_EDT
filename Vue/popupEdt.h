@@ -18,10 +18,13 @@
 
 #include "Controleur/CreneauControl.h"
 #include "Controleur/SalleControl.h"
+#include "Vue/popupsalleslibres.h"
+#include "Controleur/ecuecontroleur.h"
 
 class popupEdt : public QMainWindow
 {
     Q_OBJECT
+
 private:
     QSqlDatabase db;
     QWidget *centralWidget;
@@ -54,7 +57,7 @@ private:
     QPushButton *validerButtonGrid;
     QPushButton *annulerButtonGrid;
 
-    QStringList days;
+    QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};;
 public:
     popupEdt(QWidget *parent = nullptr);
     ~popupEdt() = default;
@@ -62,13 +65,13 @@ public:
 private slots :
     void lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox);
     void mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours);
-    void afficherInfosBouton(const QString &ecueLabel, int semaine, int row, int col);
     void validerEtAfficher();
     void bloquerBoutonsIndisponibles(int semaine, const QString& enseignant, const QString& groupe);
     void validerSelection();
     void annulerSelection();
     void onButtonClicked();
     void resetSelection();
+    void onRoomSelected(int roomNumber);
 };
 
 #endif // POPUPEDT_H

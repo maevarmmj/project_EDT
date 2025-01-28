@@ -24,7 +24,6 @@ bool isRoomAvailable(int NumeroSalle, int Semaine, const QString& Debut, const Q
 void salleLibreSemaine(int Semaine, const QList<int>& roomNumbers);
 bool insertReservation(
     int NumeroSalle, const QString& NomECUE, const QString& NomEnseignant, const QString& PrenomEnseignant,const QString& Groupe,
-    const QString& TypeCours, const QString& HeuresCours, const QString& HeuresAPlacer,
     int Semaine, const QString& Debut, const QString& Fin);
 QList<QVariantMap> getAllReservations();
 bool deleteReservation(int reservationID);

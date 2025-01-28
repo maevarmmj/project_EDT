@@ -12,7 +12,7 @@ bool initDatabase(QSqlDatabase db) {
     db = QSqlDatabase::addDatabase("QSQLITE");
 
     // 2. Specify Database File Path
-    QString dbDirectory = QDir::currentPath() + QString::fromStdString("/../../");
+    QString dbDirectory = QDir::currentPath() + QString::fromStdString("/../../CSV/");
     if (!QDir(dbDirectory).exists()) {
         QDir().mkdir(dbDirectory);
         qDebug() << "Created directory: " << dbDirectory;
@@ -36,9 +36,6 @@ bool initDatabase(QSqlDatabase db) {
                     "NomEnseignant TEXT NOT NULL,"
                     "PrenomEnseignant TEXT NOT NULL,"
                     "Groupe TEXT NOT NULL,"
-                    "TypeCours TEXT NOT NULL,"
-                    "HeuresCours TEXT NOT NULL,"
-                    "HeuresAPlacer TEXT NOT NULL,"
                     "Semaine INTEGER NOT NULL,"
                     "Debut TEXT NOT NULL,"
                     "Fin TEXT NOT NULL)")) {
@@ -72,7 +69,6 @@ bool isRoomAvailable(int NumeroSalle, int Semaine, const QString& Debut, const Q
 // Function to insert a new reservation
 bool insertReservation(
     int NumeroSalle, const QString& NomECUE, const QString& NomEnseignant, const QString& PrenomEnseignant,const QString& Groupe,
-    const QString& TypeCours, const QString& HeuresCours, const QString& HeuresAPlacer,
     int Semaine, const QString& Debut, const QString& Fin) {
 
     if (!isRoomAvailable(NumeroSalle, Semaine, Debut, Fin)) {
@@ -81,16 +77,13 @@ bool insertReservation(
     }
 
     QSqlQuery insertQuery;
-    insertQuery.prepare("INSERT INTO Reservations (NumeroSalle, NomECUE, NomEnseignant, PrenomEnseignant, Groupe, TypeCours, HeuresCours, HeuresAPlacer, Semaine, Debut, Fin) "
-                        "VALUES (:NumeroSalle, :NomECUE, :NomEnseignant, :PrenomEnseignant, :Groupe, :TypeCours, :HeuresCours, :HeuresAPlacer, :Semaine, :Debut, :Fin)");
+    insertQuery.prepare("INSERT INTO Reservations (NumeroSalle, NomECUE, NomEnseignant, PrenomEnseignant, Groupe, Semaine, Debut, Fin) "
+                        "VALUES (:NumeroSalle, :NomECUE, :NomEnseignant, :PrenomEnseignant, :Groupe, :Semaine, :Debut, :Fin)");
     insertQuery.bindValue(":NumeroSalle", NumeroSalle);
     insertQuery.bindValue(":NomECUE", NomECUE);
     insertQuery.bindValue(":NomEnseignant", NomEnseignant);
     insertQuery.bindValue(":PrenomEnseignant", PrenomEnseignant);
     insertQuery.bindValue(":Groupe", Groupe);
-    insertQuery.bindValue(":TypeCours", TypeCours);
-    insertQuery.bindValue(":HeuresCours", HeuresCours);
-    insertQuery.bindValue(":HeuresAPlacer", HeuresAPlacer);
     insertQuery.bindValue(":Semaine", Semaine);
     insertQuery.bindValue(":Debut", Debut);
     insertQuery.bindValue(":Fin", Fin);
@@ -117,9 +110,6 @@ QList<QVariantMap> getAllReservations() {
         reservation["NomEnseignant"] = query.value("NomEnseignant");
         reservation["PrenomEnseignant"] = query.value("PrenomEnseignant");
         reservation["Groupe"] = query.value("Groupe");
-        reservation["TypeCours"] = query.value("TypeCours");
-        reservation["HeuresCours"] = query.value("HeuresCours");
-        reservation["HeuresAPlacer"] = query.value("HeuresAPlacer");
         reservation["Semaine"] = query.value("Semaine");
         reservation["Debut"] = query.value("Debut");
         reservation["Fin"] = query.value("Fin");
