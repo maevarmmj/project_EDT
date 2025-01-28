@@ -58,6 +58,7 @@ private:
     QPushButton *annulerButtonGrid;
 
     QString heuresRestantes;
+    int minButtonHeight;
     QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
 public:
     popupEdt(QWidget *parent = nullptr);

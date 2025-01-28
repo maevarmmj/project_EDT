@@ -307,6 +307,7 @@ void MainWindow::addECUE() {
     AjoutEcueWindow *addecue = new AjoutEcueWindow();
     connect(addecue, &AjoutEcueWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     addecue->show();
+
 }
 
 void MainWindow::remGroup() {

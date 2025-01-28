@@ -8,7 +8,7 @@ cours StrToCours(std::string coursStr){
         return TD;
     } else if ((coursStr == "TP_INFO") || (coursStr == "TP Informatique")) {
         return TP_INFO;
-    } else if ((coursStr == "TP_INFO") || (coursStr == "TP Electronique")) {
+    } else if ((coursStr == "TP_ELEC") || (coursStr == "TP Electronique")) {
         return TP_ELEC;
     } else {
         return EXAMEN;
