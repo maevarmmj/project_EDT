@@ -26,6 +26,7 @@ SOURCES += \
         Vue/ajouterGroupeWindow.cpp \
         Vue/ajoutecueWindow.cpp \
         Vue/supprimerSalleWindow.cpp \
+        definition.cpp \
         main.cpp
 
 HEADERS += \
