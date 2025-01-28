@@ -95,8 +95,7 @@ void MainWindow::setupTable() {
         "H. TD", "H. Elec", "H. Info", "H. Exam"
     });
     table->setEditTriggers(QAbstractItemView::NoEditTriggers); // Interdire l'édition
-   // table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed); // Fixe juste les lignes
 
     table->setColumnWidth(0, 120); // Matière
     table->setColumnWidth(1, 120); // Enseignant
