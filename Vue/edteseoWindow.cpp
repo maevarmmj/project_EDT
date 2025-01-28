@@ -261,41 +261,49 @@ void MainWindow::loadGroups(boolean firstTime) {
         QDir::currentPath() + "/../../CSV/" + "Enseignants.csv"
     };
 
-    if (firstTime){
-        groupComboBox->clear();
+    QString currentGroup = groupComboBox->currentText();
+    bool selectionExists = false;
+
+    groupComboBox->clear();
+
+    if (firstTime) {
         groupComboBox->addItem("Sélectionner");
     }
-    else{
-        groupComboBox->clear();
-    }
+
     for (const QString &filePath : filePaths) {
         QFile file(filePath);
-
-         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        //    QMessageBox::warning(this, "Erreur", "Impossible de charger le fichier : " + filePath);
-           continue;
-         }
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            continue;
+        }
 
         QTextStream in(&file);
-
-        if (!in.atEnd()) {
+        if (!firstTime || (firstTime && !in.atEnd())) {
             in.readLine();
         }
 
         while (!in.atEnd()) {
             QString line = in.readLine().trimmed();
             if (!line.isEmpty()) {
+                QString itemToAdd = line;
                 if (filePath.contains("Enseignants.csv")) {
-                    line.replace(",", " ");
+                    itemToAdd.replace(",", " ");
                 }
-                groupComboBox->addItem(line);
+                groupComboBox->addItem(itemToAdd);
+
+                if (itemToAdd == currentGroup) {
+                    selectionExists = true;
+                }
             }
         }
-
         file.close();
     }
-}
 
+    if (!firstTime && selectionExists) {
+        groupComboBox->setCurrentText(currentGroup);
+    } else if (firstTime){
+        groupComboBox->setCurrentIndex(0);
+    }
+}
 
 
 // FENETRE AJOUT GROUPE
@@ -390,7 +398,7 @@ bool MainWindow::checkEnseignantsGroupesFiles() {
     QTextStream inGroupes(&fileGroupes);
     bool groupesDataFound = false;
     if (!inGroupes.atEnd()) {
-        inGroupes.readLine(); // Ignorer la première ligne (en-têtes)
+        inGroupes.readLine();
     }
     while (!inGroupes.atEnd()) {
         QString line = inGroupes.readLine().trimmed();
