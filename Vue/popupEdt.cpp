@@ -532,7 +532,8 @@ void popupEdt::validerSelection() {
                     typeCours = fields[4];
                     HeuresCours = fields[5];
                     HeuresAPlacer = fields[6];
-                    Ecue temps = Ecue(nomECUE, nomEnseignant, prenomEnseignant, groupe, typeCours, HeuresCours, HeuresAPlacer);
+                    EcueControleur temps = EcueControleur(nomECUE, nomEnseignant, prenomEnseignant, groupe, typeCours, HeuresCours, HeuresAPlacer);
+                    temps.decrementerHeuresCours(StrToCours(typeCours.toStdString()), 1);
                     break;
                 }
             }
