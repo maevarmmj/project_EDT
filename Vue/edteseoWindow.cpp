@@ -95,8 +95,7 @@ void MainWindow::setupTable() {
         "H. TD", "H. Elec", "H. Info", "H. Exam"
     });
     table->setEditTriggers(QAbstractItemView::NoEditTriggers); // Interdire l'édition
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed); // Fixe juste les lignes
 
     table->setColumnWidth(0, 120); // Matière
     table->setColumnWidth(1, 120); // Enseignant
@@ -298,9 +297,9 @@ void MainWindow::loadGroups() {
 
 void MainWindow::addGroup() {
     AjouterGroupeWindow *addgroup = new AjouterGroupeWindow();
+    connect(addgroup, &AjouterGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     addgroup->show();
 }
-
 
 void MainWindow::addECUE() {
     AjoutEcueWindow *addecue = new AjoutEcueWindow();
@@ -308,21 +307,32 @@ void MainWindow::addECUE() {
 
 void MainWindow::remGroup() {
     SupprimerGroupeWindow *remgroup = new SupprimerGroupeWindow();
+    connect(remgroup, &SupprimerGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remgroup->show();}
 
 void MainWindow::remEnseignant() {
     SupprimerEnseignantWindow *remenseignant = new SupprimerEnseignantWindow();
+    connect(remenseignant, &SupprimerEnseignantWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remenseignant->show();}
 
 void MainWindow::remSalle() {
     SupprimerSalleWindow *remsalle = new SupprimerSalleWindow();
     remsalle->show();}
 
+// ????
 void MainWindow::remECUE() {
-    QMessageBox::information(this, "Suppression ECUE", "Fonctionnalité Supprimer ECUE appelée !");
+    SupprimerEcueWindow *suppEcue = new SupprimerEcueWindow();
+    connect(suppEcue, &SupprimerEcueWindow::ecueWindowClosed, this, &MainWindow::refreshMainWindow);
+    suppEcue->show();
 }
 
 void MainWindow::updateEdt() {
     popupEdt *popup = new popupEdt();
     popup->show();
+}
+
+
+void MainWindow::refreshMainWindow() {
+    loadGroups(); // Recharger les groupes et enseignants
+    onComboBoxSelectionChanged(groupComboBox->currentText()); // Mettre à jour le tableau avec la sélection actuelle
 }

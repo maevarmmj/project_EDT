@@ -1,4 +1,4 @@
-#include "SupprimerEcueWindow.h"
+#include "supprimerecuewindow.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
@@ -11,6 +11,7 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
 {
     setWindowTitle("Supprimer une ECUE");
     resize(400, 300);
+    setWindowModality(Qt::ApplicationModal);
 
     ecueComboBox = new QComboBox();
     enseignantNomComboBox = new QComboBox();
@@ -49,6 +50,8 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
 
     connect(deleteButton, &QPushButton::clicked, this, &SupprimerEcueWindow::onSupprimerClicked);
     connect(cancelButton, &QPushButton::clicked, this, &SupprimerEcueWindow::onAnnulerClicked);
+
+    connect(this, &SupprimerEcueWindow::ecueWindowClosed, this, &SupprimerEcueWindow::updateEcueComboBoxes);
 }
 
 SupprimerEcueWindow::~SupprimerEcueWindow() {
@@ -185,17 +188,32 @@ void SupprimerEcueWindow::onSupprimerClicked()
 
     if (ecueName.isEmpty() || enseignantNom.isEmpty() || enseignantPrenom.isEmpty() || groupe.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Tous les champs doivent être remplis !");
-        return; // On arrête l'exécution de la fonction si un champ est vide
+        return;
     }
 
+    ecue.retirerECUECSV(ecueName.toStdString(), enseignantNom.toStdString(), enseignantPrenom.toStdString(), groupe.toStdString());
     QMessageBox::information(this, "Succès", "L'ECUE a été supprimée avec succès !");
-    accept(); // Fermer la fenêtre après la suppression
+    emit ecueWindowClosed();
+
 }
 
 
 
 void SupprimerEcueWindow::onAnnulerClicked() {
     QMessageBox::information(this,"Annulation", "L'opération est bien annulée");
+    emit ecueWindowClosed();
     close();
 }
 
+void SupprimerEcueWindow::updateEcueComboBoxes() {
+    ecueComboBox->clear();
+    enseignantNomComboBox->clear();
+    enseignantPrenomComboBox->clear();
+    groupeComboBox->clear();
+
+    ecueComboBox->addItem("Sélectionner");
+
+    chargerEcueDepuisCSV();
+
+
+}

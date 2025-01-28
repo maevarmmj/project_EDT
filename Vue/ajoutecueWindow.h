@@ -8,29 +8,17 @@
 #include <QSpinBox>
 #include <QGroupBox>
 #include <QDir>
+#include "definition.h"
+#include "Controleur/ecuecontroleur.h"
 
 class AjoutEcueWindow : public QWidget {
     Q_OBJECT
 
-public:
-    explicit AjoutEcueWindow(QWidget *parent = nullptr);
-
-private slots:
-    void toggleCM(int state);
-    void toggleTP(int state);
-    void toggleElec(int state);
-    void toggleInfo(int state);
-    void toggleTD(int state);
-    void toggleExam(int state);
-    void enregistrer();
-    void annuler();
-
-
-
 private:
     QLineEdit *ecueLineEdit;
     QComboBox *groupComboBox;
-    QComboBox *teacherComboBox;
+    QComboBox *nomComboBox;
+    QComboBox *prenomComboBox;
     QCheckBox *cmCheckBox;
     QSpinBox *cmSpinBox;
     QCheckBox *tpCheckBox;
@@ -45,7 +33,25 @@ private:
     QCheckBox *infoCheckBox;
     QSpinBox *infoSpinBox;
 
+    QMap<QString, QStringList> enseignantsData;
+
     void loadTeachersFromCSV();
+
+
+private slots:
+    void toggleCM(int state);
+    void toggleTP(int state);
+    void toggleElec(int state);
+    void toggleInfo(int state);
+    void toggleTD(int state);
+    void toggleExam(int state);
+    void enregistrer();
+    void annuler();
+    void updatePrenoms(const QString &nom);
+
+public:
+    explicit AjoutEcueWindow(QWidget *parent = nullptr);
+
 };
 
 #endif // AJOUT_ECUE_H

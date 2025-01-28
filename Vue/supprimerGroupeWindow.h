@@ -10,18 +10,10 @@
 #include <QDir>
 #include <QComboBox>
 #include <QDir>
-
+#include "Controleur/grpeetudiantcontrolleur.h"
 
 class SupprimerGroupeWindow : public QMainWindow {
     Q_OBJECT
-
-public:
-    explicit SupprimerGroupeWindow(QWidget *parent = nullptr);
-    ~SupprimerGroupeWindow();
-
-private slots:
-    void onDeleteClicked();
-    void onCancelClicked();
 
 private:
     QWidget *centralWidget;
@@ -31,7 +23,23 @@ private:
     QPushButton *deleteButton;
     QPushButton *cancelButton;
 
-    void loadGroupsFromCSV(); // Méthode pour charger les groupes depuis le fichier CSV
+    void loadGroupsFromCSV();
+
+private slots:
+    void onDeleteClicked();
+    void onCancelClicked();
+    void updateGroupComboBox();
+
+public:
+    explicit SupprimerGroupeWindow(QWidget *parent = nullptr);
+    ~SupprimerGroupeWindow();
+
+
+
+
+signals:
+    void windowClosed();
+
 };
 
 #endif // SUPPRIMERGROUPEWINDOW_H

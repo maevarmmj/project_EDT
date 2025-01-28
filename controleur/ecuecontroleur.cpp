@@ -191,26 +191,65 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
         return;
     }
 
-    // Initialisation des membres
-    this->nom = nomECUE;
-    this->typesCours = typesCours;
-    this->heuresParCours = heuresParCours;
-    this->heuresAPlacer = heuresParCours;
-
-    // Vérification des CSV externes
-    if (!ajouterEnseignantCSV(nom, prenom)) {
-        std::cerr << "Erreur : Enseignant introuvable dans le fichier Enseignants.csv." << std::endl;
-        return;
-    }
-    if (!ajouterGroupeCSV(groupe)) {
-        std::cerr << "Erreur : Groupe d'étudiants introuvable dans le fichier Groupes.csv." << std::endl;
-        return;
-    }
-
     // Chemin vers le fichier CSV
     QString fichier = QDir::currentPath() + "/../../CSV/Ecue.csv";
     QFile file(fichier);
-    bool fileExists = file.exists();
+
+    // Vérifier si le fichier existe et lire son contenu pour vérifier les doublons
+    if (file.exists()) {
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            std::cerr << "Erreur : Impossible de lire le fichier Ecue.csv." << std::endl;
+            return;
+        }
+
+        QTextStream in(&file);
+        bool isFirstLine = true;
+        while (!in.atEnd()) {
+            QString line = in.readLine().trimmed();
+
+            // Ignorer la première ligne (en-têtes)
+            if (isFirstLine) {
+                isFirstLine = false;
+                continue;
+            }
+
+            // Découper la ligne en colonnes
+            QStringList fields = line.split(",");
+            if (fields.size() >= 6) {
+                QString existingNomECUE = fields[0];
+                QString existingEnseignantNom = fields[1];
+                QString existingEnseignantPrenom = fields[2];
+                QString existingGroupe = fields[3];
+                QString existingTypesCours = fields[4];
+
+                // Construire les types de cours à comparer
+                QStringList typesCoursStrList;
+                for (size_t i = 0; i < typesCours.size(); ++i) {
+                    switch (typesCours[i]) {
+                    case CM: typesCoursStrList << "CM"; break;
+                    case TD: typesCoursStrList << "TD"; break;
+                    case TP_INFO: typesCoursStrList << "TP_INFO"; break;
+                    case TP_ELEC: typesCoursStrList << "TP_ELEC"; break;
+                    case EXAMEN: typesCoursStrList << "EXAMEN"; break;
+                    default: break;
+                    }
+                }
+                QString typesCoursStr = typesCoursStrList.join("/");
+
+                // Vérifier si les informations correspondent
+                if (existingNomECUE == QString::fromStdString(nomECUE) &&
+                    existingEnseignantNom == QString::fromStdString(nom) &&
+                    existingEnseignantPrenom == QString::fromStdString(prenom) &&
+                    existingGroupe == QString::fromStdString(groupe) &&
+                    existingTypesCours == typesCoursStr) {
+                    std::cerr << "Erreur : Cette ECUE existe deja." << std::endl;
+                    file.close();
+                    return;
+                }
+            }
+        }
+        file.close();
+    }
 
     // Ouvrir le fichier en mode ajout
     if (!file.open(QIODevice::Append | QIODevice::Text)) {
@@ -219,6 +258,7 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     }
 
     QTextStream out(&file);
+    bool fileExists = file.exists();
 
     if (!fileExists) {
         out << "NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlacer\n";
@@ -238,7 +278,7 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
         default: break;
         }
         heuresCoursStrList << QString::number(heuresParCours[i]);
-        heuresRestantesCoursStrList << QString::number(heuresAPlacer[i]);
+        heuresRestantesCoursStrList << QString::number(heuresParCours[i]);
     }
 
     QString typesCoursStr = typesCoursStrList.join("/");
@@ -264,6 +304,7 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     std::cout << "Heures restantes : " << heuresRestantesCoursStr.toStdString() << std::endl;
     std::cout << "Groupe : " << groupe << std::endl;
 }
+
 
 
 

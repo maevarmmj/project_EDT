@@ -10,17 +10,12 @@
 #include <QLabel>
 #include <QSpinBox>
 
+#include <Controleur/grpeetudiantcontrolleur.h>
+#include <controleur/SalleControl.h>
+#include <controleur/enseignantControl.h>
+
 class AjouterGroupeWindow : public QMainWindow {
     Q_OBJECT
-
-public:
-    AjouterGroupeWindow(QWidget *parent = nullptr);
-    ~AjouterGroupeWindow();
-
-private slots:
-    void onCategoryChanged(const QString &category);
-    void onSaveClicked();
-    void onCancelClicked();
 
 private:
     QSpinBox *salleSpinBox;
@@ -38,6 +33,19 @@ private:
 
     void createForm();
     void clearForm();
+
+private slots:
+    void onCategoryChanged(const QString &category);
+    void onSaveClicked();
+    void onCancelClicked();
+
+public:
+    AjouterGroupeWindow(QWidget *parent = nullptr);
+    ~AjouterGroupeWindow();
+
+signals:
+    void windowClosed();
+
 };
 
 #endif // AJOUTERGROUPEWINDOW_H
