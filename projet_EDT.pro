@@ -3,11 +3,11 @@ CONFIG += c++17
 CONFIG -= app_bundle
 CONFIG += qt
 
-QT += widgets
+QT += core widgets
 QT += sql
 
 SOURCES += \
-        Controlleur/CreneauControl.cpp \
+        Controleur/SalleControl.cpp \
         Model/creneau.cpp \
         Model/enseignant.cpp \
         Model/groupeetudiant.cpp \
@@ -15,11 +15,22 @@ SOURCES += \
         Model/ecue.cpp \
         Model/semaine.cpp \
         Model/edt.cpp \
-        controleur/grpeetudiantcontrolleur.cpp \
+        Controleur/CreneauControl.cpp \
+        Controleur/enseignantControl.cpp \
+        Controleur/grpeetudiantcontrolleur.cpp \
+        Controleur/ecuecontroleur.cpp \
+        Vue/popupEdt.cpp \
+        Vue/edteseoWindow.cpp \
+        Vue/supprimerEnseignantWindow.cpp \
+        Vue/supprimerGroupeWindow.cpp \
+        Vue/ajouterGroupeWindow.cpp \
+        Vue/ajoutecueWindow.cpp \
+        Vue/supprimerSalleWindow.cpp \
         main.cpp
 
 HEADERS += \
-    Controlleur/CreneauControl.h \
+    Controleur/SalleControl.h \
+    Controleur/enseignantControl.h \
     Model/creneau.h \
     Model/enseignant.h \
     Model/groupeetudiant.h \
@@ -27,11 +38,15 @@ HEADERS += \
     Model/ecue.h \
     Model/semaine.h \
     Model/edt.h \
-    controleur/grpeetudiantcontrolleur.h \
+    Vue/popupEdt.h \
+    Vue/edteseoWindow.h \
+    Vue/ajouterGroupeWindow.h \
+    Vue/supprimerEnseignantWindow.h \
+    Vue/supprimerGroupeWindow.h \
+    Vue/ajoutecueWindow.h \
+    Vue/supprimerSalleWindow.h \
     definition.h \
+    Controleur/CreneauControl.h \
+    Controleur/grpeetudiantcontrolleur.h \
+    Controleur/ecuecontroleur.h \
     main.h
-
-DISTFILES += \
-    reservations.db
-
-
