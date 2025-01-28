@@ -10,11 +10,6 @@ EcueControleur::EcueControleur() : etudiants(), enseignant() {
 }
 
 EcueControleur::EcueControleur(const QString& nomECUE, const QString& nom, const QString& prenom, const QString& groupe, const QString& typesCours, const QString& heuresParCours, const QString& heuresAPlacer) {
-    if (typesCours.size() != heuresParCours.size()) {
-        std::cerr << "Erreur : Le nombre de types de cours et le nombre d'heures ne correspondent pas." << std::endl;
-        return;
-    }
-
     // Initialisation des membres
     this->nom = nomECUE.toStdString();
 
@@ -195,6 +190,8 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     QString fichier = QDir::currentPath() + "/../../CSV/Ecue.csv";
     QFile file(fichier);
 
+    bool fileExists = file.exists();
+
     // Vérifier si le fichier existe et lire son contenu pour vérifier les doublons
     if (file.exists()) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -258,7 +255,6 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     }
 
     QTextStream out(&file);
-    bool fileExists = file.exists();
 
     if (!fileExists) {
         out << "NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlacer\n";

@@ -510,14 +510,15 @@ void popupEdt::validerSelection() {
         int semaine = buttonInfo["semaine"].toInt();
         int numeroSalle = buttonInfo["salle"].toInt();
         QString debut = buttonInfo["debut"].toString();
-        QString fin = buttonInfo["fin"].toString();
+        QString fin = buttonInfo["fin"].toString();    // Récupérer le type de cours sélectionné
+        QString typeCours = typeCoursComboBox->currentText();
 
         // Extraire le nom de l'ECUE et le groupe à partir de ecueLabel
         QString groupe = ecueLabel.split(" - ").at(0);
         QString nomECUE = ecueLabel.split(" - ").at(1);
 
         // Récupérer le nom et le prénom de l'enseignant à partir du CSV
-        QString nomEnseignant, prenomEnseignant, typeCours, HeuresCours, HeuresAPlacer;
+        QString nomEnseignant, prenomEnseignant, typesCours, HeuresCours, HeuresAPlacer;
         QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv";
         QFile file(filePath);
         if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -529,10 +530,10 @@ void popupEdt::validerSelection() {
                 if (fields.size() >= 3 && fields[0] == nomECUE && fields[3] == groupe) {
                     nomEnseignant = fields[1];
                     prenomEnseignant = fields[2];
-                    typeCours = fields[4];
+                    typesCours = fields[4];
                     HeuresCours = fields[5];
                     HeuresAPlacer = fields[6];
-                    EcueControleur temps = EcueControleur(nomECUE, nomEnseignant, prenomEnseignant, groupe, typeCours, HeuresCours, HeuresAPlacer);
+                    EcueControleur temps = EcueControleur(nomECUE, nomEnseignant, prenomEnseignant, groupe, typesCours, HeuresCours, HeuresAPlacer);
                     temps.decrementerHeuresCours(StrToCours(typeCours.toStdString()), 1);
                     break;
                 }
