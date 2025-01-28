@@ -13,6 +13,7 @@
 #include "Vue/supprimerGroupeWindow.h"
 #include "Vue/ajoutecueWindow.h"
 #include "Vue/supprimerSalleWindow.h"
+#include "Vue/supprimerecuewindow.h"
 
 
 #endif // MAIN_H

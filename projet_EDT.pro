@@ -25,7 +25,9 @@ SOURCES += \
         Vue/supprimerGroupeWindow.cpp \
         Vue/ajouterGroupeWindow.cpp \
         Vue/ajoutecueWindow.cpp \
+        Vue/supprimerecuewindow.cpp \
         Vue/supprimerSalleWindow.cpp \
+        definition.cpp \
         main.cpp
 
 HEADERS += \
@@ -45,6 +47,7 @@ HEADERS += \
     Vue/supprimerGroupeWindow.h \
     Vue/ajoutecueWindow.h \
     Vue/supprimerSalleWindow.h \
+    Vue/supprimerecuewindow.h \
     definition.h \
     Controleur/CreneauControl.h \
     Controleur/grpeetudiantcontrolleur.h \
