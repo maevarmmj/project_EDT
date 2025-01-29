@@ -19,6 +19,7 @@ SOURCES += \
         Controleur/enseignantControl.cpp \
         Controleur/grpeetudiantcontrolleur.cpp \
         Controleur/ecuecontroleur.cpp \
+        Vue/ajouteruewindow.cpp \
         Vue/popupEdt.cpp \
         Vue/edteseoWindow.cpp \
         Vue/popupsalleslibres.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
         Vue/ajoutecueWindow.cpp \
         Vue/supprimerecuewindow.cpp \
         Vue/supprimerSalleWindow.cpp \
+        Vue/supprimeruewindow.cpp \
         definition.cpp \
         main.cpp
 
@@ -41,6 +43,7 @@ HEADERS += \
     Model/ecue.h \
     Model/semaine.h \
     Model/edt.h \
+    Vue/ajouteruewindow.h \
     Vue/popupEdt.h \
     Vue/edteseoWindow.h \
     Vue/ajouterGroupeWindow.h \
@@ -50,6 +53,7 @@ HEADERS += \
     Vue/ajoutecueWindow.h \
     Vue/supprimerSalleWindow.h \
     Vue/supprimerecuewindow.h \
+    Vue/supprimeruewindow.h \
     definition.h \
     Controleur/CreneauControl.h \
     Controleur/grpeetudiantcontrolleur.h \

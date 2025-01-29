@@ -45,17 +45,19 @@ void MainWindow::setupUI() {
     remEnseignantButton = new QPushButton("Enseignant", this);
     remSalleButton = new QPushButton("Salle", this);
     remECUEButton = new QPushButton("ECUE", this);
-
+    remUEButton = new QPushButton("UE", this);
 
     remGroupButton->setVisible(false);
     remEnseignantButton->setVisible(false);
     remSalleButton->setVisible(false);
     remECUEButton->setVisible(false);
+    remUEButton->setVisible(false);
 
     topBarLayout->addWidget(remGroupButton);
     topBarLayout->addWidget(remEnseignantButton);
     topBarLayout->addWidget(remSalleButton);
     topBarLayout->addWidget(remECUEButton);
+    topBarLayout->addWidget(remUEButton);
 
 
     // Bouton "+"
@@ -65,13 +67,16 @@ void MainWindow::setupUI() {
 
     addGroupButton = new QPushButton("Élement", this);
     addECUEButton = new QPushButton("ECUE", this);
+    addUEButton = new QPushButton("UE", this);
 
     addGroupButton->setVisible(false);
     addECUEButton->setVisible(false);
-
+    addUEButton->setVisible(false);
 
     topBarLayout->addWidget(addGroupButton);
     topBarLayout->addWidget(addECUEButton);
+    topBarLayout->addWidget(addUEButton);
+
 
     mainLayout->addLayout(topBarLayout);
 
@@ -119,12 +124,14 @@ void MainWindow::setupActions() {
     connect(addButton, &QPushButton::clicked, this, &MainWindow::toggleButtonsVisibility);
     connect(addGroupButton, &QPushButton::clicked, this, &MainWindow::addGroup);
     connect(addECUEButton, &QPushButton::clicked, this, &MainWindow::addECUE);
+    connect(addUEButton, &QPushButton::clicked, this, &MainWindow::addUE);
 
     connect(remButton, &QPushButton::clicked, this, &MainWindow::toggleRemButtonsVisibility);
     connect(remGroupButton, &QPushButton::clicked, this, &MainWindow::remGroup);
     connect(remEnseignantButton, &QPushButton::clicked, this, &MainWindow::remEnseignant);
     connect(remSalleButton, &QPushButton::clicked, this, &MainWindow::remSalle);
     connect(remECUEButton, &QPushButton::clicked, this, &MainWindow::remECUE);
+    connect(remUEButton, &QPushButton::clicked, this, &MainWindow::remUE);
 
     connect(updateButton, &QPushButton::clicked, this, &MainWindow::updateEdt);
 }
@@ -250,6 +257,7 @@ void MainWindow::toggleButtonsVisibility() {
     bool isVisible = addGroupButton->isVisible();
     addGroupButton->setVisible(!isVisible);
     addECUEButton->setVisible(!isVisible);
+    addUEButton->setVisible(!isVisible);
 }
 
 void MainWindow::toggleRemButtonsVisibility() {
@@ -258,6 +266,7 @@ void MainWindow::toggleRemButtonsVisibility() {
     remEnseignantButton->setVisible(!isVisible);
     remSalleButton->setVisible(!isVisible);
     remECUEButton->setVisible(!isVisible);
+    remUEButton->setVisible(!isVisible);
 }
 
 
@@ -331,6 +340,13 @@ void MainWindow::addECUE() {
 
 }
 
+// FENETRE AJOUT UE
+void MainWindow::addUE() {
+    AjouterUEWindow *addUE = new AjouterUEWindow();
+    // connect(addUE, &AjouterUEWindow::windowClosed, this, &MainWindow::refreshMainWindow);
+    addUE->show();
+}
+
 // FENETRE SUPPRESSION GROUPE ETUDIANT
 void MainWindow::remGroup() {
     QFile fileGroupes(QDir::currentPath() + "/../../CSV/Groupes.csv");
@@ -375,6 +391,13 @@ void MainWindow::remECUE() {
     SupprimerEcueWindow *suppEcue = new SupprimerEcueWindow();
     connect(suppEcue, &SupprimerEcueWindow::ecueWindowClosed, this, &MainWindow::refreshMainWindow);
     suppEcue->show();
+}
+
+// FENETRE SUPPRESSION UE
+void MainWindow::remUE() {
+    SupprimerUEWindow *remUE = new SupprimerUEWindow();
+    //connect(remUE, &SupprimerUEWindow::windowClosed, this, &MainWindow::refreshMainWindow);
+    remUE->show();
 }
 
 // FENETRE UPDATE EDT
