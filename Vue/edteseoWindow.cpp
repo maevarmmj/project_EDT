@@ -333,12 +333,22 @@ void MainWindow::addECUE() {
 
 // FENETRE SUPPRESSION GROUPE ETUDIANT
 void MainWindow::remGroup() {
+    QFile fileGroupes(QDir::currentPath() + "/../../CSV/Groupes.csv");
+    if (!fileGroupes.exists()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez créer un groupe avant !");
+        return;
+    }
     SupprimerGroupeWindow *remgroup = new SupprimerGroupeWindow();
     connect(remgroup, &SupprimerGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remgroup->show();}
 
 // FENETRE SUPPRESSION ENSEIGNANT
 void MainWindow::remEnseignant() {
+    QFile fileEnseignants(QDir::currentPath() + "/../../CSV/Enseignants.csv");
+    if (!fileEnseignants.exists()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez créer un enseignant avant !");
+        return;
+    }
     SupprimerEnseignantWindow *remenseignant = new SupprimerEnseignantWindow();
     connect(remenseignant, &SupprimerEnseignantWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remenseignant->show();
@@ -346,12 +356,22 @@ void MainWindow::remEnseignant() {
 
 // FENETRE SUPPRESSION SALLE
 void MainWindow::remSalle() {
+    QFile fileSalles(QDir::currentPath() + "/../../CSV/Salles.csv");
+    if (!fileSalles.exists()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez créer une salle avant !");
+        return;
+    }
     SupprimerSalleWindow *remsalle = new SupprimerSalleWindow();
     connect(remsalle, &SupprimerSalleWindow::salleWindowClosed, this, &MainWindow::refreshMainWindow);
     remsalle->show();}
 
 // FENETRE SUPPRESSION ECUE
 void MainWindow::remECUE() {
+    QFile fileEcue(QDir::currentPath() + "/../../CSV/Ecue.csv");
+    if (!fileEcue.exists()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez créer une ECUE avant !");
+        return;
+    }
     SupprimerEcueWindow *suppEcue = new SupprimerEcueWindow();
     connect(suppEcue, &SupprimerEcueWindow::ecueWindowClosed, this, &MainWindow::refreshMainWindow);
     suppEcue->show();
