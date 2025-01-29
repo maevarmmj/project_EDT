@@ -14,6 +14,8 @@
 #include <controleur/SalleControl.h>
 #include <controleur/enseignantControl.h>
 
+#include "definition.h"
+
 class AjouterGroupeWindow : public QMainWindow {
     Q_OBJECT
 

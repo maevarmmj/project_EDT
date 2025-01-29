@@ -1,14 +1,14 @@
 #include "enseignantControl.h"
 
 
-bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
+CreationResult ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
     QString csvDirPath = QDir::currentPath() + "/../../CSV";
     QDir csvDir(csvDirPath);
 
     if (!csvDir.exists()) {
         if (!csvDir.mkpath(".")) {
             qDebug() << "Erreur : impossible de créer le dossier CSV:" << csvDir.path();
-            return false;
+            return CreationResult::Error;
         }
     }
 
@@ -20,7 +20,7 @@ bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
     if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Erreur : le fichier ne peut pas s'ouvrir" << file.errorString();
-            return false;
+            return CreationResult::Error;
         }
         QTextStream in(&file);
         QString line;
@@ -29,7 +29,7 @@ bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
             if (!existingData.isEmpty() && existingData.size() > 1 && existingData.first() == QString::fromStdString(nom) && existingData.at(1) == QString::fromStdString(prenom)) {
                 qDebug() << "Erreur : l'enseignant " << QString::fromStdString(nom) << " " << QString::fromStdString(prenom) << " existe déjà dans le CSV";
                 file.close();
-                return false;
+                return CreationResult::AlreadyExists;
             }
         }
         file.close();
@@ -45,7 +45,7 @@ bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
     out << QString::fromStdString(nom) << "," << QString::fromStdString(prenom) << "\n";
 
     file.close();
-    return true;
+    return CreationResult::Success;
 }
 
 

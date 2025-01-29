@@ -10,7 +10,7 @@
 #include "Model/salle.h"
 #include "definition.h"
 
-bool ajouterSalleCSV(int numero, cours cours);
+CreationResult ajouterSalleCSV(int numero, cours cours);
 bool retirerSalleCSV(int numero);
 QList<int> readRoomNumbersFromCSV(const QString& typeCours);
 

@@ -95,7 +95,6 @@ void SupprimerGroupeWindow::onDeleteClicked() {
 }
 
 void SupprimerGroupeWindow::onCancelClicked() {
-    QMessageBox::information(this, "Annulé", "Suppression annulée");
     emit windowClosed();
     close();
 }

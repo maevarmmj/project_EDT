@@ -79,7 +79,6 @@ void SupprimerSalleWindow::updateSalleComboBox() {
 }
 
 void SupprimerSalleWindow::annuler() {
-    QMessageBox::information(this,"Annulation", "L'opération est bien annulée");
     emit salleWindowClosed();
     close();
 }

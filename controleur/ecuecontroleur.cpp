@@ -180,10 +180,10 @@ boolean EcueControleur::ajouterGroupeCSV(const std::string& groupe) {
 }
 
 
-void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe) {
+CreationResult EcueControleur::creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe) {
     if (typesCours.size() != heuresParCours.size()) {
         std::cerr << "Erreur : Le nombre de types de cours et le nombre d'heures ne correspondent pas." << std::endl;
-        return;
+        return CreationResult::Error;
     }
 
     // Chemin vers le fichier CSV
@@ -196,7 +196,7 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     if (file.exists()) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             std::cerr << "Erreur : Impossible de lire le fichier Ecue.csv." << std::endl;
-            return;
+            return CreationResult::Error;
         }
 
         QTextStream in(&file);
@@ -237,11 +237,10 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
                 if (existingNomECUE == QString::fromStdString(nomECUE) &&
                     existingEnseignantNom == QString::fromStdString(nom) &&
                     existingEnseignantPrenom == QString::fromStdString(prenom) &&
-                    existingGroupe == QString::fromStdString(groupe) &&
-                    existingTypesCours == typesCoursStr) {
+                    existingGroupe == QString::fromStdString(groupe)) {
                     std::cerr << "Erreur : Cette ECUE existe deja." << std::endl;
                     file.close();
-                    return;
+                    return CreationResult::AlreadyExists;
                 }
             }
         }
@@ -251,7 +250,7 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     // Ouvrir le fichier en mode ajout
     if (!file.open(QIODevice::Append | QIODevice::Text)) {
         std::cerr << "Erreur : Impossible d'ouvrir ou de créer le fichier Ecue.csv." << std::endl;
-        return;
+        return CreationResult::Error;
     }
 
     QTextStream out(&file);
@@ -299,6 +298,7 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     std::cout << "Heures de cours : " << heuresCoursStr.toStdString() << std::endl;
     std::cout << "Heures restantes : " << heuresRestantesCoursStr.toStdString() << std::endl;
     std::cout << "Groupe : " << groupe << std::endl;
+    return CreationResult::Success;
 }
 
 

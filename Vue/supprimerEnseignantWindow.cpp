@@ -114,7 +114,6 @@ void SupprimerEnseignantWindow::onDeleteClicked() {
 }
 
 void SupprimerEnseignantWindow::onCancelClicked() {
-    QMessageBox::information(this, "Annulé", "Suppression annulée.");
     emit windowClosed();
     close();
 }

@@ -203,7 +203,6 @@ void SupprimerEcueWindow::onSupprimerClicked()
 
 
 void SupprimerEcueWindow::onAnnulerClicked() {
-    QMessageBox::information(this,"Annulation", "L'opération est bien annulée");
     emit ecueWindowClosed();
     close();
 }

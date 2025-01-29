@@ -14,6 +14,6 @@
 #include "Model/groupeetudiant.h"
 #include "definition.h"
 
-bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe);
+CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe);
 bool retirerGroupeEtudiantCSV(const std::string& nomGroupe);
 

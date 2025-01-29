@@ -1,14 +1,14 @@
 #include "grpeetudiantcontrolleur.h"
 
 
-bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
+CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
     QString csvDirPath = QDir::currentPath() + "/../../CSV";
     QDir csvDir(csvDirPath);
 
     if (!csvDir.exists()) {
         if (!csvDir.mkpath(".")) {
             qDebug() << "Erreur : impossible de créer le dossier CSV:" << csvDir.path();
-            return false;
+            return CreationResult::Error;
         }
     }
 
@@ -20,7 +20,7 @@ bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
     if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Erreur : le fichier ne peut pas s'ouvrir" << file.errorString();
-            return false;
+            return CreationResult::Error;
         }
         QTextStream in(&file);
         QString line;
@@ -29,7 +29,7 @@ bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
             if (!existingData.isEmpty() && existingData.first() == QString::fromStdString(nomGroupe)) {
                 qDebug() << "Erreur : le groupe " << QString::fromStdString(nomGroupe) << " " << " existe déjà dans le CSV";
                 file.close();
-                return false;
+                return CreationResult::AlreadyExists;
             }
         }
         file.close();
@@ -37,6 +37,7 @@ bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
 
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text | (fileExists ? QIODevice::Append : QIODevice::Truncate))) {
         qDebug() << "Erreur : le fichier ne s'ouvre pas:" << file.errorString();
+        return CreationResult::Error;
     }
     QTextStream out(&file);
     if (!fileExists) {
@@ -45,7 +46,7 @@ bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
     out << QString::fromStdString(nomGroupe) << "\n";
 
     file.close();
-    return true;
+    return CreationResult::Success;
 }
 
 

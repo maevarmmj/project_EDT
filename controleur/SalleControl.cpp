@@ -19,14 +19,14 @@ QString getCoursName(cours cours) {
     }
 }
 
-bool ajouterSalleCSV(int numero, cours cours){
+CreationResult ajouterSalleCSV(int numero, cours cours){
     QString csvDirPath = QDir::currentPath() + "/../../CSV";
     QDir csvDir(csvDirPath);
 
     if (!csvDir.exists()) {
         if (!csvDir.mkpath(".")) {
             qDebug() << "Erreur : impossible de créer le dossier CSV:" << csvDir.path();
-            return false;
+            return CreationResult::Error;
         }
     }
 
@@ -37,7 +37,7 @@ bool ajouterSalleCSV(int numero, cours cours){
     if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Error opening file for duplicate check:" << file.errorString();
-            return false;
+            return CreationResult::Error;
         }
         QTextStream in(&file);
         QString line;
@@ -46,7 +46,7 @@ bool ajouterSalleCSV(int numero, cours cours){
             if (!existingData.isEmpty() && existingData.first() == QString::number(numero)) {
                 qDebug() << "Error: Numero" << QString::number(numero) << "already exists in the CSV file.";
                 file.close();
-                return false;
+                return CreationResult::AlreadyExists;
             }
         }
         file.close();
@@ -62,7 +62,7 @@ bool ajouterSalleCSV(int numero, cours cours){
     out << numero << "," << getCoursName(cours) << "\n";
 
     file.close();
-    return true;
+    return CreationResult::Success;
 }
 
 

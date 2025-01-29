@@ -34,7 +34,7 @@ public:
     boolean ajouterSalleCSV(int numero, const cours typeSalle);
     boolean ajouterGroupeCSV(const std::string& groupe);
 
-    void creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe);
+    CreationResult creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe);
     int getNombreHeure(const cours& typeCours) const;
     uint32 decrementerHeuresCours(const cours& typeCours, uint32 nbHeuresADecrementer);
     uint32 getNombreHeureTotal();
