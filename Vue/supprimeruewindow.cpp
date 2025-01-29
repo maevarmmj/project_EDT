@@ -1,13 +1,5 @@
 #include "supprimeruewindow.h"
-#include <QDir>
-#include <QIcon>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QTimer>
-#include <QMessageBox>
-#include <QStackedWidget>
-#include <QTimer>
+
 
 SupprimerUEWindow::SupprimerUEWindow(QWidget *parent)
     : QMainWindow(parent) {

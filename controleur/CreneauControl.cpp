@@ -1,4 +1,6 @@
 #include "CreneauControl.h"
+
+
 tm setJourHeure(int jourSemaine, int heure){
     tm jourHeure;
     jourHeure.tm_wday = jourSemaine;

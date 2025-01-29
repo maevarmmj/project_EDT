@@ -5,6 +5,8 @@
 #include <QIcon>
 #include <QString>
 #include <QLabel>
+#include <QDebug>
+
 
 typedef enum cours {CM, TD, TP_INFO, TP_ELEC, EXAMEN} cours;
 typedef enum boolean {FALSE, TRUE} boolean;

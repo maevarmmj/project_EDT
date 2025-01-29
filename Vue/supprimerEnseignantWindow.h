@@ -9,6 +9,14 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QDir>
+#include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+#include <QDebug>
+#include <QStackedWidget>
+#include <QTimer>
+
 #include "Controleur/enseignantControl.h"
 
 class SupprimerEnseignantWindow : public QMainWindow {

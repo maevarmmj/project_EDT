@@ -8,6 +8,16 @@
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QComboBox>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <QMessageBox>
+#include <QDir>
+#include <QLabel>
+#include <QStackedWidget>
+#include <QTimer>
+
+
 #include "Controleur/ecuecontroleur.h"
 
 class SupprimerEcueWindow : public QDialog

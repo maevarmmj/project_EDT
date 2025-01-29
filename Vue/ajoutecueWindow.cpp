@@ -1,16 +1,4 @@
 #include "ajoutecueWindow.h"
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QStyleFactory>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QMap>
-#include <QStackedWidget>
-#include <QTimer>
 
 
 

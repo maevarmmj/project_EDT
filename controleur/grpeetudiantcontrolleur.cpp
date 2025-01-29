@@ -1,14 +1,6 @@
 #include "grpeetudiantcontrolleur.h"
 
 
-#include <QString>
-#include <QFile>
-#include <QTextStream>
-#include <QDir>
-#include <QDebug>
-#include <QList>
-#include <algorithm>
-
 
 CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe) {
     QString csvDirPath = QDir::currentPath() + "/../../CSV";

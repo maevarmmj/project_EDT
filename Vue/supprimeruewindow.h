@@ -8,6 +8,13 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QDir>
+#include <QIcon>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <QTimer>
+#include <QMessageBox>
 
 class SupprimerUEWindow : public QMainWindow {
     Q_OBJECT

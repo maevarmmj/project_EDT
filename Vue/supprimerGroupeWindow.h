@@ -9,7 +9,16 @@
 #include <QPushButton>
 #include <QDir>
 #include <QComboBox>
-#include <QDir>
+#include <QLabel>
+#include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+#include <QDebug>
+#include <QTimer>
+#include <QStackedWidget>
+
+
 #include "Controleur/grpeetudiantcontrolleur.h"
 
 class SupprimerGroupeWindow : public QMainWindow {
