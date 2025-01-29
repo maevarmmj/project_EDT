@@ -27,7 +27,7 @@ void MainWindow::setupUI() {
 
     QHBoxLayout *topBarLayout = new QHBoxLayout();
 
-    QLabel *groupLabel = new QLabel("Personnel (étudiants ou enseignant) :", this);
+    QLabel *groupLabel = new QLabel("Personnel :", this);
     topBarLayout->addWidget(groupLabel);
 
     // Menu déroulant pour les groupes
