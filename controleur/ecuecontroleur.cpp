@@ -192,8 +192,9 @@ CreationResult EcueControleur::creerECUE(const std::string& nomECUE, const std::
 
     bool fileExists = file.exists();
 
-    // Vérifier si le fichier existe et lire son contenu pour vérifier les doublons
-    if (file.exists()) {
+    QList<QStringList> ecues;
+
+    if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             std::cerr << "Erreur : Impossible de lire le fichier Ecue.csv." << std::endl;
             return CreationResult::Error;
@@ -201,9 +202,8 @@ CreationResult EcueControleur::creerECUE(const std::string& nomECUE, const std::
 
         QTextStream in(&file);
         bool isFirstLine = true;
-        while (!in.atEnd()) {
-            QString line = in.readLine().trimmed();
-
+        QString line;
+        while (in.readLineInto(&line)) {
             // Ignorer la première ligne (en-têtes)
             if (isFirstLine) {
                 isFirstLine = false;
@@ -233,32 +233,33 @@ CreationResult EcueControleur::creerECUE(const std::string& nomECUE, const std::
                 }
                 QString typesCoursStr = typesCoursStrList.join("/");
 
-                // Vérifier si les informations correspondent
+                if (existingNomECUE == QString::fromStdString(nomECUE) &&
+                    existingEnseignantNom != QString::fromStdString(nom) &&
+                    existingGroupe == QString::fromStdString(groupe)) {
+                    std::cerr << "Une ECUE ne peut pas avoir 2 professeurs" << std::endl;
+                    file.close();
+                    return CreationResult::Error;
+                }
+
                 if (existingNomECUE == QString::fromStdString(nomECUE) &&
                     existingEnseignantNom == QString::fromStdString(nom) &&
                     existingEnseignantPrenom == QString::fromStdString(prenom) &&
-                    existingGroupe == QString::fromStdString(groupe)) {
+                    existingGroupe == QString::fromStdString(groupe) &&
+                    existingTypesCours == typesCoursStr) {
                     std::cerr << "Erreur : Cette ECUE existe deja." << std::endl;
                     file.close();
                     return CreationResult::AlreadyExists;
                 }
+
+                ecues.append(fields);
+
+
             }
         }
         file.close();
     }
 
-    // Ouvrir le fichier en mode ajout
-    if (!file.open(QIODevice::Append | QIODevice::Text)) {
-        std::cerr << "Erreur : Impossible d'ouvrir ou de créer le fichier Ecue.csv." << std::endl;
-        return CreationResult::Error;
-    }
-
-    QTextStream out(&file);
-
-    if (!fileExists) {
-        out << "NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlacer\n";
-    }
-
+    QStringList newEcue;
     QStringList typesCoursStrList;
     QStringList heuresCoursStrList;
     QStringList heuresRestantesCoursStrList;
@@ -283,12 +284,32 @@ CreationResult EcueControleur::creerECUE(const std::string& nomECUE, const std::
     QString enseignant = QString::fromStdString(nom + "," + prenom);
     QString groupeStr = QString::fromStdString(groupe);
 
-    out << QString::fromStdString(nomECUE) << ","
-        << enseignant << ","
-        << groupeStr << ","
-        << typesCoursStr << ","
-        << heuresCoursStr << ","
-        << heuresRestantesCoursStr << "\n";
+    newEcue << QString::fromStdString(nomECUE)
+            << enseignant
+            << groupeStr
+            << typesCoursStr
+            << heuresCoursStr
+            << heuresRestantesCoursStr;
+
+    ecues.append(newEcue);
+    std::sort(ecues.begin(), ecues.end(), [](const QStringList& a, const QStringList& b) {
+        return a.first().toLower() < b.first().toLower(); // Comparaison insensible à la casse
+    });
+
+
+
+    // Ouvrir le fichier en mode écriture
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        std::cerr << "Erreur : Impossible d'ouvrir ou de créer le fichier Ecue.csv." << std::endl;
+        return CreationResult::Error;
+    }
+
+    QTextStream out(&file);
+    out << "NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlacer\n";
+
+    for(const auto& ecue : ecues) {
+        out << ecue.join(",") << "\n";
+    }
 
     file.close();
 

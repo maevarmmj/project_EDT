@@ -19,7 +19,7 @@ QString getCoursName(cours cours) {
     }
 }
 
-CreationResult ajouterSalleCSV(int numero, cours cours){
+CreationResult ajouterSalleCSV(int numero, cours type) {
     QString csvDirPath = QDir::currentPath() + "/../../CSV";
     QDir csvDir(csvDirPath);
 
@@ -30,36 +30,56 @@ CreationResult ajouterSalleCSV(int numero, cours cours){
         }
     }
 
+    QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salles.csv");
     QFile file(csv);
     bool fileExists = file.exists();
 
+    QList<QPair<int, QString>> salles; // Pour stocker les salles existantes et la nouvelle
 
     if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Error opening file for duplicate check:" << file.errorString();
             return CreationResult::Error;
         }
+
         QTextStream in(&file);
         QString line;
+        bool firstLine = true;
         while (in.readLineInto(&line)) {
+            if (firstLine){
+                firstLine = false;
+                continue;
+            }
             QStringList existingData = line.split(",");
-            if (!existingData.isEmpty() && existingData.first() == QString::number(numero)) {
-                qDebug() << "Error: Numero" << QString::number(numero) << "already exists in the CSV file.";
-                file.close();
-                return CreationResult::AlreadyExists;
+            if (!existingData.isEmpty() && existingData.size() > 1 ) {
+                if (existingData.first().toInt() == numero ) {
+                    qDebug() << "Error: Numero" << QString::number(numero) << "already exists in the CSV file.";
+                    file.close();
+                    return CreationResult::AlreadyExists;
+                }
+                salles.append(qMakePair(existingData.first().toInt(), existingData.at(1)));
             }
         }
         file.close();
     }
 
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text | (fileExists ? QIODevice::Append : QIODevice::Truncate))) {
+    salles.append(qMakePair(numero, QString::fromStdString(CoursToStr(type))));
+    std::sort(salles.begin(), salles.end(), [](const QPair<int, QString>& a, const QPair<int, QString>& b) {
+        return a.first < b.first; // Comparaison numérique
+    });
+
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Error opening file:" << file.errorString();
+        return CreationResult::Error;
     }
     QTextStream out(&file);
-    if (!fileExists) {
-        out << "Numero,Cours" << "\n";
+    out << "Numero,Type" << "\n";
+
+
+    for(const auto& salle : salles) {
+        out << salle.first << "," << salle.second << "\n";
     }
-    out << numero << "," << getCoursName(cours) << "\n";
 
     file.close();
     return CreationResult::Success;

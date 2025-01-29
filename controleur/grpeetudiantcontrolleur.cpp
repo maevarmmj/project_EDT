@@ -1,7 +1,16 @@
 #include "grpeetudiantcontrolleur.h"
 
 
-CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
+#include <QString>
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
+#include <QDebug>
+#include <QList>
+#include <algorithm>
+
+
+CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe) {
     QString csvDirPath = QDir::currentPath() + "/../../CSV";
     QDir csvDir(csvDirPath);
 
@@ -16,6 +25,7 @@ CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
     QFile file(csv);
     bool fileExists = file.exists();
 
+    QList<QString> groups; // Pour stocker les groupes existants et le nouveau
 
     if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -24,26 +34,41 @@ CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
         }
         QTextStream in(&file);
         QString line;
+        bool firstLine = true;
         while (in.readLineInto(&line)) {
+            if(firstLine) {
+                firstLine = false;
+                continue;
+            }
             QStringList existingData = line.split(",");
-            if (!existingData.isEmpty() && existingData.first() == QString::fromStdString(nomGroupe)) {
-                qDebug() << "Erreur : le groupe " << QString::fromStdString(nomGroupe) << " " << " existe déjà dans le CSV";
-                file.close();
-                return CreationResult::AlreadyExists;
+            if (!existingData.isEmpty()) {
+                if (existingData.first() == QString::fromStdString(nomGroupe)) {
+                    qDebug() << "Erreur : le groupe " << QString::fromStdString(nomGroupe) << " " << " existe déjà dans le CSV";
+                    file.close();
+                    return CreationResult::AlreadyExists;
+                }
+
+                groups.append(existingData.first());
             }
         }
         file.close();
     }
+    groups.append(QString::fromStdString(nomGroupe));
+    std::sort(groups.begin(), groups.end(), [](const QString& a, const QString& b) {
+        return a.toLower() < b.toLower(); // Comparaison insensible à la casse
+    });
 
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text | (fileExists ? QIODevice::Append : QIODevice::Truncate))) {
-        qDebug() << "Erreur : le fichier ne s'ouvre pas:" << file.errorString();
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : le fichier ne peut pas s'ouvrir" << file.errorString();
         return CreationResult::Error;
     }
     QTextStream out(&file);
-    if (!fileExists) {
-        out << "Groupe" << "\n";
+    out << "Groupe" << "\n";
+
+    for(const QString& group : groups) {
+        out << group << "\n";
     }
-    out << QString::fromStdString(nomGroupe) << "\n";
 
     file.close();
     return CreationResult::Success;

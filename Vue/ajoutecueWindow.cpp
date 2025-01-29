@@ -71,17 +71,25 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     EXISTE_DEJA->setAlignment(Qt::AlignCenter);
     EXISTE_DEJA->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
 
+    QLabel *ERREUR_PROF = new QLabel("Une ECUE ne peut être associé qu'à un enseignant par groupe !");
+    ERREUR_PROF->setAlignment(Qt::AlignCenter);
+    ERREUR_PROF->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
     AJOUT_REUSSI->setFixedHeight(30);
     MANQUE_INFO->setFixedHeight(30);
     EXISTE_DEJA->setFixedHeight(30);
+    ERREUR_PROF->setFixedHeight(30);
 
     messageStack->addWidget(AJOUT_REUSSI);
     messageStack->addWidget(MANQUE_INFO);
     messageStack->addWidget(EXISTE_DEJA);
+    messageStack->addWidget(ERREUR_PROF);
+
 
     AJOUT_REUSSI->hide();
     MANQUE_INFO->hide();
     EXISTE_DEJA->hide();
+    ERREUR_PROF->hide();
 
     // ------------------ Messages si réussite / erreur de la tache ------------------------
 
@@ -437,8 +445,8 @@ void AjoutEcueWindow::enregistrer() {
         showMessageAndHide(0); // 0 pour AJOUT_REUSSI
     } else if (result == CreationResult::AlreadyExists) {
         showMessageAndHide(2); // 3 pour EXISTE_DEJA
-    } else {
-        // Gestion d'une autre erreur possible
+    } else if (result == CreationResult::Error) {
+        showMessageAndHide(3);
     }
     emit windowClosed();
 }
