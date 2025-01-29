@@ -37,3 +37,6 @@
 *.json
 /build
 *.15294e6
+
+*.csv
+*.db
