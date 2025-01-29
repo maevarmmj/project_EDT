@@ -10,6 +10,7 @@
 #include <string>
 
 #include "Model/enseignant.h"
+#include "Controleur/CreneauControl.h"
 #include "definition.h"
 
 bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom);

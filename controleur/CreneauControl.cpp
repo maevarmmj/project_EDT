@@ -123,21 +123,6 @@ QList<QVariantMap> getAllReservations() {
     return reservations;
 }
 
-
-// Function to delete a reservation by ID
-bool deleteReservation(int reservationID) {
-    QSqlQuery query;
-    query.prepare("DELETE FROM Reservations WHERE ReservationID = :ReservationID");
-    query.bindValue(":ReservationID", reservationID);
-
-    if (!query.exec()) {
-        qDebug() << "Error deleting reservation:" << query.lastError().text();
-        return false;
-    }
-
-    return true;
-}
-
 void salleLibreSemaine(int Semaine, const QList<int>& roomNumbers) {
     // Jours de la semaine
     QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
@@ -209,4 +194,36 @@ bool isGroupAvailable(const QString& Groupe, int Semaine, const QString& Debut, 
     }
 
     return !query.next(); // Group is available if no matching reservation is found
+}
+
+void deleteReservationsByTeacher(const QString& NomEnseignant, const QString& PrenomEnseignant) {
+    QSqlQuery query;
+    query.prepare("DELETE FROM Reservations WHERE NomEnseignant = :NomEnseignant AND PrenomEnseignant = :PrenomEnseignant");
+    query.bindValue(":NomEnseignant", NomEnseignant);
+    query.bindValue(":PrenomEnseignant", PrenomEnseignant);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting reservations by teacher:" << query.lastError().text();
+    }
+}
+
+void deleteReservationsByGroup(const QString& groupe) {
+    QSqlQuery query;
+    query.prepare("DELETE FROM Reservations WHERE Groupe = :Groupe");
+    query.bindValue(":Groupe", groupe);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting reservations by group:" << query.lastError().text();
+    }
+}
+
+void deleteReservationsByECUE(const QString& groupe,const QString& NomECUE) {
+    QSqlQuery query;
+    query.prepare("DELETE FROM Reservations WHERE Groupe = :Groupe AND NomECUE = :NomECUE");
+    query.bindValue(":Groupe", groupe);
+    query.bindValue(":NomECUE", NomECUE);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting reservations by group:" << query.lastError().text();
+    }
 }

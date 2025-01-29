@@ -2,6 +2,7 @@
 #define ECUECONTROLEUR_H
 
 #include "Model/ecue.h"
+#include "Controleur/CreneauControl.h"
 #include "definition.h"
 #include <QString>
 

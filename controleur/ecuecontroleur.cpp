@@ -455,6 +455,7 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
                 existingNomEnseignant == QString::fromStdString(nom).trimmed() &&
                 existingPrenomEnseignant == QString::fromStdString(prenom).trimmed() &&
                 existingGroupeEtudiant == QString::fromStdString(groupe).trimmed()) {
+                deleteReservationsByECUE(QString::fromStdString(groupe), QString::fromStdString(nomECUE));
                 found = true;
                 continue;
             }
@@ -480,6 +481,7 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
     }
 
     file.close();
+
     return true;
 }
 
