@@ -10,7 +10,7 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
 
     // Définition de la taille de la fenêtre
     resize(600, 400);
-    setWindowTitle("Créer un groupe");
+    setWindowTitle("Créer un élément");
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
@@ -61,7 +61,6 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     buttonLayout->addWidget(cancelButton);
     buttonLayout->addWidget(saveButton);
     mainLayout->addLayout(buttonLayout);
-
     connect(saveButton, &QPushButton::clicked, this, &AjouterGroupeWindow::onSaveClicked);
     connect(cancelButton, &QPushButton::clicked, this, &AjouterGroupeWindow::onCancelClicked);
 
