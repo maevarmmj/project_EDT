@@ -7,6 +7,9 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Supprimer un numéro de salle");
     resize(400, 200);
     setWindowModality(Qt::ApplicationModal);
+    QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
+    QIcon icon(file);
+    setWindowIcon(icon);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
 

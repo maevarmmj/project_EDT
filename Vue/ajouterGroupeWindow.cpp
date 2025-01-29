@@ -11,10 +11,14 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     // Définition de la taille de la fenêtre
     resize(600, 400);
     setWindowTitle("Créer un groupe");
+    QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
+    QIcon icon(file);
+    setWindowIcon(icon);
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     setWindowModality(Qt::ApplicationModal);
+
 
     // Ajout d'un style général pour la fenêtre
     // this->setStyleSheet(

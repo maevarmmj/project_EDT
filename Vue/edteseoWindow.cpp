@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUI();
     setupActions();
     loadGroups(TRUE);
+    QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
+    QIcon icon(file);
+    setWindowIcon(icon);
     this->setFixedSize(880, 400);
     this->setWindowTitle("Emploi du temps");
 }
@@ -21,7 +24,7 @@ void MainWindow::setupUI() {
 
     QHBoxLayout *topBarLayout = new QHBoxLayout();
 
-    QLabel *groupLabel = new QLabel("Personnel :", this);
+    QLabel *groupLabel = new QLabel("Personnel (étudiants ou enseignant) :", this);
     topBarLayout->addWidget(groupLabel);
 
     // Menu déroulant pour les groupes
@@ -353,6 +356,7 @@ void MainWindow::remECUE() {
 // FENETRE UPDATE EDT
 void MainWindow::updateEdt() {
     popupEdt *popup = new popupEdt();
+    connect(popup, &popupEdt::windowClosed, this, &MainWindow::refreshMainWindow);
     popup->show();
 }
 

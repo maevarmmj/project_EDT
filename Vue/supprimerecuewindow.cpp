@@ -12,6 +12,9 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
     setWindowTitle("Supprimer une ECUE");
     resize(400, 300);
     setWindowModality(Qt::ApplicationModal);
+    QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
+    QIcon icon(file);
+    setWindowIcon(icon);
 
     ecueComboBox = new QComboBox();
     enseignantNomComboBox = new QComboBox();

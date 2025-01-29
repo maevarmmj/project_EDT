@@ -15,6 +15,9 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Ajout d'ECUE");
     resize(600, 500);
     setWindowModality(Qt::ApplicationModal);
+    QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
+    QIcon icon(file);
+    setWindowIcon(icon);
 
     // Appliquer un style pour rendre la fenêtre plus esthétique
     // setStyleSheet(
@@ -202,6 +205,13 @@ void AjoutEcueWindow::toggleTP(int state) {
     bool visible = (state == Qt::Checked);
     elecCheckBox->setVisible(visible);
     infoCheckBox->setVisible(visible);
+
+    if (!visible) {
+        elecSpinBox->setVisible(false);
+        infoSpinBox->setVisible(false);
+        elecCheckBox->setChecked(false);
+        infoCheckBox->setChecked(false);
+    }
 }
 
 void AjoutEcueWindow::toggleElec(int state) {
