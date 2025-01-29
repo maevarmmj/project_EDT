@@ -55,6 +55,7 @@ private:
     void setupActions();
     void hideButtons();
     bool checkEnseignantsGroupesFiles();
+    bool checkECUEFile();
 
 private slots:
     void loadGroups(boolean firstTime);

@@ -342,8 +342,11 @@ void MainWindow::addECUE() {
 
 // FENETRE AJOUT UE
 void MainWindow::addUE() {
+    if (!checkECUEFile()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez créer une ECUE avant de créer une UE.");
+        return;
+    }
     AjouterUEWindow *addUE = new AjouterUEWindow();
-    // connect(addUE, &AjouterUEWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     addUE->show();
 }
 
@@ -395,6 +398,11 @@ void MainWindow::remECUE() {
 
 // FENETRE SUPPRESSION UE
 void MainWindow::remUE() {
+    QFile fileGroupes(QDir::currentPath() + "/../../CSV/UE.csv");
+    if (!fileGroupes.exists()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez créer une UE avant !");
+        return;
+    }
     SupprimerUEWindow *remUE = new SupprimerUEWindow();
     //connect(remUE, &SupprimerUEWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remUE->show();
@@ -466,4 +474,33 @@ bool MainWindow::checkEnseignantsGroupesFiles() {
     }
 
     return true;
+}
+
+bool MainWindow::checkECUEFile() {
+    QFile fileEcue(QDir::currentPath() + "/../../CSV/" + "Ecue.csv");
+
+    // Vérifier si le fichier existe et peut être ouvert
+    if (!fileEcue.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return false;
+    }
+
+    QTextStream inEcue(&fileEcue);
+    bool ecueDataFound = false;
+
+    // Ignorer la première ligne (en-tête)
+    if (!inEcue.atEnd()) {
+        inEcue.readLine();
+    }
+
+    // Vérifier s'il y a au moins une ligne de données
+    while (!inEcue.atEnd()) {
+        QString line = inEcue.readLine().trimmed();
+        if (!line.isEmpty()) {
+            ecueDataFound = true;
+            break;
+        }
+    }
+
+    fileEcue.close();
+    return ecueDataFound;
 }
