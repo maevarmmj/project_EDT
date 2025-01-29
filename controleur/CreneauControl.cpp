@@ -1,5 +1,4 @@
 #include "CreneauControl.h"
-
 tm setJourHeure(int jourSemaine, int heure){
     tm jourHeure;
     jourHeure.tm_wday = jourSemaine;
@@ -217,13 +216,49 @@ void deleteReservationsByGroup(const QString& groupe) {
     }
 }
 
-void deleteReservationsByECUE(const QString& groupe,const QString& NomECUE) {
+
+void deleteReservationsBySalle(int numeroSalle, cours typeCours){
     QSqlQuery query;
-    query.prepare("DELETE FROM Reservations WHERE Groupe = :Groupe AND NomECUE = :NomECUE");
-    query.bindValue(":Groupe", groupe);
-    query.bindValue(":NomECUE", NomECUE);
+    query.prepare("SELECT * FROM Reservations WHERE NumeroSalle = :NumeroSalle");
+    query.bindValue(":NumeroSalle", numeroSalle);
 
     if (!query.exec()) {
-        qDebug() << "Error deleting reservations by group:" << query.lastError().text();
+        qDebug() << "Error fetching reservations by room:" << query.lastError().text();
+        return;
+    }
+
+    while (query.next()) {
+        QString nomECUE = query.value("NomECUE").toString();
+        QString groupe = query.value("Groupe").toString();
+
+        // Récupérer le nom et le prénom de l'enseignant à partir du CSV
+        QString nomEnseignant, prenomEnseignant, typesCours, HeuresCours, HeuresAPlacer;
+        QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv";
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+            in.readLine();
+            while (!in.atEnd()) {
+                QString line = in.readLine();
+                QStringList fields = line.split(",");
+                if (fields.size() >= 3 && fields[0] == nomECUE && fields[3] == groupe) {
+                    nomEnseignant = fields[1];
+                    prenomEnseignant = fields[2];
+                    typesCours = fields[4];
+                    HeuresCours = fields[5];
+                    HeuresAPlacer = fields[6];
+                    EcueControleur temps = EcueControleur(nomECUE, nomEnseignant, prenomEnseignant, groupe, typesCours, HeuresCours, HeuresAPlacer);
+                    temps.decrementerHeuresCours(typeCours, -1);
+                    break;
+                }
+            }
+            file.close();
+        }
+    }
+    query.prepare("DELETE FROM Reservations WHERE NumeroSalle = :NumeroSalle");
+    query.bindValue(":NumeroSalle", numeroSalle);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting reservations by room:" << query.lastError().text();
     }
 }

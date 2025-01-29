@@ -26,7 +26,6 @@ class popupEdt : public QMainWindow
     Q_OBJECT
 
 private:
-    QSqlDatabase db;
     QWidget *centralWidget;
     QVBoxLayout *mainLayout;
     // ---------------- Bandeau du Haut --------------------

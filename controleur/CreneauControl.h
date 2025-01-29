@@ -15,6 +15,8 @@
 #include <QDir>
 
 #include "Model/creneau.h"
+#include "Controleur/ecuecontroleur.h"
+#include "definition.h"
 
 tm setJourHeure(int jourSemaine, int heure);
 int ajouterreservation();
@@ -32,5 +34,6 @@ bool isGroupAvailable(const QString& Groupe, int Semaine, const QString& Debut, 
 void deleteReservationsByTeacher(const QString& NomEnseignant, const QString& PrenomEnseignant);
 void deleteReservationsByGroup(const QString& groupe);
 void deleteReservationsByECUE(const QString& groupe,const QString& NomECUE);
+void deleteReservationsBySalle(int numeroSalle, cours typeCours);
 
 #endif // CRENEAUCONTROL_H

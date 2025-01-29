@@ -455,7 +455,15 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
                 existingNomEnseignant == QString::fromStdString(nom).trimmed() &&
                 existingPrenomEnseignant == QString::fromStdString(prenom).trimmed() &&
                 existingGroupeEtudiant == QString::fromStdString(groupe).trimmed()) {
-                deleteReservationsByECUE(QString::fromStdString(groupe), QString::fromStdString(nomECUE));
+                QSqlQuery query;
+                query.prepare("DELETE FROM Reservations WHERE Groupe = :Groupe AND NomECUE = :NomECUE");
+                query.bindValue(":Groupe", QString::fromStdString(groupe));
+                query.bindValue(":NomECUE", QString::fromStdString(nomECUE));
+
+                if (!query.exec()) {
+                    qDebug() << "Error deleting reservations by group:" << query.lastError().text();
+                }
+
                 found = true;
                 continue;
             }
@@ -484,5 +492,6 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
 
     return true;
 }
+
 
 

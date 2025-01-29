@@ -8,6 +8,7 @@
 #include <QDir>
 
 #include "Model/salle.h"
+#include "Controleur/CreneauControl.h"
 #include "definition.h"
 
 bool ajouterSalleCSV(int numero, cours cours);
