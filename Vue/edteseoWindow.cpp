@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUI();
     setupActions();
     loadGroups(TRUE);
+    QSqlDatabase db;
+    // Initialize the database
+    initDatabase(db);
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
@@ -344,6 +347,7 @@ void MainWindow::remEnseignant() {
 // FENETRE SUPPRESSION SALLE
 void MainWindow::remSalle() {
     SupprimerSalleWindow *remsalle = new SupprimerSalleWindow();
+    connect(remsalle, &SupprimerSalleWindow::salleWindowClosed, this, &MainWindow::refreshMainWindow);
     remsalle->show();}
 
 // FENETRE SUPPRESSION ECUE

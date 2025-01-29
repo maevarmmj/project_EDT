@@ -6,8 +6,6 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
-    // Initialize the database
-    initDatabase(db);
 
     // Fenêtre principale
     this->setWindowTitle("Mise à jour edt");

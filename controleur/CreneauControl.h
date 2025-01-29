@@ -15,6 +15,8 @@
 #include <QDir>
 
 #include "Model/creneau.h"
+#include "Controleur/ecuecontroleur.h"
+#include "definition.h"
 
 tm setJourHeure(int jourSemaine, int heure);
 int ajouterreservation();
@@ -29,5 +31,9 @@ QList<QVariantMap> getAllReservations();
 bool deleteReservation(int reservationID);
 bool isTeacherAvailable(const QString& NomEnseignant, int Semaine, const QString& Debut, const QString& Fin);
 bool isGroupAvailable(const QString& Groupe, int Semaine, const QString& Debut, const QString& Fin);
+void deleteReservationsByTeacher(const QString& NomEnseignant, const QString& PrenomEnseignant);
+void deleteReservationsByGroup(const QString& groupe);
+void deleteReservationsByECUE(const QString& groupe,const QString& NomECUE);
+void deleteReservationsBySalle(int numeroSalle, cours typeCours);
 
 #endif // CRENEAUCONTROL_H

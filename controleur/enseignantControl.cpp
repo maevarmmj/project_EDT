@@ -160,5 +160,8 @@ bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
                  << " " << QString::fromStdString(prenom) << " ont été supprimées.";
     }
 
+    // supprimer de la base de données
+    deleteReservationsByTeacher(QString::fromStdString(nom), QString::fromStdString(prenom));
+
     return true;
 }

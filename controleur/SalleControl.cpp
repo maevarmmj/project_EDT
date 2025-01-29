@@ -67,6 +67,7 @@ CreationResult ajouterSalleCSV(int numero, cours cours){
 
 
 bool retirerSalleCSV(int numero){
+    cours typeCours;
     QFile file(csv);
 
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
@@ -91,6 +92,7 @@ bool retirerSalleCSV(int numero){
         QStringList data = line.split(",");
         if (!data.isEmpty() && data.first() == QString::number(numero)) {
             found = true;
+            typeCours = StrToCours(data[1].toStdString());
             continue;
         }
         lines.append(line);
@@ -111,6 +113,9 @@ bool retirerSalleCSV(int numero){
     }
 
     file.close();
+
+    deleteReservationsBySalle(numero, typeCours);
+
     return true;
 }
 

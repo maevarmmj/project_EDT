@@ -150,5 +150,7 @@ bool retirerGroupeEtudiantCSV(const std::string& nomGroupe) {
         qDebug() << "Toutes les ECUE associées au groupe " << QString::fromStdString(nomGroupe) << " ont été supprimées.";
     }
 
+    deleteReservationsByGroup(QString::fromStdString(nomGroupe));
+
     return true;
 }

@@ -1,5 +1,4 @@
 #include "CreneauControl.h"
-
 tm setJourHeure(int jourSemaine, int heure){
     tm jourHeure;
     jourHeure.tm_wday = jourSemaine;
@@ -123,21 +122,6 @@ QList<QVariantMap> getAllReservations() {
     return reservations;
 }
 
-
-// Function to delete a reservation by ID
-bool deleteReservation(int reservationID) {
-    QSqlQuery query;
-    query.prepare("DELETE FROM Reservations WHERE ReservationID = :ReservationID");
-    query.bindValue(":ReservationID", reservationID);
-
-    if (!query.exec()) {
-        qDebug() << "Error deleting reservation:" << query.lastError().text();
-        return false;
-    }
-
-    return true;
-}
-
 void salleLibreSemaine(int Semaine, const QList<int>& roomNumbers) {
     // Jours de la semaine
     QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
@@ -209,4 +193,72 @@ bool isGroupAvailable(const QString& Groupe, int Semaine, const QString& Debut, 
     }
 
     return !query.next(); // Group is available if no matching reservation is found
+}
+
+void deleteReservationsByTeacher(const QString& NomEnseignant, const QString& PrenomEnseignant) {
+    QSqlQuery query;
+    query.prepare("DELETE FROM Reservations WHERE NomEnseignant = :NomEnseignant AND PrenomEnseignant = :PrenomEnseignant");
+    query.bindValue(":NomEnseignant", NomEnseignant);
+    query.bindValue(":PrenomEnseignant", PrenomEnseignant);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting reservations by teacher:" << query.lastError().text();
+    }
+}
+
+void deleteReservationsByGroup(const QString& groupe) {
+    QSqlQuery query;
+    query.prepare("DELETE FROM Reservations WHERE Groupe = :Groupe");
+    query.bindValue(":Groupe", groupe);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting reservations by group:" << query.lastError().text();
+    }
+}
+
+
+void deleteReservationsBySalle(int numeroSalle, cours typeCours){
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Reservations WHERE NumeroSalle = :NumeroSalle");
+    query.bindValue(":NumeroSalle", numeroSalle);
+
+    if (!query.exec()) {
+        qDebug() << "Error fetching reservations by room:" << query.lastError().text();
+        return;
+    }
+
+    while (query.next()) {
+        QString nomECUE = query.value("NomECUE").toString();
+        QString groupe = query.value("Groupe").toString();
+
+        // Récupérer le nom et le prénom de l'enseignant à partir du CSV
+        QString nomEnseignant, prenomEnseignant, typesCours, HeuresCours, HeuresAPlacer;
+        QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv";
+        QFile file(filePath);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+            in.readLine();
+            while (!in.atEnd()) {
+                QString line = in.readLine();
+                QStringList fields = line.split(",");
+                if (fields.size() >= 3 && fields[0] == nomECUE && fields[3] == groupe) {
+                    nomEnseignant = fields[1];
+                    prenomEnseignant = fields[2];
+                    typesCours = fields[4];
+                    HeuresCours = fields[5];
+                    HeuresAPlacer = fields[6];
+                    EcueControleur temps = EcueControleur(nomECUE, nomEnseignant, prenomEnseignant, groupe, typesCours, HeuresCours, HeuresAPlacer);
+                    temps.decrementerHeuresCours(typeCours, -1);
+                    break;
+                }
+            }
+            file.close();
+        }
+    }
+    query.prepare("DELETE FROM Reservations WHERE NumeroSalle = :NumeroSalle");
+    query.bindValue(":NumeroSalle", numeroSalle);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting reservations by room:" << query.lastError().text();
+    }
 }

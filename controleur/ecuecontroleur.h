@@ -4,6 +4,10 @@
 #include "Model/ecue.h"
 #include "definition.h"
 #include <QString>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlRecord>
 
 class EcueControleur
 {
@@ -43,6 +47,7 @@ public:
     bool retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe);
 
     std::string coursToString(const cours& typeCours) const;
+    void ajoutHeureCours(const cours& typeCours, const QString& nomECUE, const QString& groupe);
 
 
 
