@@ -3,6 +3,9 @@
 popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     setWindowModality(Qt::ApplicationModal);
+    QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
+    QIcon icon(file);
+    setWindowIcon(icon);
     // Initialize the database
     initDatabase(db);
 
@@ -144,6 +147,10 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
 
     // ----------- Connexion du bouton Valider ----------------
     QObject::connect(validerButton, SIGNAL(clicked()), this, SLOT(validerEtAfficher()));
+}
+
+popupEdt::~popupEdt(){
+    emit windowClosed();
 }
 
 void popupEdt::validerEtAfficher( )
@@ -597,6 +604,8 @@ void popupEdt::validerSelection() {
     // Cacher les boutons de validation et d'annulation
     validerButtonGrid->hide();
     annulerButtonGrid->hide();
+
+    emit windowClosed();
 }
 
 void popupEdt::annulerSelection() {

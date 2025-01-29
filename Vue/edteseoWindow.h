@@ -23,6 +23,7 @@
 #include "Vue/supprimerSalleWindow.h"
 #include "Vue/popupEdt.h"
 #include "Vue/supprimerecuewindow.h"
+#include "Vue/popupEdt.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

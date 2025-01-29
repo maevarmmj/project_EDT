@@ -12,6 +12,9 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
     resize(600, 300);
     setWindowTitle("Supprimer un groupe d'étudiants");
     setWindowModality(Qt::ApplicationModal);
+    QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
+    QIcon icon(file);
+    setWindowIcon(icon);
 
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);

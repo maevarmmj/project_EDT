@@ -62,7 +62,7 @@ private:
     QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
 public:
     popupEdt(QWidget *parent = nullptr);
-    ~popupEdt() = default;
+    ~popupEdt();
 
 private slots :
     void lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox);
@@ -74,6 +74,9 @@ private slots :
     void onButtonClicked();
     void resetSelection();
     void onRoomSelected(int roomNumber);
+
+signals:
+    void windowClosed();
 };
 
 #endif // POPUPEDT_H
