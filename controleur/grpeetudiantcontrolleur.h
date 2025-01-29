@@ -15,5 +15,5 @@
 #include "definition.h"
 
 CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe);
-bool retirerGroupeEtudiantCSV(const std::string& nomGroupe);
+SuppressionResult retirerGroupeEtudiantCSV(const std::string& nomGroupe);
 

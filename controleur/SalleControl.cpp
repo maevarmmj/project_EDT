@@ -66,13 +66,13 @@ CreationResult ajouterSalleCSV(int numero, cours cours){
 }
 
 
-bool retirerSalleCSV(int numero){
+SuppressionResult retirerSalleCSV(int numero){
     cours typeCours;
     QFile file(csv);
 
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "Error opening file:" << file.errorString();
-        return false;
+        return SuppressionResult::Error;
     }
 
     QTextStream in(&file);
@@ -101,7 +101,7 @@ bool retirerSalleCSV(int numero){
     if (!found) {
         qDebug() << "Error: Numero" << QString::number(numero) << "not found in CSV.";
         file.close();
-        return false;
+        return SuppressionResult::Error;
     }
 
     file.seek(0);
@@ -116,7 +116,7 @@ bool retirerSalleCSV(int numero){
 
     deleteReservationsBySalle(numero, typeCours);
 
-    return true;
+    return SuppressionResult::Success;
 }
 
 // Function to read room numbers from the CSV file

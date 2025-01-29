@@ -421,13 +421,13 @@ uint32 EcueControleur::getNombreHeureTotal() {
 
 
 
-bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe) {
+SuppressionResult EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe) {
     QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Ecue.csv");
     QFile file(csv);
 
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "Erreur : impossible d'ouvrir le fichier:" << file.errorString();
-        return false;
+        return SuppressionResult::Error;
     }
 
     QTextStream in(&file);
@@ -477,7 +477,7 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
         << " " << QString::fromStdString(nomECUE)
         << " non trouvé dans le fichier CSV.";
         file.close();
-        return false;
+        return SuppressionResult::Error;
     }
 
     file.seek(0);
@@ -490,7 +490,7 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
 
     file.close();
 
-    return true;
+    return SuppressionResult::Success;
 }
 
 

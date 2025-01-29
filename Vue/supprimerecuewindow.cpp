@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QLabel>
+#include <QStackedWidget>
+#include <QTimer>
 
 SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
     : QDialog(parent)
@@ -25,6 +27,30 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
 
     chargerEcueDepuisCSV();
 
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
+    QStackedWidget *messageStack = new QStackedWidget(this);
+
+    QLabel *SUPPRESSION_REUSSIE = new QLabel("Suppression réussie !");
+    SUPPRESSION_REUSSIE->setAlignment(Qt::AlignCenter);
+    SUPPRESSION_REUSSIE->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+
+    QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
+    MANQUE_INFO->setAlignment(Qt::AlignCenter);
+    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    SUPPRESSION_REUSSIE->setFixedHeight(30);
+    MANQUE_INFO->setFixedHeight(30);
+
+    messageStack->addWidget(SUPPRESSION_REUSSIE);
+    messageStack->addWidget(MANQUE_INFO);
+
+    SUPPRESSION_REUSSIE->hide();
+    MANQUE_INFO->hide();
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
+
     QLabel *label = new QLabel("Insérez de l'information de l'ECUE à supprimer");
     label->setAlignment(Qt::AlignHCenter);
 
@@ -44,6 +70,7 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(label);
     mainLayout->addLayout(formLayout);
+    mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonLayout);
 
     connect(ecueComboBox, &QComboBox::currentTextChanged, this, &SupprimerEcueWindow::onEcueSelectionChanged);
@@ -174,30 +201,62 @@ void SupprimerEcueWindow::onGroupeChanged(const QString &groupe) {
 
     qDebug() << "Groupe sélectionné :" << groupe;
     qDebug() << "ECUE :" << ecue << ", Nom :" << nom << ", Prénom :" << prenom;
-
-    QMessageBox::information(this, "Groupe sélectionné",
-                             QString("Groupe sélectionné : %1\nECUE : %2\nEnseignant : %3 %4")
-                                 .arg(groupe).arg(ecue).arg(nom).arg(prenom));
 }
+
 
 
 
 void SupprimerEcueWindow::onSupprimerClicked()
 {
+    QStackedWidget* messageStack = findChild<QStackedWidget*>();
+    if (!messageStack) return;
+
+
+    auto showMessageAndHide = [messageStack](int index) {
+        messageStack->setCurrentIndex(index);
+        for (int i = 0; i < messageStack->count(); ++i) {
+            QWidget* widget = messageStack->widget(i);
+            if (widget) {
+                if (i == index) {
+                    widget->show();
+                } else {
+                    widget->hide();
+                }
+            }
+        }
+
+        QTimer::singleShot(2000, [messageStack]() {
+            if (messageStack) {
+                for (int i = 0; i < messageStack->count(); ++i) {
+                    QWidget* widget = messageStack->widget(i);
+                    if (widget) {
+                        widget->hide();
+                    }
+                }
+            }
+        });
+    };
+
     QString ecueName = ecueComboBox->currentText();
     QString enseignantNom = enseignantNomComboBox->currentText();
     QString enseignantPrenom = enseignantPrenomComboBox->currentText();
     QString groupe = groupeComboBox->currentText();
 
     if (ecueName.isEmpty() || enseignantNom.isEmpty() || enseignantPrenom.isEmpty() || groupe.isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Tous les champs doivent être remplis !");
+        showMessageAndHide(1); // 1 pour MANQUE_INFO
         return;
     }
 
-    ecue.retirerECUECSV(ecueName.toStdString(), enseignantNom.toStdString(), enseignantPrenom.toStdString(), groupe.toStdString());
-    QMessageBox::information(this, "Succès", "L'ECUE a été supprimée avec succès !");
-    emit ecueWindowClosed();
 
+    SuppressionResult result = ecue.retirerECUECSV(ecueName.toStdString(), enseignantNom.toStdString(), enseignantPrenom.toStdString(), groupe.toStdString());
+
+    if (result == SuppressionResult::Success) {
+        showMessageAndHide(0); // 0 pour SUPPRESSION_REUSSIE
+    } else {
+        showMessageAndHide(1); // 1 pour MANQUE_INFO
+    }
+
+    emit ecueWindowClosed();
 }
 
 

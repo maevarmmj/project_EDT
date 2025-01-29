@@ -44,7 +44,7 @@ public:
     uint32 getNombreHeureTotal();
     uint32 getNombreHeureTotalAPlacer();
 
-    bool retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe);
+    SuppressionResult retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe);
 
     std::string coursToString(const cours& typeCours) const;
     void ajoutHeureCours(const cours& typeCours, const QString& nomECUE, const QString& groupe);

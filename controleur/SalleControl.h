@@ -12,7 +12,7 @@
 #include "definition.h"
 
 CreationResult ajouterSalleCSV(int numero, cours cours);
-bool retirerSalleCSV(int numero);
+SuppressionResult retirerSalleCSV(int numero);
 QList<int> readRoomNumbersFromCSV(const QString& typeCours);
 
 #endif // SALLECONTROL_H

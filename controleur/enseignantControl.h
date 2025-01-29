@@ -14,7 +14,7 @@
 #include "definition.h"
 
 CreationResult ajouterEnseignantCSV(const std::string& nom, const std::string& prenom);
-bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom);
+SuppressionResult retirerEnseignantCSV(const std::string& nom, const std::string& prenom);
 
 
 #endif // ENSEIGNANTCONTROL_H
