@@ -3,7 +3,6 @@
 
 #include "Controleur/CreneauControl.h"
 #include "Controleur/SalleControl.h"
-#include "Vue/popupsalleslibres.h"
 #include "Controleur/ecuecontroleur.h"
 #include "definition.h"
 

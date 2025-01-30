@@ -22,7 +22,6 @@ SOURCES += \
         Vue/ajouteruewindow.cpp \
         Vue/popupEdt.cpp \
         Vue/edteseoWindow.cpp \
-        Vue/popupsalleslibres.cpp \
         Vue/supprimerEnseignantWindow.cpp \
         Vue/supprimerGroupeWindow.cpp \
         Vue/ajouterGroupeWindow.cpp \
@@ -47,7 +46,6 @@ HEADERS += \
     Vue/popupEdt.h \
     Vue/edteseoWindow.h \
     Vue/ajouterGroupeWindow.h \
-    Vue/popupsalleslibres.h \
     Vue/supprimerEnseignantWindow.h \
     Vue/supprimerGroupeWindow.h \
     Vue/ajoutecueWindow.h \
