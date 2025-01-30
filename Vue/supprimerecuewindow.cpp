@@ -104,6 +104,8 @@ void SupprimerEcueWindow::chargerEcueDepuisCSV() {
     file.close();
 }
 
+// ---- Changement des informations des comboBox selon la sélection de l'ECUE (en cascade) ----
+
 void SupprimerEcueWindow::onEcueSelectionChanged(const QString &ecue) {
     enseignantNomComboBox->clear();
     enseignantNomComboBox->addItem("Sélectionner");
@@ -132,6 +134,8 @@ void SupprimerEcueWindow::onEcueSelectionChanged(const QString &ecue) {
     file.close();
 }
 
+// ---- Changement des informations des comboBox selon la sélection du nom de l'Enseignant (en cascade) ----
+
 void SupprimerEcueWindow::onEnseignantNomChanged(const QString &nom) {
     enseignantPrenomComboBox->clear();
 
@@ -157,6 +161,8 @@ void SupprimerEcueWindow::onEnseignantNomChanged(const QString &nom) {
 
     file.close();
 }
+
+// ---- Changement des informations des comboBox selon la sélection du prénom de l'Enseignant (en cascade) ----
 
 void SupprimerEcueWindow::onEnseignantPrenomChanged(const QString &prenom) {
     groupeComboBox->clear();
@@ -186,6 +192,8 @@ void SupprimerEcueWindow::onEnseignantPrenomChanged(const QString &prenom) {
     file.close();
 }
 
+// ---- Changement des informations des comboBox selon la sélection du Groupe (en cascade) ----
+
 void SupprimerEcueWindow::onGroupeChanged(const QString &groupe) {
     if (groupe == "Sélectionner") return;
 
@@ -198,9 +206,7 @@ void SupprimerEcueWindow::onGroupeChanged(const QString &groupe) {
 }
 
 
-
-
-
+// ---- Cascade des changements d'informations selon ce qui a été sélectionné ----
 
 void SupprimerEcueWindow::updateEcueComboBoxes() {
     ecueComboBox->clear();
@@ -211,11 +217,10 @@ void SupprimerEcueWindow::updateEcueComboBoxes() {
     ecueComboBox->addItem("Sélectionner");
 
     chargerEcueDepuisCSV();
-
-
 }
 
 // ---- Quand on clique sur le bouton "Supprimer" ----
+
 void SupprimerEcueWindow::onSupprimerClicked()
 {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
@@ -257,7 +262,6 @@ void SupprimerEcueWindow::onSupprimerClicked()
         return;
     }
 
-
     SuppressionResult result = ecue.retirerECUECSV(ecueName.toStdString(), enseignantNom.toStdString(), enseignantPrenom.toStdString(), groupe.toStdString());
 
     if (result == SuppressionResult::Success) {
@@ -269,7 +273,9 @@ void SupprimerEcueWindow::onSupprimerClicked()
     emit ecueWindowClosed();
 }
 
+
 // ---- Quand on clique sur le bouton "annuler" ----
+
 void SupprimerEcueWindow::onAnnulerClicked() {
     emit ecueWindowClosed();
     close();

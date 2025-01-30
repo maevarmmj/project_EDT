@@ -3,6 +3,7 @@
 
 
 AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
+    // ------ Set inital fenêtre --------
     setWindowTitle("Ajout d'ECUE");
     resize(600, 500);
     setWindowModality(Qt::ApplicationModal);
@@ -10,11 +11,12 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     QIcon icon(file);
     setWindowIcon(icon);
 
-
+    // ------ Main layout --------
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(20, 20, 20, 20);
     mainLayout->setSpacing(15);
 
+    // ------ NOM ECUE --------
     QHBoxLayout *ecueLayout = new QHBoxLayout();
     QLabel *ecueLabel = new QLabel("Nom de l'ECUE:");
     ecueLineEdit = new QLineEdit();
@@ -22,8 +24,10 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     ecueLayout->addWidget(ecueLineEdit);
     mainLayout->addLayout(ecueLayout);
 
+    // ------ Layout groupe + enseignant --------
     QHBoxLayout *groupTeacherLayout = new QHBoxLayout();
 
+    // ------ Nom + prénom enseignant --------
     QHBoxLayout *nomEnseignantLayout = new QHBoxLayout();
     QHBoxLayout *prenomEnseignantLayout = new QHBoxLayout();
     QVBoxLayout *enseignantLayout = new QVBoxLayout;
@@ -243,8 +247,6 @@ void AjoutEcueWindow::toggleElec(int state) {
 void AjoutEcueWindow::toggleInfo(int state) {
     infoSpinBox->setVisible(state == Qt::Checked);
 }
-
-
 
 
 // ---- MAJ des prénoms après avoir renseigné le nom de famille  ----

@@ -1,24 +1,7 @@
 #ifndef SUPPRIMERGROUPEWINDOW_H
 #define SUPPRIMERGROUPEWINDOW_H
 
-#include <QMainWindow>
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QDir>
-#include <QComboBox>
-#include <QLabel>
-#include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
-#include <QDebug>
-#include <QTimer>
-#include <QStackedWidget>
-
-
+#include "definition.h"
 #include "Controleur/grpeetudiantcontrolleur.h"
 
 class SupprimerGroupeWindow : public QMainWindow {

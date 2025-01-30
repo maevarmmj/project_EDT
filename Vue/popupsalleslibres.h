@@ -1,10 +1,7 @@
 #ifndef POPUPSALLESLIBRES_H
 #define POPUPSALLESLIBRES_H
 
-#include <QDialog>
-#include <QComboBox>
-#include <QVBoxLayout>
-#include <QPushButton>
+#include "definition.h"
 
 class PopupSallesLibres : public QDialog
 {

@@ -1,23 +1,7 @@
 #ifndef SUPPRIMERECUEWINDOW_H
 #define SUPPRIMERECUEWINDOW_H
 
-#include <QDialog>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QHBoxLayout>
-#include <QComboBox>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QMessageBox>
-#include <QDir>
-#include <QLabel>
-#include <QStackedWidget>
-#include <QTimer>
-
-
+#include "definition.h"
 #include "Controleur/ecuecontroleur.h"
 
 class SupprimerEcueWindow : public QDialog

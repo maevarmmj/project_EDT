@@ -69,6 +69,7 @@ void AjouterUEWindow::setupUI(){
 
 AjouterUEWindow::~AjouterUEWindow(){}
 
+// ------ Chargement de Ecue.csv" --------
 
 void AjouterUEWindow::chargerEcueDepuisCSV() {
     QString csvPath = QDir::currentPath() + "/../../CSV/Ecue.csv";
@@ -140,7 +141,6 @@ void AjouterUEWindow::enregistrerUE(){
     });
 
 }
-
 
 // ---- Quand on clique sur le bouton "annuler" ----
 void AjouterUEWindow::annuler() {

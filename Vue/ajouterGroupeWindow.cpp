@@ -65,7 +65,6 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
 
     connect(categoryComboBox, &QComboBox::currentTextChanged, this, &AjouterGroupeWindow::onCategoryChanged);
 
-    // Alignement des boutons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     cancelButton = new QPushButton("Annuler", this);
     cancelButton->setObjectName("cancelButton");
@@ -104,7 +103,7 @@ void AjouterGroupeWindow::onCategoryChanged(const QString &category) {
         formLayout->addRow("Prénom :", prenomLineEdit);
     }
     else if (category == "Salle") {
-        salleSpinBox = new QSpinBox(this);  // Utilisation de la variable membre
+        salleSpinBox = new QSpinBox(this);
         salleSpinBox->setRange(1, 438);
 
         typeComboBox = new QComboBox(this);

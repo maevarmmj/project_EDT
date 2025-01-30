@@ -1,26 +1,6 @@
 #ifndef AJOUT_ECUE_H
 #define AJOUT_ECUE_H
 
-#include <QWidget>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QSpinBox>
-#include <QGroupBox>
-#include <QDir>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QStyleFactory>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QMap>
-#include <QStackedWidget>
-#include <QTimer>
-
 #include "definition.h"
 #include "Controleur/ecuecontroleur.h"
 

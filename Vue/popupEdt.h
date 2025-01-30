@@ -1,25 +1,11 @@
 #ifndef POPUPEDT_H
 #define POPUPEDT_H
 
-#include <QApplication>
-#include <QMainWindow>
-#include <QLabel>
-#include <QGridLayout>
-#include <QPushButton>
-#include <QWidget>
-#include <QHBoxLayout>
-#include <QSpinBox>
-#include <QComboBox>
-#include <QVBoxLayout>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QDateTime>
-
 #include "Controleur/CreneauControl.h"
 #include "Controleur/SalleControl.h"
 #include "Vue/popupsalleslibres.h"
 #include "Controleur/ecuecontroleur.h"
+#include "definition.h"
 
 class popupEdt : public QMainWindow
 {

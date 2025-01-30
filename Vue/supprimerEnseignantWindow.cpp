@@ -81,6 +81,8 @@ SupprimerEnseignantWindow::~SupprimerEnseignantWindow() {
     emit windowClosed();
 }
 
+// ---- Chargement de Enseignants.csv ----
+
 void SupprimerEnseignantWindow::loadTeachersFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Enseignants.csv");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -115,6 +117,8 @@ void SupprimerEnseignantWindow::loadTeachersFromCSV() {
     nameComboBox->addItem("Sélectionner");
     nameComboBox->addItems(teacherData.keys());}
 
+// ---- MAJ du prénom selon le nom de l'enseignant renseigné ----
+
 void SupprimerEnseignantWindow::updatePrenomComboBox(const QString &selectedName) {
     prenomComboBox->clear();
 
@@ -123,9 +127,7 @@ void SupprimerEnseignantWindow::updatePrenomComboBox(const QString &selectedName
     }
 }
 
-
-
-
+// ---- MAJ de l'enseignant dans Enseignants.csv ----
 
 void SupprimerEnseignantWindow::updateEnseignantComboBox() {
     nameComboBox->clear();

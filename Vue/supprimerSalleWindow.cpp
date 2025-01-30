@@ -98,6 +98,8 @@ bool SupprimerSalleWindow::chargerSallesDepuisCSV() {
     return true;
 }
 
+// ---- MAJ de Salles.csv après suppression ----
+
 void SupprimerSalleWindow::updateSalleComboBox() {
     salleComboBox->clear();
     chargerSallesDepuisCSV();
@@ -148,6 +150,7 @@ void SupprimerSalleWindow::supprimer() {
 }
 
 // ---- Quand on clique sur le bouton "annuler" ----
+
 void SupprimerSalleWindow::annuler() {
     emit salleWindowClosed();
     close();

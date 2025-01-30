@@ -1,21 +1,6 @@
 #ifndef AJOUTERGROUPEWINDOW_H
 #define AJOUTERGROUPEWINDOW_H
 
-#include <QMainWindow>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QLabel>
-#include <QSpinBox>
-#include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QStackedWidget>
-#include <QTimer>
-
-
 #include <Controleur/grpeetudiantcontrolleur.h>
 #include <controleur/SalleControl.h>
 #include <controleur/enseignantControl.h>

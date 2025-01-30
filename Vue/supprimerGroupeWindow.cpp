@@ -1,6 +1,5 @@
 #include "supprimerGroupeWindow.h"
 
-
 SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
     : QMainWindow(parent) {
 
@@ -76,6 +75,8 @@ SupprimerGroupeWindow::~SupprimerGroupeWindow() {
     emit windowClosed();
 }
 
+// ---- Chargement de Groupes.csv ----
+
 void SupprimerGroupeWindow::loadGroupsFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Groupes.csv");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -105,8 +106,7 @@ void SupprimerGroupeWindow::loadGroupsFromCSV() {
 }
 
 
-
-
+// ---- MAJ de Groupes.csv après suppression ----
 
 void SupprimerGroupeWindow::updateGroupComboBox() {
     groupComboBox->clear();

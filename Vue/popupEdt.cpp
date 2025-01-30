@@ -1,20 +1,18 @@
 #include "popupEdt.h"
 
 popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
+
+    // ----- Réglages fenêtre principale ------
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     setWindowModality(Qt::ApplicationModal);
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
-
-    // Fenêtre principale
     this->setWindowTitle("Mise à jour edt");
 
-    // Widget central
     centralWidget = new QWidget(this);
     this->setCentralWidget(centralWidget);
 
-    // Layout principal
     mainLayout = new QVBoxLayout(centralWidget);
 
     // ---------------- Bandeau du Haut --------------------
@@ -112,38 +110,37 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
         }
     }
 
+    // ---- Widget pour la grille (pour la cacher/afficher facilement) ----
 
-    // Widget pour la grille (pour la cacher/afficher facilement)
     gridWidget = new QWidget();
     gridWidget->setLayout(gridLayout);
     gridWidget->hide(); // Cacher la grille au démarrage
     gridWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     mainLayout->addWidget(gridWidget); // Ajouter le widget au layout principal
 
-    // Boutons Valider et Annuler
     annulerButtonGrid = new QPushButton("Annuler", this);
     validerButtonGrid = new QPushButton("Valider", this);
 
-    // Layout pour les boutons Valider et Annuler
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
     buttonsLayout->addWidget(annulerButtonGrid);
     buttonsLayout->addWidget(validerButtonGrid);
     mainLayout->addLayout(buttonsLayout);
 
-    // Connecter les signaux des boutons Valider et Annuler
+    // ---- Connexion des boutons valider/annuler ----
+
     connect(validerButtonGrid, &QPushButton::clicked, this, &popupEdt::validerSelection);
     connect(annulerButtonGrid, &QPushButton::clicked, this, &popupEdt::annulerSelection);
 
     validerButtonGrid->hide();
     annulerButtonGrid->hide();
 
-    // Ajustements
     gridLayout->setSpacing(0);
     mainLayout->setSpacing(10);
     mainLayout->addStretch();
     mainLayout->setContentsMargins(10, 10, 10, 10);
 
     // ----------- Connexion du bouton Valider ----------------
+
     QObject::connect(validerButton, SIGNAL(clicked()), this, SLOT(validerEtAfficher()));
 }
 
@@ -180,7 +177,8 @@ void popupEdt::validerEtAfficher( )
     gridWidget->show();
 }
 
-// Fonction pour lire le CSV et mettre à jour les ComboBox ECUE et Type de Cours
+// ---- Lire Ecue.csv et mettre à jour les combobox ECUE et Type de Cours ----
+
 void popupEdt::lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox) {
     QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv";
     QFile file(filePath);
@@ -241,7 +239,8 @@ void popupEdt::lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursCombo
     }
 }
 
-// Fonction pour mettre à jour les informations du bandeau du bas
+// ---- Mettre à jour les informations du bandeau du bas ----
+
 void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours) {
     QString filePath = QDir::currentPath() + "/../../CSV/" + "Ecue.csv";
     QFile file(filePath);
@@ -302,7 +301,8 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
     file.close();
 }
 
-// Fonction pour bloquer les boutons des créneaux où aucune salle n'est disponible
+// ---- Fonction pour bloquer les boutons des créneaux où aucune salle n'est disponible ----
+
 void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignant, const QString& groupe) {
     // Heures de début et de fin
     QTime startTime(8, 0);
@@ -396,6 +396,7 @@ void popupEdt::onButtonClicked() {
         qDebug() << "Toute les heures ont été selectionné pour ce module";
         return;
     }
+
 
     // Retrieve the row and column of the clicked button
     int row = -1, col = -1;

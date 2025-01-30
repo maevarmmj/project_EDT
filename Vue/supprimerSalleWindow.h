@@ -1,21 +1,7 @@
 #ifndef SUPPRIMERSALLEWINDOW_H
 #define SUPPRIMERSALLEWINDOW_H
 
-#include <QWidget>
-#include <QComboBox>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMessageBox>
-#include <QSpinBox>
-#include <QFormLayout>
-#include <QDir>
-#include <QFile>
-#include <QTextStream>
-#include <QTimer>
-#include <QStackedWidget>
-
+#include "definition.h"
 #include "Controleur/SalleControl.h"
 
 class SupprimerSalleWindow : public QWidget

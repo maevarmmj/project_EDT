@@ -1,24 +1,6 @@
 #ifndef AJOUTERUEWINDOW_H
 #define AJOUTERUEWINDOW_H
 
-#include <QWidget>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QSpinBox>
-#include <QGroupBox>
-#include <QDir>
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QIcon>
-#include <QFile>
-#include <QTextStream>
-#include <QScrollArea>
-#include <QDebug>
-#include <QMessageBox>
-#include <QStackedWidget>
-#include <QTimer>
-
 #include "definition.h"
 #include "qmainwindow.h"
 

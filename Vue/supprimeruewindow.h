@@ -1,20 +1,7 @@
 #ifndef SUPPRIMERUEWINDOW_H
 #define SUPPRIMERUEWINDOW_H
 
-#include <QMainWindow>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QComboBox>
-#include <QPushButton>
-#include <QStackedWidget>
-#include <QDir>
-#include <QIcon>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QTimer>
-#include <QMessageBox>
+#include "definition.h"
 
 class SupprimerUEWindow : public QMainWindow {
     Q_OBJECT

@@ -1,24 +1,6 @@
 #ifndef EDTESEOWINDOW_H
 #define EDTESEOWINDOW_H
 
-#include <QMainWindow>
-#include <QTableWidget>
-#include <QComboBox>
-#include <QPushButton>
-#include <QMenu>
-#include <QVBoxLayout>
-#include <QHeaderView>
-#include <QEnterEvent>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QStringList>
-#include <QDir>
-#include <QMessageBox>
-#include <QHBoxLayout>
-#include <QLabel>
-
-
 #include "Vue/ajouterGroupeWindow.h"
 #include "Vue/ajoutecueWindow.h"
 #include "Vue/supprimerGroupeWindow.h"
@@ -29,6 +11,7 @@
 #include "Vue/popupEdt.h"
 #include "Vue/AjouterUEWindow.h"
 #include "Vue/supprimeruewindow.h"
+#include "definition.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
