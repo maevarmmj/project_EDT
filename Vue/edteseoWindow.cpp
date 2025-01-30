@@ -1,10 +1,4 @@
 #include "edteseoWindow.h"
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QMessageBox>
-#include <QHBoxLayout>
-#include <QLabel>
 
 // Constructeur
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {

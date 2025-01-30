@@ -1,5 +1,4 @@
 #include "definition.h"
-#include <QDebug>
 
 // ---- Transforme les strings en types de cours ----
 cours StrToCours(std::string coursStr){

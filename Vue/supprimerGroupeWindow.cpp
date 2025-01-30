@@ -1,12 +1,4 @@
 #include "supprimerGroupeWindow.h"
-#include <QLabel>
-#include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
-#include <QDebug>
-#include <QTimer>
-#include <QStackedWidget>
 
 
 SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)

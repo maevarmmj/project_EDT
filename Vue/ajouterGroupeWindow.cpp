@@ -1,11 +1,4 @@
 #include "ajouterGroupeWindow.h"
-#include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QSpinBox>
-#include <iostream>
-#include <QStackedWidget>
-#include <QTimer>
 
 AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     : QMainWindow(parent) {

@@ -1,11 +1,4 @@
 #include "supprimerEnseignantWindow.h"
-#include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
-#include <QDebug>
-#include <QStackedWidget>
-#include <QTimer>
 
 
 SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)

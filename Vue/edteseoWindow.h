@@ -9,12 +9,15 @@
 #include <QVBoxLayout>
 #include <QHeaderView>
 #include <QEnterEvent>
-
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 #include <QStringList>
 #include <QDir>
+#include <QMessageBox>
+#include <QHBoxLayout>
+#include <QLabel>
+
 
 #include "Vue/ajouterGroupeWindow.h"
 #include "Vue/ajoutecueWindow.h"

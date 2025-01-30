@@ -1,9 +1,4 @@
 #include "supprimerSalleWindow.h"
-#include <QFile>
-#include <QTextStream>
-#include <QMessageBox>
-#include <QTimer>
-#include <QStackedWidget>
 
 
 SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {

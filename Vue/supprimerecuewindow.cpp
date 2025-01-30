@@ -1,12 +1,4 @@
 #include "supprimerecuewindow.h"
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QMessageBox>
-#include <QDir>
-#include <QLabel>
-#include <QStackedWidget>
-#include <QTimer>
 
 SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
     : QDialog(parent)

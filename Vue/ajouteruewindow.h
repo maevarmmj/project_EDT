@@ -8,10 +8,19 @@
 #include <QSpinBox>
 #include <QGroupBox>
 #include <QDir>
-#include "definition.h"
-#include "qmainwindow.h"
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QIcon>
+#include <QFile>
+#include <QTextStream>
+#include <QScrollArea>
+#include <QDebug>
+#include <QMessageBox>
+#include <QStackedWidget>
+#include <QTimer>
+
+#include "definition.h"
+#include "qmainwindow.h"
 
 class AjouterUEWindow : public QMainWindow {
     Q_OBJECT

@@ -2,13 +2,15 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
-
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 #include <QStringList>
 #include <QDir>
+#include <QString>
+#include <QList>
+#include <algorithm>
+
 
 #include "Model/groupeetudiant.h"
 #include "Controleur/CreneauControl.h"

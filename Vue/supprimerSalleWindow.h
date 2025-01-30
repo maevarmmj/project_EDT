@@ -11,6 +11,11 @@
 #include <QSpinBox>
 #include <QFormLayout>
 #include <QDir>
+#include <QFile>
+#include <QTextStream>
+#include <QTimer>
+#include <QStackedWidget>
+
 #include "Controleur/SalleControl.h"
 
 class SupprimerSalleWindow : public QWidget

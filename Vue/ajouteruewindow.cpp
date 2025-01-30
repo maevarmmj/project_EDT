@@ -1,14 +1,4 @@
 #include "ajouteruewindow.h"
-#include <QDir>
-#include <QIcon>
-#include <QFile>
-#include <QTextStream>
-#include <QScrollArea>
-#include <QGroupBox>
-#include <QDebug>
-#include <QMessageBox>
-#include <QStackedWidget>
-#include <QTimer>
 
 AjouterUEWindow::AjouterUEWindow(QWidget *parent)
     : QMainWindow(parent) {
