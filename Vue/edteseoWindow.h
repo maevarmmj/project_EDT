@@ -47,7 +47,6 @@ private:
     QPushButton *remUEButton;
     QPushButton *updateButton;
     QPushButton *refreshButton;
-
     QList<QString> rooms;
 
     void setupUI();
@@ -70,14 +69,12 @@ private slots:
     void toggleButtonsVisibility();
     void toggleRemButtonsVisibility();
     void refreshMainWindow();
-
     void updateEdt();
     void onComboBoxSelectionChanged(const QString &selectedText);
 
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-
 
 };
 

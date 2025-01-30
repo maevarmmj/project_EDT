@@ -16,9 +16,6 @@
 class AjouterUEWindow : public QMainWindow {
     Q_OBJECT
 
-public:
-    AjouterUEWindow(QWidget *parent = nullptr);
-    void setupUI();
 private:
     QVBoxLayout* mainLayout;
     QLabel* ueLabel;
@@ -26,10 +23,16 @@ private:
     QList<QCheckBox*> ecueCheckBoxes;
     QPushButton* enregistrerButton;
     QGroupBox* ecueGroupBox;
+    QPushButton* annulerButton;
+
     void chargerEcueDepuisCSV();
     void enregistrerUE();
-    QPushButton* annulerButton;
     void annuler();
+
+public:
+    AjouterUEWindow(QWidget *parent = nullptr);
+    ~AjouterUEWindow();
+    void setupUI();
 
 
 };

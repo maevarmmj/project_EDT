@@ -81,6 +81,8 @@ void AjouterUEWindow::setupUI(){
     connect(annulerButton, &QPushButton::clicked, this, &AjouterUEWindow::annuler);
 }
 
+AjouterUEWindow::~AjouterUEWindow(){}
+
 
 void AjouterUEWindow::chargerEcueDepuisCSV() {
     QString csvPath = QDir::currentPath() + "/../../CSV/Ecue.csv";
@@ -122,7 +124,7 @@ void AjouterUEWindow::chargerEcueDepuisCSV() {
     file.close();
 }
 
-
+// ---- Quand on clique sur le bouton "Enregistrer" ----
 void AjouterUEWindow::enregistrerUE(){
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
     if (!messageStack) return;
@@ -154,7 +156,7 @@ void AjouterUEWindow::enregistrerUE(){
 }
 
 
-
+// ---- Quand on clique sur le bouton "annuler" ----
 void AjouterUEWindow::annuler() {
     close();
 }

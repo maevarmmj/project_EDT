@@ -17,7 +17,6 @@ class SupprimerEcueWindow : public QDialog
 private:
     QPushButton *deleteButton;
     QPushButton *cancelButton;
-
     QComboBox *ecueComboBox;
     QComboBox *enseignantNomComboBox;
     QComboBox *enseignantPrenomComboBox;
@@ -45,7 +44,7 @@ public:
     ~SupprimerEcueWindow();
 
 signals:
-    void ecueWindowClosed();
+    void ecueWindowClosed(); // Signal émis à la fenêtre principale
 };
 
 #endif // SUPPRIMERECUEWINDOW_H

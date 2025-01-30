@@ -78,6 +78,8 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
         connect(this, &SupprimerGroupeWindow::windowClosed, this, &SupprimerGroupeWindow::updateGroupComboBox);
 }
 
+// ---- Fermer la fenêtre à partir de la croix ----
+
 SupprimerGroupeWindow::~SupprimerGroupeWindow() {
     emit windowClosed();
 }
@@ -111,6 +113,16 @@ void SupprimerGroupeWindow::loadGroupsFromCSV() {
 }
 
 
+
+
+
+void SupprimerGroupeWindow::updateGroupComboBox() {
+    groupComboBox->clear();
+    loadGroupsFromCSV();
+}
+
+
+// ---- Quand on clique sur le bouton "Supprimer" ----
 void SupprimerGroupeWindow::onDeleteClicked() {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
     if (!messageStack) return;
@@ -156,11 +168,7 @@ void SupprimerGroupeWindow::onDeleteClicked() {
     emit windowClosed();
 }
 
+// ---- Quand on clique sur le bouton "annuler" ----
 void SupprimerGroupeWindow::onCancelClicked() {
     close();
-}
-
-void SupprimerGroupeWindow::updateGroupComboBox() {
-    groupComboBox->clear();
-    loadGroupsFromCSV();
 }

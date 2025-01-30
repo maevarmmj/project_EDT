@@ -14,6 +14,7 @@ class SupprimerUEWindow : public QMainWindow {
 
 public:
     SupprimerUEWindow(QWidget *parent = nullptr);
+    ~SupprimerUEWindow();
     void setupUI();
 
 private:

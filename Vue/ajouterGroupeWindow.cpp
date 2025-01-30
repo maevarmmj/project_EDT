@@ -90,6 +90,8 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     onCategoryChanged(categoryComboBox->currentText());
 }
 
+// ---- Fermer la fenêtre à partir de la croix ----
+
 AjouterGroupeWindow::~AjouterGroupeWindow() {
     emit windowClosed(); // Émettre le signal si la fenêtre est fermée par la croix
 
@@ -130,7 +132,7 @@ void AjouterGroupeWindow::clearForm() {
     }
 }
 
-
+// ---- Quand on clique sur le bouton "Enregistrer" ----
 void AjouterGroupeWindow::onSaveClicked() {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
     if (!messageStack) return;
@@ -204,11 +206,12 @@ void AjouterGroupeWindow::onSaveClicked() {
     } else if (category != "Salle"){
         showMessageAndHide(1); // 2 pour MANQUE_INFO
     }
-    emit windowClosed(); // Émettre le signal si la fenêtre est fermée par la croix
+    emit windowClosed();
 }
 
+// ---- Quand on clique sur le bouton "annuler" ----
 void AjouterGroupeWindow::onCancelClicked() {
-    emit windowClosed(); // Émettre le signal avant de fermer
+    emit windowClosed();
     close();
 }
 

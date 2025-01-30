@@ -1,7 +1,7 @@
 #include "definition.h"
 #include <QDebug>
 
-// TRANSFORME LES STR EN TYPE COURS
+// ---- Transforme les strings en types de cours ----
 cours StrToCours(std::string coursStr){
     if (coursStr == "CM") {
         return CM;
@@ -16,7 +16,7 @@ cours StrToCours(std::string coursStr){
     }
 }
 
-// TRANSFORME LES TYPES COURS EN STR
+// ---- Transforme les types de cours en strings ----
 std::string  CoursToStr(cours cours){
     switch (cours) {
     case CM: return "CM";

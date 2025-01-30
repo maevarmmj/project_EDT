@@ -29,15 +29,12 @@ private:
     QSpinBox *examSpinBox;
     QCheckBox *elecCheckBox;
     QSpinBox *elecSpinBox;
-
     QCheckBox *infoCheckBox;
     QSpinBox *infoSpinBox;
-
     QMap<QString, QStringList> enseignantsData;
 
     void loadTeachersFromCSV();
     void loadGroupsFromCSV();
-
 
 
 private slots:
@@ -56,7 +53,7 @@ public:
     ~AjoutEcueWindow();
 
 signals:
-    void windowClosed();
+    void windowClosed(); // Signal émis à la fenêtre principale
 
 };
 

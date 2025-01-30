@@ -65,6 +65,9 @@ void SupprimerUEWindow::setupUI() {
 }
 
 
+SupprimerUEWindow::~SupprimerUEWindow(){
+}
+
 void SupprimerUEWindow::chargerUEDepuisCSV() {
     QString csvPath = QDir::currentPath() + "/../../CSV/UE.csv";
     QFile file(csvPath);
@@ -85,6 +88,8 @@ void SupprimerUEWindow::chargerUEDepuisCSV() {
     }
     file.close();
 }
+
+// ---- Quand on clique sur le bouton "Supprimer" ----
 
 void SupprimerUEWindow::supprimerUE() {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
@@ -115,7 +120,7 @@ void SupprimerUEWindow::supprimerUE() {
     });
 }
 
-
+// ---- Quand on clique sur le bouton "annuler" ----
 void SupprimerUEWindow::annuler() {
     close();
 }

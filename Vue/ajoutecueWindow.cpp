@@ -23,12 +23,10 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     setWindowIcon(icon);
 
 
-    // Layout principal avec marges et espacement
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(20, 20, 20, 20);
     mainLayout->setSpacing(15);
 
-    // Ligne 1 : Nom de l'ECUE
     QHBoxLayout *ecueLayout = new QHBoxLayout();
     QLabel *ecueLabel = new QLabel("Nom de l'ECUE:");
     ecueLineEdit = new QLineEdit();
@@ -36,7 +34,6 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     ecueLayout->addWidget(ecueLineEdit);
     mainLayout->addLayout(ecueLayout);
 
-    // Ligne 2 : Groupe étudiant et enseignant
     QHBoxLayout *groupTeacherLayout = new QHBoxLayout();
 
     QHBoxLayout *nomEnseignantLayout = new QHBoxLayout();
@@ -115,7 +112,6 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     mainLayout->addLayout(groupTeacherLayout);
 
-    // Ligne 3 : Type de cours
     QGroupBox *typeGroupBox = new QGroupBox("Type de cours");
     QVBoxLayout *typeCourseLayout = new QVBoxLayout();
     typeCourseLayout->setSpacing(10);
@@ -186,11 +182,29 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     examLayout->addWidget(examSpinBox);
     typeCourseLayout->addLayout(examLayout);
 
-
     typeGroupBox->setLayout(typeCourseLayout);
     mainLayout->addWidget(typeGroupBox);
 
-    // Connecter les cases à cocher pour afficher/masquer les champs de saisie
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+    buttonsLayout->setSpacing(20);
+
+    QPushButton *cancelButton = new QPushButton("Annuler");
+    QPushButton *saveButton = new QPushButton("Enregistrer");
+
+    cancelButton->setObjectName("cancelButton");
+    saveButton->setObjectName("saveButton");
+
+    buttonsLayout->addStretch();
+    buttonsLayout->addWidget(cancelButton);
+    buttonsLayout->addWidget(saveButton);
+    buttonsLayout->addStretch();
+    mainLayout->addWidget(messageStack);
+    mainLayout->addLayout(buttonsLayout);
+
+    setLayout(mainLayout);
+
+    // ---- Connexion de chaque bouton et leurs actions ----
+
     connect(cmCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleCM);
     connect(tpCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleTP);
     connect(elecCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleElec);
@@ -198,42 +212,24 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     connect(tdCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleTD);
     connect(examCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleExam);
     connect(nomComboBox, &QComboBox::currentTextChanged, this, &AjoutEcueWindow::updatePrenoms);
-
-
-    // Ligne 4 : Boutons Enregistrer et Annuler
-    QHBoxLayout *buttonsLayout = new QHBoxLayout();
-    buttonsLayout->setSpacing(20);
-
-    // Boutons Annuler et Enregistrer
-    QPushButton *cancelButton = new QPushButton("Annuler");
-    QPushButton *saveButton = new QPushButton("Enregistrer");
-
-    // Donner des IDs pour le style personnalisé
-    cancelButton->setObjectName("cancelButton");
-    saveButton->setObjectName("saveButton");
-
-    buttonsLayout->addStretch();
-    buttonsLayout->addWidget(cancelButton); // Bouton Annuler à gauche
-    buttonsLayout->addWidget(saveButton);   // Bouton Enregistrer à droite
-    buttonsLayout->addStretch();
-    mainLayout->addWidget(messageStack);
-    mainLayout->addLayout(buttonsLayout);
-
-    // Connecter les boutons
     connect(saveButton, &QPushButton::clicked, this, &AjoutEcueWindow::enregistrer);
     connect(cancelButton, &QPushButton::clicked, this, &AjoutEcueWindow::annuler);
 
-    // Appliquer le layout principal à la fenêtre
-    setLayout(mainLayout);
 }
+
+// ---- Fermer la fenêtre à partir de la croix ----
 
 AjoutEcueWindow::~AjoutEcueWindow(){
     emit windowClosed();
 }
 
+// ---- Faire afficher le spinbox CM après clic sur la checkbox CM ----
+
 void AjoutEcueWindow::toggleCM(int state) {
     cmSpinBox->setVisible(state == Qt::Checked);
 }
+
+// ---- Faire afficher les checkbox Elec et Info après clic sur la checkbox TP ----
 
 void AjoutEcueWindow::toggleTP(int state) {
     bool visible = (state == Qt::Checked);
@@ -248,13 +244,46 @@ void AjoutEcueWindow::toggleTP(int state) {
     }
 }
 
+// ---- Faire afficher le spinbox Elec après clic sur la checkbox Elec ----
+
 void AjoutEcueWindow::toggleElec(int state) {
     elecSpinBox->setVisible(state == Qt::Checked);
 }
 
+// ---- Faire afficher le spinbox Info après clic sur la checkbox Info ----
+
 void AjoutEcueWindow::toggleInfo(int state) {
     infoSpinBox->setVisible(state == Qt::Checked);
 }
+
+
+
+
+// ---- MAJ des prénoms après avoir renseigné le nom de famille  ----
+
+void AjoutEcueWindow::updatePrenoms(const QString &nom) {
+    prenomComboBox->clear(); // Effacez les prénoms existants
+
+    // Ajoutez les prénoms correspondants au nom sélectionné
+    if (enseignantsData.contains(nom)) {
+        prenomComboBox->addItems(enseignantsData[nom]);
+    }
+}
+
+// ---- Faire afficher le spinbox TD après clic sur la checkbox TD ----
+
+void AjoutEcueWindow::toggleTD(int state) {
+    tdSpinBox->setVisible(state == Qt::Checked);
+}
+
+// ---- Faire afficher le spinbox examen après clic sur la checkbox Examen  ----
+
+void AjoutEcueWindow::toggleExam(int state) {
+    examSpinBox->setVisible(state == Qt::Checked);
+}
+
+
+// ---- Charger Enseignants.csv ----
 
 void AjoutEcueWindow::loadTeachersFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Enseignants.csv");
@@ -292,43 +321,37 @@ void AjoutEcueWindow::loadTeachersFromCSV() {
     nomComboBox->addItems(enseignantsData.keys());
 }
 
-void AjoutEcueWindow::updatePrenoms(const QString &nom) {
-    prenomComboBox->clear(); // Effacez les prénoms existants
 
-    // Ajoutez les prénoms correspondants au nom sélectionné
-    if (enseignantsData.contains(nom)) {
-        prenomComboBox->addItems(enseignantsData[nom]);
+// ---- Charger Groupes.csv ----
+
+void AjoutEcueWindow::loadGroupsFromCSV() {
+    QFile file(QDir::currentPath() + "/../../CSV/" + "Groupes.csv");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Erreur", "Impossible de lire le fichier Groupes.csv.");
+        return;
     }
+
+    QTextStream in(&file);
+    bool isFirstLine = true;
+
+    while (!in.atEnd()) {
+        QString line = in.readLine().trimmed();
+
+        if (isFirstLine) {
+            isFirstLine = false;
+            continue;
+        }
+
+        if (!line.isEmpty()) {
+            groupComboBox->addItem(line);
+        }
+    }
+
+    file.close();
 }
 
 
-void AjoutEcueWindow::toggleTD(int state) {
-    tdSpinBox->setVisible(state == Qt::Checked);
-}
-
-void AjoutEcueWindow::toggleExam(int state) {
-    examSpinBox->setVisible(state == Qt::Checked);
-}
-
-void AjoutEcueWindow::annuler() {
-    ecueLineEdit->clear();
-    nomComboBox ->clear();
-    prenomComboBox  ->clear();
-    groupComboBox->setCurrentIndex(0);
-    cmCheckBox->setChecked(false);
-    tpCheckBox->setChecked(false);
-    tdCheckBox->setChecked(false);
-    examCheckBox->setChecked(false);
-    elecCheckBox->setChecked(false);
-    infoCheckBox->setChecked(false);
-
-    emit windowClosed();
-
-    close();
-}
-
-#include <QTimer>
-#include <QTimer>
+// ---- Quand on clique sur le bouton "Enregistrer" ----
 
 void AjoutEcueWindow::enregistrer() {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
@@ -451,28 +474,21 @@ void AjoutEcueWindow::enregistrer() {
     emit windowClosed();
 }
 
-void AjoutEcueWindow::loadGroupsFromCSV() {
-    QFile file(QDir::currentPath() + "/../../CSV/" + "Groupes.csv");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "Erreur", "Impossible de lire le fichier Groupes.csv.");
-        return;
-    }
+// ---- Quand on clique sur le bouton "annuler" ----
 
-    QTextStream in(&file);
-    bool isFirstLine = true;
+void AjoutEcueWindow::annuler() {
+    ecueLineEdit->clear();
+    nomComboBox ->clear();
+    prenomComboBox  ->clear();
+    groupComboBox->setCurrentIndex(0);
+    cmCheckBox->setChecked(false);
+    tpCheckBox->setChecked(false);
+    tdCheckBox->setChecked(false);
+    examCheckBox->setChecked(false);
+    elecCheckBox->setChecked(false);
+    infoCheckBox->setChecked(false);
 
-    while (!in.atEnd()) {
-        QString line = in.readLine().trimmed();
+    emit windowClosed();
 
-        if (isFirstLine) {
-            isFirstLine = false;
-            continue; // Ignorer l'en-tête
-        }
-
-        if (!line.isEmpty()) {
-            groupComboBox->addItem(line);
-        }
-    }
-
-    file.close();
+    close();
 }

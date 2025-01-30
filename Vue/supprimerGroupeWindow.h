@@ -34,11 +34,8 @@ public:
     explicit SupprimerGroupeWindow(QWidget *parent = nullptr);
     ~SupprimerGroupeWindow();
 
-
-
-
 signals:
-    void windowClosed();
+    void windowClosed(); // Signal émis à la fenêtre principale
 
 };
 

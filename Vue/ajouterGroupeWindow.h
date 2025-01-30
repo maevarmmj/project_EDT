@@ -46,7 +46,7 @@ public:
     ~AjouterGroupeWindow();
 
 signals:
-    void windowClosed();
+    void windowClosed(); // Signal émis à la fenêtre principale
 
 };
 

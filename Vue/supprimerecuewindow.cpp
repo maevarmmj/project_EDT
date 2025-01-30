@@ -84,6 +84,8 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
     connect(this, &SupprimerEcueWindow::ecueWindowClosed, this, &SupprimerEcueWindow::updateEcueComboBoxes);
 }
 
+// ---- Fermer la fenêtre à partir de la croix ----
+
 SupprimerEcueWindow::~SupprimerEcueWindow() {
 }
 
@@ -206,6 +208,22 @@ void SupprimerEcueWindow::onGroupeChanged(const QString &groupe) {
 
 
 
+
+
+void SupprimerEcueWindow::updateEcueComboBoxes() {
+    ecueComboBox->clear();
+    enseignantNomComboBox->clear();
+    enseignantPrenomComboBox->clear();
+    groupeComboBox->clear();
+
+    ecueComboBox->addItem("Sélectionner");
+
+    chargerEcueDepuisCSV();
+
+
+}
+
+// ---- Quand on clique sur le bouton "Supprimer" ----
 void SupprimerEcueWindow::onSupprimerClicked()
 {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
@@ -259,22 +277,8 @@ void SupprimerEcueWindow::onSupprimerClicked()
     emit ecueWindowClosed();
 }
 
-
-
+// ---- Quand on clique sur le bouton "annuler" ----
 void SupprimerEcueWindow::onAnnulerClicked() {
     emit ecueWindowClosed();
     close();
-}
-
-void SupprimerEcueWindow::updateEcueComboBoxes() {
-    ecueComboBox->clear();
-    enseignantNomComboBox->clear();
-    enseignantPrenomComboBox->clear();
-    groupeComboBox->clear();
-
-    ecueComboBox->addItem("Sélectionner");
-
-    chargerEcueDepuisCSV();
-
-
 }

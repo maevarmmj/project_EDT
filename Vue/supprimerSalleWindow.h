@@ -45,7 +45,7 @@ public:
 
 
 signals:
-    void salleWindowClosed();
+    void salleWindowClosed(); // Signal émis à la fenêtre principale
 };
 
 #endif // SUPPRIMERSALLEWINDOW_H

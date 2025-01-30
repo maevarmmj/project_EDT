@@ -10,19 +10,19 @@ class PopupSallesLibres : public QDialog
 {
     Q_OBJECT
 
-public:
-    PopupSallesLibres(const QList<int>& sallesLibres, QWidget *parent = nullptr);
-    int getSelectedRoomNumber() const;
-
 private:
     QComboBox *sallesComboBox;
     int selectedRoomNumber;
 
+private slots:
+    void onValidationClicked();
+public:
+    PopupSallesLibres(const QList<int>& sallesLibres, QWidget *parent = nullptr);
+    int getSelectedRoomNumber() const;
+
 signals:
     void roomSelected(int roomNumber);
 
-private slots:
-    void onValidationClicked();
 };
 
 #endif // POPUPSALLESLIBRES_H

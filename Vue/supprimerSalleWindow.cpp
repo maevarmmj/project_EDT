@@ -70,6 +70,8 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     setLayout(mainLayout);
 }
 
+// ---- Fermer la fenêtre à partir de la croix ----
+
 SupprimerSalleWindow::~SupprimerSalleWindow() {
 }
 
@@ -106,12 +108,7 @@ void SupprimerSalleWindow::updateSalleComboBox() {
     chargerSallesDepuisCSV();
 }
 
-void SupprimerSalleWindow::annuler() {
-    emit salleWindowClosed();
-    close();
-}
-
-
+// ---- Quand on clique sur le bouton "Supprimer" ----
 void SupprimerSalleWindow::supprimer() {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
     if (!messageStack) return;
@@ -153,4 +150,10 @@ void SupprimerSalleWindow::supprimer() {
         showMessageAndHide(1); // 1 pour MANQUE_INFO
     }
     emit salleWindowClosed();
+}
+
+// ---- Quand on clique sur le bouton "annuler" ----
+void SupprimerSalleWindow::annuler() {
+    emit salleWindowClosed();
+    close();
 }

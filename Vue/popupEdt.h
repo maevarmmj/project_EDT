@@ -59,9 +59,6 @@ private:
     QString heuresRestantes;
     int minButtonHeight;
     QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
-public:
-    popupEdt(QWidget *parent = nullptr);
-    ~popupEdt();
 
 private slots :
     void lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox);
@@ -73,6 +70,11 @@ private slots :
     void onButtonClicked();
     void resetSelection();
     void onRoomSelected(int roomNumber);
+
+public:
+    popupEdt(QWidget *parent = nullptr);
+    ~popupEdt();
+
 
 signals:
     void windowClosed();

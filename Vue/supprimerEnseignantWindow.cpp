@@ -82,6 +82,8 @@ SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)
     connect(this, &SupprimerEnseignantWindow::windowClosed, this, &SupprimerEnseignantWindow::updateEnseignantComboBox);
 }
 
+// ---- Fermer la fenêtre à partir de la croix ----
+
 SupprimerEnseignantWindow::~SupprimerEnseignantWindow() {
     emit windowClosed();
 }
@@ -129,6 +131,16 @@ void SupprimerEnseignantWindow::updatePrenomComboBox(const QString &selectedName
 }
 
 
+
+
+
+void SupprimerEnseignantWindow::updateEnseignantComboBox() {
+    nameComboBox->clear();
+    prenomComboBox->clear();
+    loadTeachersFromCSV();
+}
+
+// ---- Quand on clique sur le bouton "Supprimer" ----
 void SupprimerEnseignantWindow::onDeleteClicked() {
     QStackedWidget* messageStack = findChild<QStackedWidget*>();
     if (!messageStack) return;
@@ -176,13 +188,8 @@ void SupprimerEnseignantWindow::onDeleteClicked() {
     emit windowClosed();
 }
 
+
+// ---- Quand on clique sur le bouton "annuler" ----
 void SupprimerEnseignantWindow::onCancelClicked() {
     close();
-}
-
-
-void SupprimerEnseignantWindow::updateEnseignantComboBox() {
-    nameComboBox->clear();
-    prenomComboBox->clear();
-    loadTeachersFromCSV();
 }
