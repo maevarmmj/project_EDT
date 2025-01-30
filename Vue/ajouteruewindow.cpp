@@ -35,7 +35,6 @@ void AjouterUEWindow::setupUI(){
     // ------------------ Messages test ------------------------
 
 
-    // Nom de l'UE
     QHBoxLayout *nomUELayout = new QHBoxLayout();
     ueLabel = new QLabel("Nom de l'UE : ");
     ueLineEdit = new QLineEdit();
@@ -43,14 +42,12 @@ void AjouterUEWindow::setupUI(){
     nomUELayout->addWidget(ueLineEdit);
     mainLayout->addLayout(nomUELayout);
 
-    // GroupBox pour les cases à cocher des ECUE
     ecueGroupBox = new QGroupBox("ECUE à inclure", centralWidget);
     ecueGroupBox->setObjectName("ecueGroupBox");
     QVBoxLayout *ecueCheckBoxLayout = new QVBoxLayout(ecueGroupBox);
     ecueGroupBox->setLayout(ecueCheckBoxLayout);
     mainLayout->addWidget(ecueGroupBox);
 
-    // ScrollArea pour les ECUE
     QScrollArea *scrollArea = new QScrollArea(centralWidget);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(ecueGroupBox);
@@ -58,7 +55,6 @@ void AjouterUEWindow::setupUI(){
 
     chargerEcueDepuisCSV();
 
-    // Boutons Annuler et Enregistrer
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     annulerButton = new QPushButton("Annuler");
     enregistrerButton = new QPushButton("Enregistrer");
