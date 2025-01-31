@@ -37,8 +37,9 @@ void MainWindow::setupUI() {
     topBarLayout->addStretch();
 
     // Bouton "-"
-    remButton = new QPushButton("-", this);
-    remButton->setFixedSize(25, 25); //
+    remButton = new QPushButton("", this);
+    remButton->setIcon(QIcon("../../Ressources/moins.png"));
+    remButton->setStyleSheet("padding: 5px;");
     topBarLayout->addWidget(remButton);
 
     remGroupButton = new QPushButton("Groupe", this);
@@ -59,8 +60,9 @@ void MainWindow::setupUI() {
 
 
     // Bouton "+"
-    addButton = new QPushButton("+", this);
-    addButton->setFixedSize(25, 25);
+    addButton = new QPushButton("", this);
+    addButton->setIcon(QIcon("../../Ressources/plus.png"));
+    addButton->setStyleSheet("padding: 5px;");
     topBarLayout->addWidget(addButton);
 
     addGroupButton = new QPushButton("Élement", this);
@@ -76,7 +78,6 @@ void MainWindow::setupUI() {
     mainLayout->addLayout(topBarLayout);
 
     updateButton = new QPushButton("Mettre à jour l'emploi du temps", this);
-    updateButton->setFixedWidth(200);  // Largeur du bouton
 
     // Créer un layout horizontal pour centrer le bouton
     QHBoxLayout *updateLayout = new QHBoxLayout();
@@ -96,6 +97,8 @@ void MainWindow::setupUI() {
 // Configuration de la table
 void MainWindow::setupTable() {
     table = new QTableWidget(9, 8, this);
+    table->setStyleSheet("background-color: #f9f5fa;"
+                         "border-radius: 15px; ");
     table->setHorizontalHeaderLabels({
         "Matière", "Enseignant", "H. totales", "H. CM",
         "H. TD", "H. Elec", "H. Info", "H. Exam"

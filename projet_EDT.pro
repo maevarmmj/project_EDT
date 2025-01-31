@@ -55,3 +55,6 @@ HEADERS += \
     Controleur/grpeetudiantcontrolleur.h \
     Controleur/ecuecontroleur.h \
     main.h
+
+DISTFILES += \
+    Ressources/StyleSheet.qss
