@@ -4,7 +4,7 @@
 #include "definition.h"
 #include "Controleur/SalleControl.h"
 
-class SupprimerSalleWindow : public QWidget
+class SupprimerSalleWindow : public QMainWindow
 {
     Q_OBJECT
 

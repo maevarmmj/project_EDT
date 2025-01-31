@@ -4,11 +4,12 @@
 #include "definition.h"
 #include "Controleur/ecuecontroleur.h"
 
-class SupprimerEcueWindow : public QDialog
+class SupprimerEcueWindow : public QMainWindow
 {
     Q_OBJECT
 
 private:
+    QWidget *centralWidget;
     QPushButton *deleteButton;
     QPushButton *cancelButton;
     QComboBox *ecueComboBox;

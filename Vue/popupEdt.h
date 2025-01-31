@@ -13,6 +13,7 @@ class popupEdt : public QMainWindow
 private:
     QWidget *centralWidget;
     QVBoxLayout *mainLayout;
+    QStackedWidget *messageStack;
     // ---------------- Bandeau du Haut --------------------
     QWidget *bandeauWidget;
     QHBoxLayout *bandeauLayout;
@@ -46,6 +47,7 @@ private:
     QStringList days = {"Mon", "Tue", "Wed", "Thu", "Fri"};
 
 private slots :
+    void showMessageAndHide (int index);
     void lectureCsvEcue(QComboBox *ecueComboBox, QComboBox *typeCoursComboBox);
     void mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignantValueLabel, QLabel *ecueInfoValueLabel, QLabel *typeCoursInfoValueLabel, const QString &ecueLabel, const QString &typeCours);
     void validerEtAfficher();

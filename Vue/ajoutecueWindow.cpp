@@ -2,17 +2,19 @@
 
 
 
-AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
+AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QMainWindow(parent) {
     // ------ Set inital fenêtre --------
     setWindowTitle("Ajout d'ECUE");
     resize(600, 500);
+    centralWidget = new QWidget(this);
+    this->setCentralWidget(centralWidget);
     setWindowModality(Qt::ApplicationModal);
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
 
     // ------ Main layout --------
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
     mainLayout->setContentsMargins(20, 20, 20, 20);
     mainLayout->setSpacing(15);
 
@@ -50,19 +52,19 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QLabel *AJOUT_REUSSI = new QLabel("Ajout réussi !");
     AJOUT_REUSSI->setAlignment(Qt::AlignCenter);
-    AJOUT_REUSSI->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+    AJOUT_REUSSI->setObjectName("reussi");
 
     QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
     MANQUE_INFO->setAlignment(Qt::AlignCenter);
-    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    MANQUE_INFO->setObjectName("loupe");
 
     QLabel *EXISTE_DEJA = new QLabel("Cette ECUE existe déjà !");
     EXISTE_DEJA->setAlignment(Qt::AlignCenter);
-    EXISTE_DEJA->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    EXISTE_DEJA->setObjectName("loupe");
 
     QLabel *ERREUR_PROF = new QLabel("Une ECUE ne peut être associé qu'à un enseignant par groupe !");
     ERREUR_PROF->setAlignment(Qt::AlignCenter);
-    ERREUR_PROF->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    ERREUR_PROF->setObjectName("loupe");
 
     AJOUT_REUSSI->setFixedHeight(30);
     MANQUE_INFO->setFixedHeight(30);
@@ -110,6 +112,7 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QHBoxLayout *cmLayout = new QHBoxLayout();
     cmCheckBox = new QCheckBox("CM");
+    cmCheckBox->setObjectName("cbText");
     cmSpinBox = new QSpinBox();
     cmSpinBox->setRange(0, 100);
     cmSpinBox->setSuffix(" h");
@@ -121,11 +124,13 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QHBoxLayout *tpLayout = new QHBoxLayout();
     tpCheckBox = new QCheckBox("TP");
+    tpCheckBox->setObjectName("cbText");
     tpLayout->addWidget(tpCheckBox);
     typeCourseLayout->addLayout(tpLayout);
 
     QHBoxLayout *elecLayout = new QHBoxLayout();
     elecCheckBox = new QCheckBox("Elec");
+    elecCheckBox->setObjectName("cbText");
     elecCheckBox->setVisible(false);
     elecSpinBox = new QSpinBox();
     elecSpinBox->setRange(0, 100);
@@ -140,6 +145,7 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QHBoxLayout *infoLayout = new QHBoxLayout();
     infoCheckBox = new QCheckBox("Info");
+    infoCheckBox->setObjectName("cbText");
     infoCheckBox->setVisible(false);
     infoSpinBox = new QSpinBox();
     infoSpinBox->setRange(0, 100);
@@ -154,6 +160,7 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QHBoxLayout *tdLayout = new QHBoxLayout();
     tdCheckBox = new QCheckBox("TD");
+    tdCheckBox->setObjectName("cbText");
     tdSpinBox = new QSpinBox();
     tdSpinBox->setRange(0, 100);
     tdSpinBox->setSuffix(" h");
@@ -165,6 +172,7 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QHBoxLayout *examLayout = new QHBoxLayout();
     examCheckBox = new QCheckBox("Examen");
+    examCheckBox->setObjectName("cbText");
     examSpinBox = new QSpinBox();
     examSpinBox->setRange(0, 100);
     examSpinBox->setSuffix(" h");
@@ -186,14 +194,12 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     cancelButton->setObjectName("cancelButton");
     saveButton->setObjectName("saveButton");
 
-    buttonsLayout->addStretch();
     buttonsLayout->addWidget(cancelButton);
     buttonsLayout->addWidget(saveButton);
-    buttonsLayout->addStretch();
     mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonsLayout);
 
-    setLayout(mainLayout);
+     // setLayout(mainLayout);
 
     // ---- Connexion de chaque bouton et leurs actions ----
 

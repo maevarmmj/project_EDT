@@ -7,7 +7,6 @@ SupprimerUEWindow::SupprimerUEWindow(QWidget *parent)
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
-    this->setFixedSize(400, 300);
     this->setWindowTitle("Supprimer une UE");
     setWindowModality(Qt::ApplicationModal);
 }
@@ -24,7 +23,7 @@ void SupprimerUEWindow::setupUI() {
 
     QLabel *TEST = new QLabel("Fonctionnalité bientôt disponible :)");
     TEST->setAlignment(Qt::AlignCenter);
-    TEST->setStyleSheet("font-size: 14px; color: orange; font-weight: bold;");
+    TEST->setObjectName("bientot");
     TEST->setFixedHeight(30);
     messageStack->addWidget(TEST);
     TEST->hide();
@@ -35,6 +34,7 @@ void SupprimerUEWindow::setupUI() {
     // Label et ComboBox pour choisir l'UE à supprimer
     QHBoxLayout *ueLayout = new QHBoxLayout();
     ueLabel = new QLabel("UE à supprimer : ");
+    ueLabel->setObjectName("titleLabel");
     ueComboBox = new QComboBox();
     ueLayout->addWidget(ueLabel);
     ueLayout->addWidget(ueComboBox);
@@ -47,6 +47,8 @@ void SupprimerUEWindow::setupUI() {
     supprimerButton = new QPushButton("Supprimer");
     buttonLayout->addWidget(annulerButton);
     buttonLayout->addWidget(supprimerButton);
+    annulerButton->setObjectName("saveButton");
+    supprimerButton->setObjectName("cancelButton");
     mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonLayout);
 
