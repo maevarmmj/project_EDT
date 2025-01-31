@@ -1,26 +1,22 @@
 # Projet Framework : Emploi du temps
 ### Par Mathis CASSERT, Maeva RAMAMONJY, Anaïs BOISSON, Lou-Anne VAULOT, Marie Ndeye DIOP
 Ce programme en C++ a été conçu pour la création d'un logiciel de création d'emploi du temps à destination de l'administration d'une école. 
-Il répond aux différents besoins pour pouvoir créer de manière simplifiée les EDT, et supprimer les éléments inutiles. Il gère également les erreurs possibles que l'utilisateur peut générer, pour une utilisation logique et ergonomique.
-
+Il répond aux différents besoins pour pouvoir créer de manière simplifiée les EDT, et supprimer les éléments inutiles. Il gère également les erreurs possibles que l'utilisateur peut générer, pour une utilisation logique et ergonomique. 
 Les fichiers .csv énoncés dans ce readme et la base de données MySQL sont dans le dossier "CSV" du projet.
-
 Les ressources graphiques sont dans le dossier "Ressources".
-
-
-
-Conseil avant le premier lancement du programme : 
+\
+\
+\
+Conseil avant le premier lancement du programme : \
 ✅ S'il existe, supprimer le dossier "CSV" pour une meilleure simulation.
-
+\
 Lors du lancement du programme, la fenêtre principale apparaît. 
-
-
-▪▪▪▪▪▪▪▪ Liste des éléments disponibles ▪▪▪▪▪▪▪▪
-
-
-➡️ Tableau avec toutes les informations relatives au personnel sélectionné dans le menu déroulant en haut à gauche (groupe d'étudiants ou enseignant). Par ligne, il y a le nom de l'ECUE, les étudiants/enseignant concerné(s), les heures pour chaque type de cours, et les heures totales de l'ECUE. 
-➡️ En haut à droite : bouton "+" et "-", qui mènent respectivement à des fenêtres pour l'ajout ou la suppression d'un élément.
-➡️ Au centre : bouton "Mettre à jour l'emploi du temps", pour pouvoir ajouter des cours dans des créneaux. Prend en compte les heures restantes à placer selon le nombre d'heures total par type de cours.
+\
+\
+Liste des éléments disponibles : \
+➡️ Tableau avec toutes les informations relatives au personnel sélectionné dans le menu déroulant en haut à gauche (groupe d'étudiants ou enseignant). Par ligne, il y a le nom de l'ECUE, les étudiants/enseignant concerné(s), les heures pour chaque type de cours, et les heures totales de l'ECUE. \
+➡️ En haut à droite : bouton "+" et "-", qui mènent respectivement à des fenêtres pour l'ajout ou la suppression d'un élément. \
+➡️ Au centre : bouton "Mettre à jour l'emploi du temps", pour pouvoir ajouter des cours dans des créneaux. Prend en compte les heures restantes à placer selon le nombre d'heures total par type de cours. \
 
 
 ▪▪▪▪▪▪▪▪ BOUTON "+" ▪▪▪▪▪▪▪▪
