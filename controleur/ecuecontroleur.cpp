@@ -180,10 +180,10 @@ boolean EcueControleur::ajouterGroupeCSV(const std::string& groupe) {
 }
 
 
-void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe) {
+CreationResult EcueControleur::creerECUE(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::vector<cours>& typesCours, const std::vector<int>& heuresParCours, const std::string& groupe) {
     if (typesCours.size() != heuresParCours.size()) {
         std::cerr << "Erreur : Le nombre de types de cours et le nombre d'heures ne correspondent pas." << std::endl;
-        return;
+        return CreationResult::Error;
     }
 
     // Chemin vers le fichier CSV
@@ -192,18 +192,18 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
 
     bool fileExists = file.exists();
 
-    // Vérifier si le fichier existe et lire son contenu pour vérifier les doublons
-    if (file.exists()) {
+    QList<QStringList> ecues;
+
+    if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             std::cerr << "Erreur : Impossible de lire le fichier Ecue.csv." << std::endl;
-            return;
+            return CreationResult::Error;
         }
 
         QTextStream in(&file);
         bool isFirstLine = true;
-        while (!in.atEnd()) {
-            QString line = in.readLine().trimmed();
-
+        QString line;
+        while (in.readLineInto(&line)) {
             // Ignorer la première ligne (en-têtes)
             if (isFirstLine) {
                 isFirstLine = false;
@@ -233,7 +233,14 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
                 }
                 QString typesCoursStr = typesCoursStrList.join("/");
 
-                // Vérifier si les informations correspondent
+                if (existingNomECUE == QString::fromStdString(nomECUE) &&
+                    existingEnseignantNom != QString::fromStdString(nom) &&
+                    existingGroupe == QString::fromStdString(groupe)) {
+                    std::cerr << "Une ECUE ne peut pas avoir 2 professeurs" << std::endl;
+                    file.close();
+                    return CreationResult::Error;
+                }
+
                 if (existingNomECUE == QString::fromStdString(nomECUE) &&
                     existingEnseignantNom == QString::fromStdString(nom) &&
                     existingEnseignantPrenom == QString::fromStdString(prenom) &&
@@ -241,25 +248,18 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
                     existingTypesCours == typesCoursStr) {
                     std::cerr << "Erreur : Cette ECUE existe deja." << std::endl;
                     file.close();
-                    return;
+                    return CreationResult::AlreadyExists;
                 }
+
+                ecues.append(fields);
+
+
             }
         }
         file.close();
     }
 
-    // Ouvrir le fichier en mode ajout
-    if (!file.open(QIODevice::Append | QIODevice::Text)) {
-        std::cerr << "Erreur : Impossible d'ouvrir ou de créer le fichier Ecue.csv." << std::endl;
-        return;
-    }
-
-    QTextStream out(&file);
-
-    if (!fileExists) {
-        out << "NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlacer\n";
-    }
-
+    QStringList newEcue;
     QStringList typesCoursStrList;
     QStringList heuresCoursStrList;
     QStringList heuresRestantesCoursStrList;
@@ -284,12 +284,32 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     QString enseignant = QString::fromStdString(nom + "," + prenom);
     QString groupeStr = QString::fromStdString(groupe);
 
-    out << QString::fromStdString(nomECUE) << ","
-        << enseignant << ","
-        << groupeStr << ","
-        << typesCoursStr << ","
-        << heuresCoursStr << ","
-        << heuresRestantesCoursStr << "\n";
+    newEcue << QString::fromStdString(nomECUE)
+            << enseignant
+            << groupeStr
+            << typesCoursStr
+            << heuresCoursStr
+            << heuresRestantesCoursStr;
+
+    ecues.append(newEcue);
+    std::sort(ecues.begin(), ecues.end(), [](const QStringList& a, const QStringList& b) {
+        return a.first().toLower() < b.first().toLower(); // Comparaison insensible à la casse
+    });
+
+
+
+    // Ouvrir le fichier en mode écriture
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        std::cerr << "Erreur : Impossible d'ouvrir ou de créer le fichier Ecue.csv." << std::endl;
+        return CreationResult::Error;
+    }
+
+    QTextStream out(&file);
+    out << "NomECUE,NomEnseignant,PrenomEnseignant,Groupe,TypesCours,HeuresCours,HeuresAPlacer\n";
+
+    for(const auto& ecue : ecues) {
+        out << ecue.join(",") << "\n";
+    }
 
     file.close();
 
@@ -299,6 +319,7 @@ void EcueControleur::creerECUE(const std::string& nomECUE, const std::string& no
     std::cout << "Heures de cours : " << heuresCoursStr.toStdString() << std::endl;
     std::cout << "Heures restantes : " << heuresRestantesCoursStr.toStdString() << std::endl;
     std::cout << "Groupe : " << groupe << std::endl;
+    return CreationResult::Success;
 }
 
 
@@ -421,13 +442,13 @@ uint32 EcueControleur::getNombreHeureTotal() {
 
 
 
-bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe) {
+SuppressionResult EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::string& nom, const std::string& prenom, const std::string& groupe) {
     QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Ecue.csv");
     QFile file(csv);
 
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "Erreur : impossible d'ouvrir le fichier:" << file.errorString();
-        return false;
+        return SuppressionResult::Error;
     }
 
     QTextStream in(&file);
@@ -477,7 +498,7 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
         << " " << QString::fromStdString(nomECUE)
         << " non trouvé dans le fichier CSV.";
         file.close();
-        return false;
+        return SuppressionResult::Error;
     }
 
     file.seek(0);
@@ -490,7 +511,7 @@ bool EcueControleur::retirerECUECSV(const std::string& nomECUE, const std::strin
 
     file.close();
 
-    return true;
+    return SuppressionResult::Success;
 }
 
 

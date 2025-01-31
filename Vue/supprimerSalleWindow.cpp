@@ -1,7 +1,5 @@
 #include "supprimerSalleWindow.h"
-#include <QFile>
-#include <QTextStream>
-#include <QMessageBox>
+
 
 SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Supprimer un numéro de salle");
@@ -12,6 +10,30 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     setWindowIcon(icon);
 
     QVBoxLayout *mainLayout = new QVBoxLayout();
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
+    QStackedWidget *messageStack = new QStackedWidget(this);
+
+    QLabel *SUPPRESSION_REUSSIE = new QLabel("Suppression réussie !");
+    SUPPRESSION_REUSSIE->setAlignment(Qt::AlignCenter);
+    SUPPRESSION_REUSSIE->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+
+    QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
+    MANQUE_INFO->setAlignment(Qt::AlignCenter);
+    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    SUPPRESSION_REUSSIE->setFixedHeight(30);
+    MANQUE_INFO->setFixedHeight(30);
+
+    messageStack->addWidget(SUPPRESSION_REUSSIE);
+    messageStack->addWidget(MANQUE_INFO);
+
+    SUPPRESSION_REUSSIE->hide();
+    MANQUE_INFO->hide();
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
 
     QLabel *label = new QLabel("Sélectionnez le numéro de la salle à supprimer :");
     salleComboBox = new QComboBox();
@@ -32,6 +54,7 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     buttonLayout->addWidget(annulerButton);
     buttonLayout->addWidget(supprimerButton);
     buttonLayout->addStretch();
+    mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonLayout);
 
     connect(annulerButton, &QPushButton::clicked, this, &SupprimerSalleWindow::annuler);
@@ -41,6 +64,8 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
 
     setLayout(mainLayout);
 }
+
+// ---- Fermer la fenêtre à partir de la croix ----
 
 SupprimerSalleWindow::~SupprimerSalleWindow() {
 }
@@ -73,24 +98,60 @@ bool SupprimerSalleWindow::chargerSallesDepuisCSV() {
     return true;
 }
 
+// ---- MAJ de Salles.csv après suppression ----
+
 void SupprimerSalleWindow::updateSalleComboBox() {
     salleComboBox->clear();
     chargerSallesDepuisCSV();
 }
 
-void SupprimerSalleWindow::annuler() {
-    QMessageBox::information(this,"Annulation", "L'opération est bien annulée");
-    emit salleWindowClosed();
-    close();
-}
-
+// ---- Quand on clique sur le bouton "Supprimer" ----
 void SupprimerSalleWindow::supprimer() {
+    QStackedWidget* messageStack = findChild<QStackedWidget*>();
+    if (!messageStack) return;
+
+    auto showMessageAndHide = [messageStack](int index) {
+        messageStack->setCurrentIndex(index);
+        for (int i = 0; i < messageStack->count(); ++i) {
+            QWidget* widget = messageStack->widget(i);
+            if (widget) {
+                if (i == index) {
+                    widget->show();
+                } else {
+                    widget->hide();
+                }
+            }
+        }
+
+        QTimer::singleShot(2000, [messageStack]() {
+            if (messageStack) {
+                for (int i = 0; i < messageStack->count(); ++i) {
+                    QWidget* widget = messageStack->widget(i);
+                    if (widget) {
+                        widget->hide();
+                    }
+                }
+            }
+        });
+    };
+
     QString salleNumber = salleComboBox->currentText();
     if (salleNumber.isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Le numéro de la salle n'est pas valide.");
+        showMessageAndHide(1); // 1 pour MANQUE_INFO
         return;
     }
-    retirerSalleCSV(salleComboBox->currentText().toInt());
-    QMessageBox::information(this, "Succès", QString("La salle numéro %1 a bien été supprimée.").arg(salleNumber));
+    SuppressionResult result = retirerSalleCSV(salleComboBox->currentText().toInt());
+    if (result == SuppressionResult::Success) {
+        showMessageAndHide(0); // 0 pour SUPPRESSION_REUSSIE
+    } else {
+        showMessageAndHide(1); // 1 pour MANQUE_INFO
+    }
     emit salleWindowClosed();
+}
+
+// ---- Quand on clique sur le bouton "annuler" ----
+
+void SupprimerSalleWindow::annuler() {
+    emit salleWindowClosed();
+    close();
 }

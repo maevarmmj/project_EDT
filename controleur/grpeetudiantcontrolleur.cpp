@@ -1,14 +1,15 @@
 #include "grpeetudiantcontrolleur.h"
 
 
-bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
+
+CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe) {
     QString csvDirPath = QDir::currentPath() + "/../../CSV";
     QDir csvDir(csvDirPath);
 
     if (!csvDir.exists()) {
         if (!csvDir.mkpath(".")) {
             qDebug() << "Erreur : impossible de créer le dossier CSV:" << csvDir.path();
-            return false;
+            return CreationResult::Error;
         }
     }
 
@@ -16,47 +17,64 @@ bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe){
     QFile file(csv);
     bool fileExists = file.exists();
 
+    QList<QString> groups; // Pour stocker les groupes existants et le nouveau
 
     if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Erreur : le fichier ne peut pas s'ouvrir" << file.errorString();
-            return false;
+            return CreationResult::Error;
         }
         QTextStream in(&file);
         QString line;
+        bool firstLine = true;
         while (in.readLineInto(&line)) {
+            if(firstLine) {
+                firstLine = false;
+                continue;
+            }
             QStringList existingData = line.split(",");
-            if (!existingData.isEmpty() && existingData.first() == QString::fromStdString(nomGroupe)) {
-                qDebug() << "Erreur : le groupe " << QString::fromStdString(nomGroupe) << " " << " existe déjà dans le CSV";
-                file.close();
-                return false;
+            if (!existingData.isEmpty()) {
+                if (existingData.first() == QString::fromStdString(nomGroupe)) {
+                    qDebug() << "Erreur : le groupe " << QString::fromStdString(nomGroupe) << " " << " existe déjà dans le CSV";
+                    file.close();
+                    return CreationResult::AlreadyExists;
+                }
+
+                groups.append(existingData.first());
             }
         }
         file.close();
     }
+    groups.append(QString::fromStdString(nomGroupe));
+    std::sort(groups.begin(), groups.end(), [](const QString& a, const QString& b) {
+        return a.toLower() < b.toLower(); // Comparaison insensible à la casse
+    });
 
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text | (fileExists ? QIODevice::Append : QIODevice::Truncate))) {
-        qDebug() << "Erreur : le fichier ne s'ouvre pas:" << file.errorString();
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : le fichier ne peut pas s'ouvrir" << file.errorString();
+        return CreationResult::Error;
     }
     QTextStream out(&file);
-    if (!fileExists) {
-        out << "Groupe" << "\n";
+    out << "Groupe" << "\n";
+
+    for(const QString& group : groups) {
+        out << group << "\n";
     }
-    out << QString::fromStdString(nomGroupe) << "\n";
 
     file.close();
-    return true;
+    return CreationResult::Success;
 }
 
 
-bool retirerGroupeEtudiantCSV(const std::string& nomGroupe) {
+SuppressionResult retirerGroupeEtudiantCSV(const std::string& nomGroupe) {
     // Fichier Groupes.csv
     QString csvGroupes = QDir::currentPath() + QString::fromStdString("/../../CSV/Groupes.csv");
     QFile fileGroupes(csvGroupes);
 
     if (!fileGroupes.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "Erreur : impossible d'ouvrir le fichier:" << fileGroupes.errorString();
-        return false;
+        return SuppressionResult::Error;
     }
 
     QTextStream inGroupes(&fileGroupes);
@@ -84,7 +102,7 @@ bool retirerGroupeEtudiantCSV(const std::string& nomGroupe) {
     if (!found) {
         qDebug() << "Erreur : Groupe " << QString::fromStdString(nomGroupe) << " non trouvé dans le fichier CSV.";
         fileGroupes.close();
-        return false;
+        return SuppressionResult::Error;
     }
 
     // Réécrire le fichier Groupes.csv sans le groupe supprimé
@@ -104,7 +122,7 @@ bool retirerGroupeEtudiantCSV(const std::string& nomGroupe) {
 
     if (!fileEcue.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "Erreur : impossible d'ouvrir le fichier:" << fileEcue.errorString();
-        return false;
+        return SuppressionResult::Error;
     }
 
     QTextStream inEcue(&fileEcue);
@@ -151,5 +169,5 @@ bool retirerGroupeEtudiantCSV(const std::string& nomGroupe) {
 
     deleteReservationsByGroup(QString::fromStdString(nomGroupe));
 
-    return true;
+    return SuppressionResult::Success;
 }

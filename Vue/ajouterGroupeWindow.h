@@ -1,18 +1,11 @@
 #ifndef AJOUTERGROUPEWINDOW_H
 #define AJOUTERGROUPEWINDOW_H
 
-#include <QMainWindow>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QLabel>
-#include <QSpinBox>
-
 #include <Controleur/grpeetudiantcontrolleur.h>
 #include <controleur/SalleControl.h>
 #include <controleur/enseignantControl.h>
+
+#include "definition.h"
 
 class AjouterGroupeWindow : public QMainWindow {
     Q_OBJECT
@@ -44,7 +37,7 @@ public:
     ~AjouterGroupeWindow();
 
 signals:
-    void windowClosed();
+    void windowClosed(); // Signal émis à la fenêtre principale
 
 };
 

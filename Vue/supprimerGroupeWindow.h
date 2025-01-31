@@ -1,15 +1,7 @@
 #ifndef SUPPRIMERGROUPEWINDOW_H
 #define SUPPRIMERGROUPEWINDOW_H
 
-#include <QMainWindow>
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QDir>
-#include <QComboBox>
-#include <QDir>
+#include "definition.h"
 #include "Controleur/grpeetudiantcontrolleur.h"
 
 class SupprimerGroupeWindow : public QMainWindow {
@@ -34,11 +26,8 @@ public:
     explicit SupprimerGroupeWindow(QWidget *parent = nullptr);
     ~SupprimerGroupeWindow();
 
-
-
-
 signals:
-    void windowClosed();
+    void windowClosed(); // Signal émis à la fenêtre principale
 
 };
 

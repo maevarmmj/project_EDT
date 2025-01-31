@@ -1,9 +1,5 @@
 #include "supprimerEnseignantWindow.h"
-#include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
-#include <QDebug>
+
 
 SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)
     : QMainWindow(parent) {
@@ -20,6 +16,30 @@ SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)
 
     mainLayout = new QVBoxLayout();
     centralWidget->setLayout(mainLayout);
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
+    QStackedWidget *messageStack = new QStackedWidget(this);
+
+    QLabel *SUPPRESSION_REUSSIE = new QLabel("Suppression réussie !");
+    SUPPRESSION_REUSSIE->setAlignment(Qt::AlignCenter);
+    SUPPRESSION_REUSSIE->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+
+    QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
+    MANQUE_INFO->setAlignment(Qt::AlignCenter);
+    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    SUPPRESSION_REUSSIE->setFixedHeight(30);
+    MANQUE_INFO->setFixedHeight(30);
+
+    messageStack->addWidget(SUPPRESSION_REUSSIE);
+    messageStack->addWidget(MANQUE_INFO);
+
+    SUPPRESSION_REUSSIE->hide();
+    MANQUE_INFO->hide();
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
 
     QLabel *titleLabel = new QLabel("Supprimer un enseignant :", this);
     titleLabel->setAlignment(Qt::AlignCenter);
@@ -46,6 +66,7 @@ SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)
 
     buttonLayout->addWidget(cancelButton);
     buttonLayout->addWidget(deleteButton);
+    mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonLayout);
 
     connect(deleteButton, &QPushButton::clicked, this, &SupprimerEnseignantWindow::onDeleteClicked);
@@ -54,9 +75,13 @@ SupprimerEnseignantWindow::SupprimerEnseignantWindow(QWidget *parent)
     connect(this, &SupprimerEnseignantWindow::windowClosed, this, &SupprimerEnseignantWindow::updateEnseignantComboBox);
 }
 
+// ---- Fermer la fenêtre à partir de la croix ----
+
 SupprimerEnseignantWindow::~SupprimerEnseignantWindow() {
     emit windowClosed();
 }
+
+// ---- Chargement de Enseignants.csv ----
 
 void SupprimerEnseignantWindow::loadTeachersFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Enseignants.csv");
@@ -92,6 +117,8 @@ void SupprimerEnseignantWindow::loadTeachersFromCSV() {
     nameComboBox->addItem("Sélectionner");
     nameComboBox->addItems(teacherData.keys());}
 
+// ---- MAJ du prénom selon le nom de l'enseignant renseigné ----
+
 void SupprimerEnseignantWindow::updatePrenomComboBox(const QString &selectedName) {
     prenomComboBox->clear();
 
@@ -100,28 +127,64 @@ void SupprimerEnseignantWindow::updatePrenomComboBox(const QString &selectedName
     }
 }
 
-void SupprimerEnseignantWindow::onDeleteClicked() {
-    QString nom = nameComboBox->currentText();
-    QString prenom = prenomComboBox->currentText();
-
-    if (nom.isEmpty() || prenom.isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un nom et un prénom.");
-        return;
-    }
-    retirerEnseignantCSV(nom.toStdString(), prenom.toStdString());
-    QMessageBox::information(this, "Succès", QString("L'enseignant '%1 %2' a été supprimé.").arg(nom, prenom));
-    emit windowClosed();
-}
-
-void SupprimerEnseignantWindow::onCancelClicked() {
-    QMessageBox::information(this, "Annulé", "Suppression annulée.");
-    emit windowClosed();
-    close();
-}
-
+// ---- MAJ de l'enseignant dans Enseignants.csv ----
 
 void SupprimerEnseignantWindow::updateEnseignantComboBox() {
     nameComboBox->clear();
     prenomComboBox->clear();
     loadTeachersFromCSV();
+}
+
+// ---- Quand on clique sur le bouton "Supprimer" ----
+void SupprimerEnseignantWindow::onDeleteClicked() {
+    QStackedWidget* messageStack = findChild<QStackedWidget*>();
+    if (!messageStack) return;
+
+
+    auto showMessageAndHide = [messageStack](int index) {
+        messageStack->setCurrentIndex(index);
+        for (int i = 0; i < messageStack->count(); ++i) {
+            QWidget* widget = messageStack->widget(i);
+            if (widget) {
+                if (i == index) {
+                    widget->show();
+                } else {
+                    widget->hide();
+                }
+            }
+        }
+
+        QTimer::singleShot(2000, [messageStack]() {
+            if (messageStack) {
+                for (int i = 0; i < messageStack->count(); ++i) {
+                    QWidget* widget = messageStack->widget(i);
+                    if (widget) {
+                        widget->hide();
+                    }
+                }
+            }
+        });
+    };
+
+
+    QString nom = nameComboBox->currentText();
+    QString prenom = prenomComboBox->currentText();
+
+    if (nom.isEmpty() || prenom.isEmpty()) {
+        showMessageAndHide(1); // 1 pour MANQUE_INFO
+        return;
+    }
+    SuppressionResult result = retirerEnseignantCSV(nom.toStdString(), prenom.toStdString());
+    if (result == SuppressionResult::Success) {
+        showMessageAndHide(0); // 0 pour SUPPRESSION_REUSSIE
+    } else {
+        showMessageAndHide(1); // 1 pour MANQUE_INFO
+    }
+    emit windowClosed();
+}
+
+
+// ---- Quand on clique sur le bouton "annuler" ----
+void SupprimerEnseignantWindow::onCancelClicked() {
+    close();
 }

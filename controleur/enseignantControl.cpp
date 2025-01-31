@@ -1,14 +1,15 @@
 #include "enseignantControl.h"
 
 
-bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
+
+CreationResult ajouterEnseignantCSV(const std::string& nom, const std::string& prenom) {
     QString csvDirPath = QDir::currentPath() + "/../../CSV";
     QDir csvDir(csvDirPath);
 
     if (!csvDir.exists()) {
         if (!csvDir.mkpath(".")) {
             qDebug() << "Erreur : impossible de créer le dossier CSV:" << csvDir.path();
-            return false;
+            return CreationResult::Error;
         }
     }
 
@@ -16,46 +17,61 @@ bool ajouterEnseignantCSV(const std::string& nom, const std::string& prenom){
     QFile file(csv);
     bool fileExists = file.exists();
 
+    QList<QPair<QString, QString>> enseignants; // Pour stocker les enseignants existants et le nouveau
 
     if (fileExists) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug() << "Erreur : le fichier ne peut pas s'ouvrir" << file.errorString();
-            return false;
+            return CreationResult::Error;
         }
         QTextStream in(&file);
         QString line;
+        bool firstLine = true;
         while (in.readLineInto(&line)) {
+            if(firstLine) {
+                firstLine = false;
+                continue;
+            }
             QStringList existingData = line.split(",");
-            if (!existingData.isEmpty() && existingData.size() > 1 && existingData.first() == QString::fromStdString(nom) && existingData.at(1) == QString::fromStdString(prenom)) {
-                qDebug() << "Erreur : l'enseignant " << QString::fromStdString(nom) << " " << QString::fromStdString(prenom) << " existe déjà dans le CSV";
-                file.close();
-                return false;
+            if (!existingData.isEmpty() && existingData.size() > 1) {
+                if (existingData.first() == QString::fromStdString(nom) && existingData.at(1) == QString::fromStdString(prenom)) {
+                    qDebug() << "Erreur : l'enseignant " << QString::fromStdString(nom) << " " << QString::fromStdString(prenom) << " existe déjà dans le CSV";
+                    file.close();
+                    return CreationResult::AlreadyExists;
+                }
+                enseignants.append(qMakePair(existingData.first(), existingData.at(1)));
             }
         }
         file.close();
     }
 
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text | (fileExists ? QIODevice::Append : QIODevice::Truncate))) {
-        qDebug() << "Erreur : le fichier ne s'ouvre pas:" << file.errorString();
+    enseignants.append(qMakePair(QString::fromStdString(nom), QString::fromStdString(prenom)));
+    std::sort(enseignants.begin(), enseignants.end(), [](const QPair<QString, QString>& a, const QPair<QString, QString>& b) {
+        return a.first.toLower() < b.first.toLower(); // Comparaison insensible à la casse sur le nom de famille
+    });
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : le fichier ne peut pas s'ouvrir" << file.errorString();
+        return CreationResult::Error;
     }
     QTextStream out(&file);
-    if (!fileExists) {
-        out << "Nom,Prenom" << "\n";
-    }
-    out << QString::fromStdString(nom) << "," << QString::fromStdString(prenom) << "\n";
+    out << "Nom,Prenom" << "\n";
 
+    for(const auto& enseignant : enseignants) {
+        out << enseignant.first << "," << enseignant.second << "\n";
+    }
     file.close();
-    return true;
+    return CreationResult::Success;
 }
 
 
-bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
+SuppressionResult retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
     QString csvEnseignants = QDir::currentPath() + QString::fromStdString("/../../CSV/Enseignants.csv");
     QFile fileEnseignants(csvEnseignants);
 
     if (!fileEnseignants.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "Erreur : impossible d'ouvrir le fichier:" << fileEnseignants.errorString();
-        return false;
+        return SuppressionResult::Error;
     }
 
     QTextStream inEnseignants(&fileEnseignants);
@@ -91,7 +107,7 @@ bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
         << " " << QString::fromStdString(prenom)
         << " non trouvé dans le fichier CSV.";
         fileEnseignants.close();
-        return false;
+        return SuppressionResult::Error;
     }
 
     // Réécrire le fichier Enseignants.csv sans l'enseignant supprimé
@@ -111,7 +127,7 @@ bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
 
     if (!fileEcue.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "Erreur : impossible d'ouvrir le fichier:" << fileEcue.errorString();
-        return false;
+        return SuppressionResult::Error;
     }
 
     QTextStream inEcue(&fileEcue);
@@ -163,5 +179,5 @@ bool retirerEnseignantCSV(const std::string& nom, const std::string& prenom) {
     // supprimer de la base de données
     deleteReservationsByTeacher(QString::fromStdString(nom), QString::fromStdString(prenom));
 
-    return true;
+    return SuppressionResult::Success;
 }

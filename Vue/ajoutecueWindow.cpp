@@ -1,17 +1,9 @@
 #include "ajoutecueWindow.h"
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QStyleFactory>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QMap>
+
 
 
 AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
+    // ------ Set inital fenêtre --------
     setWindowTitle("Ajout d'ECUE");
     resize(600, 500);
     setWindowModality(Qt::ApplicationModal);
@@ -19,23 +11,12 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     QIcon icon(file);
     setWindowIcon(icon);
 
-    // Appliquer un style pour rendre la fenêtre plus esthétique
-    // setStyleSheet(
-    //     "QWidget { background-color: #f4f4f4; }"
-    //     "QLabel { font-size: 16px; font-weight: bold; color: #333; }"
-    //     "QPushButton#saveButton { background-color: #5cb85c; color: white; font-size: 16px; padding: 12px; border-radius: 8px; }"
-    //     "QPushButton#saveButton:hover { background-color: #4cae4c; }"
-    //     "QPushButton#cancelButton { background-color: #d9534f; color: white; font-size: 16px; padding: 12px; border-radius: 8px; }"
-    //     "QPushButton#cancelButton:hover { background-color: #c9302c; }"
-    //     "QLineEdit, QComboBox { font-size: 14px; padding: 6px; border: 1px solid #ccc; border-radius: 5px; }"
-    //     );
-
-    // Layout principal avec marges et espacement
+    // ------ Main layout --------
     QVBoxLayout *mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(20, 20, 20, 20);
     mainLayout->setSpacing(15);
 
-    // Ligne 1 : Nom de l'ECUE
+    // ------ NOM ECUE --------
     QHBoxLayout *ecueLayout = new QHBoxLayout();
     QLabel *ecueLabel = new QLabel("Nom de l'ECUE:");
     ecueLineEdit = new QLineEdit();
@@ -43,9 +24,10 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     ecueLayout->addWidget(ecueLineEdit);
     mainLayout->addLayout(ecueLayout);
 
-    // Ligne 2 : Groupe étudiant et enseignant
+    // ------ Layout groupe + enseignant --------
     QHBoxLayout *groupTeacherLayout = new QHBoxLayout();
 
+    // ------ Nom + prénom enseignant --------
     QHBoxLayout *nomEnseignantLayout = new QHBoxLayout();
     QHBoxLayout *prenomEnseignantLayout = new QHBoxLayout();
     QVBoxLayout *enseignantLayout = new QVBoxLayout;
@@ -59,6 +41,46 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     QLabel *prenomLabel = new QLabel("Prénom enseignant", this);
     prenomComboBox = new QComboBox(this);
+
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
+    QStackedWidget *messageStack = new QStackedWidget(this);
+
+
+    QLabel *AJOUT_REUSSI = new QLabel("Ajout réussi !");
+    AJOUT_REUSSI->setAlignment(Qt::AlignCenter);
+    AJOUT_REUSSI->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+
+    QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
+    MANQUE_INFO->setAlignment(Qt::AlignCenter);
+    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    QLabel *EXISTE_DEJA = new QLabel("Cette ECUE existe déjà !");
+    EXISTE_DEJA->setAlignment(Qt::AlignCenter);
+    EXISTE_DEJA->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    QLabel *ERREUR_PROF = new QLabel("Une ECUE ne peut être associé qu'à un enseignant par groupe !");
+    ERREUR_PROF->setAlignment(Qt::AlignCenter);
+    ERREUR_PROF->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    AJOUT_REUSSI->setFixedHeight(30);
+    MANQUE_INFO->setFixedHeight(30);
+    EXISTE_DEJA->setFixedHeight(30);
+    ERREUR_PROF->setFixedHeight(30);
+
+    messageStack->addWidget(AJOUT_REUSSI);
+    messageStack->addWidget(MANQUE_INFO);
+    messageStack->addWidget(EXISTE_DEJA);
+    messageStack->addWidget(ERREUR_PROF);
+
+
+    AJOUT_REUSSI->hide();
+    MANQUE_INFO->hide();
+    EXISTE_DEJA->hide();
+    ERREUR_PROF->hide();
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
 
 
     loadTeachersFromCSV();
@@ -82,7 +104,6 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
 
     mainLayout->addLayout(groupTeacherLayout);
 
-    // Ligne 3 : Type de cours
     QGroupBox *typeGroupBox = new QGroupBox("Type de cours");
     QVBoxLayout *typeCourseLayout = new QVBoxLayout();
     typeCourseLayout->setSpacing(10);
@@ -153,11 +174,29 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     examLayout->addWidget(examSpinBox);
     typeCourseLayout->addLayout(examLayout);
 
-
     typeGroupBox->setLayout(typeCourseLayout);
     mainLayout->addWidget(typeGroupBox);
 
-    // Connecter les cases à cocher pour afficher/masquer les champs de saisie
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+    buttonsLayout->setSpacing(20);
+
+    QPushButton *cancelButton = new QPushButton("Annuler");
+    QPushButton *saveButton = new QPushButton("Enregistrer");
+
+    cancelButton->setObjectName("cancelButton");
+    saveButton->setObjectName("saveButton");
+
+    buttonsLayout->addStretch();
+    buttonsLayout->addWidget(cancelButton);
+    buttonsLayout->addWidget(saveButton);
+    buttonsLayout->addStretch();
+    mainLayout->addWidget(messageStack);
+    mainLayout->addLayout(buttonsLayout);
+
+    setLayout(mainLayout);
+
+    // ---- Connexion de chaque bouton et leurs actions ----
+
     connect(cmCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleCM);
     connect(tpCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleTP);
     connect(elecCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleElec);
@@ -165,41 +204,24 @@ AjoutEcueWindow::AjoutEcueWindow(QWidget *parent) : QWidget(parent) {
     connect(tdCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleTD);
     connect(examCheckBox, &QCheckBox::checkStateChanged, this, &AjoutEcueWindow::toggleExam);
     connect(nomComboBox, &QComboBox::currentTextChanged, this, &AjoutEcueWindow::updatePrenoms);
-
-
-    // Ligne 4 : Boutons Enregistrer et Annuler
-    QHBoxLayout *buttonsLayout = new QHBoxLayout();
-    buttonsLayout->setSpacing(20);
-
-    // Boutons Annuler et Enregistrer
-    QPushButton *cancelButton = new QPushButton("Annuler");
-    QPushButton *saveButton = new QPushButton("Enregistrer");
-
-    // Donner des IDs pour le style personnalisé
-    cancelButton->setObjectName("cancelButton");
-    saveButton->setObjectName("saveButton");
-
-    buttonsLayout->addStretch();
-    buttonsLayout->addWidget(cancelButton); // Bouton Annuler à gauche
-    buttonsLayout->addWidget(saveButton);   // Bouton Enregistrer à droite
-    buttonsLayout->addStretch();
-    mainLayout->addLayout(buttonsLayout);
-
-    // Connecter les boutons
     connect(saveButton, &QPushButton::clicked, this, &AjoutEcueWindow::enregistrer);
     connect(cancelButton, &QPushButton::clicked, this, &AjoutEcueWindow::annuler);
 
-    // Appliquer le layout principal à la fenêtre
-    setLayout(mainLayout);
 }
+
+// ---- Fermer la fenêtre à partir de la croix ----
 
 AjoutEcueWindow::~AjoutEcueWindow(){
     emit windowClosed();
 }
 
+// ---- Faire afficher le spinbox CM après clic sur la checkbox CM ----
+
 void AjoutEcueWindow::toggleCM(int state) {
     cmSpinBox->setVisible(state == Qt::Checked);
 }
+
+// ---- Faire afficher les checkbox Elec et Info après clic sur la checkbox TP ----
 
 void AjoutEcueWindow::toggleTP(int state) {
     bool visible = (state == Qt::Checked);
@@ -214,13 +236,44 @@ void AjoutEcueWindow::toggleTP(int state) {
     }
 }
 
+// ---- Faire afficher le spinbox Elec après clic sur la checkbox Elec ----
+
 void AjoutEcueWindow::toggleElec(int state) {
     elecSpinBox->setVisible(state == Qt::Checked);
 }
 
+// ---- Faire afficher le spinbox Info après clic sur la checkbox Info ----
+
 void AjoutEcueWindow::toggleInfo(int state) {
     infoSpinBox->setVisible(state == Qt::Checked);
 }
+
+
+// ---- MAJ des prénoms après avoir renseigné le nom de famille  ----
+
+void AjoutEcueWindow::updatePrenoms(const QString &nom) {
+    prenomComboBox->clear(); // Effacez les prénoms existants
+
+    // Ajoutez les prénoms correspondants au nom sélectionné
+    if (enseignantsData.contains(nom)) {
+        prenomComboBox->addItems(enseignantsData[nom]);
+    }
+}
+
+// ---- Faire afficher le spinbox TD après clic sur la checkbox TD ----
+
+void AjoutEcueWindow::toggleTD(int state) {
+    tdSpinBox->setVisible(state == Qt::Checked);
+}
+
+// ---- Faire afficher le spinbox examen après clic sur la checkbox Examen  ----
+
+void AjoutEcueWindow::toggleExam(int state) {
+    examSpinBox->setVisible(state == Qt::Checked);
+}
+
+
+// ---- Charger Enseignants.csv ----
 
 void AjoutEcueWindow::loadTeachersFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Enseignants.csv");
@@ -258,132 +311,8 @@ void AjoutEcueWindow::loadTeachersFromCSV() {
     nomComboBox->addItems(enseignantsData.keys());
 }
 
-void AjoutEcueWindow::updatePrenoms(const QString &nom) {
-    prenomComboBox->clear(); // Effacez les prénoms existants
 
-    // Ajoutez les prénoms correspondants au nom sélectionné
-    if (enseignantsData.contains(nom)) {
-        prenomComboBox->addItems(enseignantsData[nom]);
-    }
-}
-
-
-void AjoutEcueWindow::toggleTD(int state) {
-    tdSpinBox->setVisible(state == Qt::Checked);
-}
-
-void AjoutEcueWindow::toggleExam(int state) {
-    examSpinBox->setVisible(state == Qt::Checked);
-}
-
-void AjoutEcueWindow::annuler() {
-    ecueLineEdit->clear();
-    nomComboBox ->clear();
-    prenomComboBox  ->clear();
-    groupComboBox->setCurrentIndex(0);
-    cmCheckBox->setChecked(false);
-    tpCheckBox->setChecked(false);
-    tdCheckBox->setChecked(false);
-    examCheckBox->setChecked(false);
-    elecCheckBox->setChecked(false);
-    infoCheckBox->setChecked(false);
-
-    QMessageBox::information(this, "Opération annulée", "L'opération a été annulée.");
-    emit windowClosed();
-
-    close();
-}
-
-void AjoutEcueWindow::enregistrer() {
-    // Vérification du nom de l'ECUE
-    if (ecueLineEdit->text().isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Veuillez renseigner le nom de l'ECUE.");
-        return;
-    }
-
-    // Vérification si un enseignant est sélectionné
-    if (nomComboBox ->currentIndex() == 0 && prenomComboBox->currentIndex() == 0) {
-        QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un enseignant.");
-        return;
-    }
-
-    // Vérification si au moins un type de cours a été coché
-    if (!cmCheckBox->isChecked() && !tpCheckBox->isChecked() && !tdCheckBox->isChecked() &&
-        !examCheckBox->isChecked() && !elecCheckBox->isChecked() && !infoCheckBox->isChecked()) {
-        QMessageBox::warning(this, "Erreur", "Veuillez cocher au moins un type de cours.");
-        return;
-    }
-
-
-
-    // Vérification des heures renseignées pour les types de cours
-    if (cmCheckBox->isChecked() && cmSpinBox->value() == 0) {
-        QMessageBox::warning(this, "Erreur", "Veuillez renseigner des heures pour le CM.");
-        return;
-    }
-    if (tpCheckBox->isChecked() && (elecSpinBox->value() == 0 && infoSpinBox->value() == 0)) {
-        QMessageBox::warning(this, "Erreur", "Veuillez renseigner des heures pour le TP.");
-        return;
-    }
-    if (tdCheckBox->isChecked() && tdSpinBox->value() == 0) {
-        QMessageBox::warning(this, "Erreur", "Veuillez renseigner des heures pour le TD.");
-        return;
-    }
-    if (examCheckBox->isChecked() && examSpinBox->value() == 0) {
-        QMessageBox::warning(this, "Erreur", "Veuillez renseigner des heures pour l'Examen.");
-        return;
-    }
-
-
-    QString message = QString("Nom de l'ECUE: %1, Groupe étudiant: %2, Enseignant: %3 %4, ")
-                          .arg(ecueLineEdit->text())
-                          .arg(groupComboBox->currentText())
-                          .arg(nomComboBox->currentText())
-                          .arg(prenomComboBox->currentText());
-
-
-    std::vector<cours> typesCours = {};
-    std::vector<int> heuresCours = {};
-    EcueControleur ecue;
-
-
-    if (cmCheckBox->isChecked()){
-        message += QString("CM: %1 heures ").arg(cmSpinBox->value());
-        typesCours.push_back(CM);
-        heuresCours.push_back(cmSpinBox->value());
-    }
-    if (tpCheckBox->isChecked()) {
-        if (elecCheckBox->isChecked()) {
-                message += QString("TP Elec : %1 heures ").arg(elecSpinBox->value());
-                typesCours.push_back(TP_ELEC);
-                heuresCours.push_back(elecSpinBox->value());        }
-        if (infoCheckBox->isChecked()) {
-                message += QString("TP Info : %1 heures ").arg(infoSpinBox->value());
-                typesCours.push_back(TP_INFO);
-                heuresCours.push_back(infoSpinBox->value());
-                 }
-    }
-    if (tdCheckBox->isChecked()){
-        message += QString("TD: %1 heures ").arg(tdSpinBox->value());
-        typesCours.push_back(TD);
-        heuresCours.push_back(tdSpinBox->value());
-    }
-    if (examCheckBox->isChecked()){
-        message += QString("Examen: %1 heures ").arg(examSpinBox->value());
-        typesCours.push_back(EXAMEN);
-        heuresCours.push_back(examSpinBox->value());
-    }
-
-    ecue.creerECUE(ecueLineEdit->text().toStdString(), nomComboBox->currentText().toStdString(), prenomComboBox->currentText().toStdString(), typesCours, heuresCours, groupComboBox->currentText().toStdString());
-
-    // Afficher dans la console
-    qDebug() << "Données sauvegardées :\n" << message;
-
-    // Confirmation à l'utilisateur
-    QMessageBox::information(this, "Données sauvegardées", "Les données ont été sauvegardées avec succès !");
-    emit windowClosed();
-
-}
+// ---- Charger Groupes.csv ----
 
 void AjoutEcueWindow::loadGroupsFromCSV() {
     QFile file(QDir::currentPath() + "/../../CSV/" + "Groupes.csv");
@@ -400,7 +329,7 @@ void AjoutEcueWindow::loadGroupsFromCSV() {
 
         if (isFirstLine) {
             isFirstLine = false;
-            continue; // Ignorer l'en-tête
+            continue;
         }
 
         if (!line.isEmpty()) {
@@ -409,4 +338,147 @@ void AjoutEcueWindow::loadGroupsFromCSV() {
     }
 
     file.close();
+}
+
+
+// ---- Quand on clique sur le bouton "Enregistrer" ----
+
+void AjoutEcueWindow::enregistrer() {
+    QStackedWidget* messageStack = findChild<QStackedWidget*>();
+    if (!messageStack) return;
+
+    // Fonction pour afficher un message et lancer le timer
+    auto showMessageAndHide = [ messageStack](int index) {
+        messageStack->setCurrentIndex(index);
+        for (int i = 0; i < messageStack->count(); ++i) {
+            QWidget* widget = messageStack->widget(i);
+            if (widget) {
+                if (i == index) {
+                    widget->show();
+                } else {
+                    widget->hide();
+                }
+            }
+        }
+
+        QTimer::singleShot(2000, [messageStack]() {
+            if (messageStack) {
+                for (int i = 0; i < messageStack->count(); ++i) {
+                    QWidget* widget = messageStack->widget(i);
+                    if (widget) {
+                        widget->hide();
+                    }
+                }
+            }
+        });
+    };
+
+    // Vérification du nom de l'ECUE
+    if (ecueLineEdit->text().isEmpty()) {
+        showMessageAndHide(1); // Index de MANQUE_INFO
+        return;
+    }
+
+    // Vérification si un enseignant est sélectionné
+    if (nomComboBox->currentIndex() == 0 && prenomComboBox->currentIndex() == 0) {
+        showMessageAndHide(1); // Index de MANQUE_INFO
+        return;
+    }
+
+    // Vérification si au moins un type de cours a été coché
+    if (!cmCheckBox->isChecked() && !tpCheckBox->isChecked() && !tdCheckBox->isChecked() &&
+        !examCheckBox->isChecked() && !elecCheckBox->isChecked() && !infoCheckBox->isChecked()) {
+        showMessageAndHide(1); // Index de MANQUE_INFO
+        return;
+    }
+
+    // Vérification des heures renseignées pour les types de cours
+    if (cmCheckBox->isChecked() && cmSpinBox->value() == 0) {
+        showMessageAndHide(1); // Index de MANQUE_INFO
+        return;
+    }
+    if (tpCheckBox->isChecked() && (elecSpinBox->value() == 0 && infoSpinBox->value() == 0)) {
+        showMessageAndHide(1); // Index de MANQUE_INFO
+        return;
+    }
+    if (tdCheckBox->isChecked() && tdSpinBox->value() == 0) {
+        showMessageAndHide(1); // Index de MANQUE_INFO
+        return;
+    }
+    if (examCheckBox->isChecked() && examSpinBox->value() == 0) {
+        showMessageAndHide(1); // Index de MANQUE_INFO
+        return;
+    }
+    QString message = QString("Nom de l'ECUE: %1, Groupe étudiant: %2, Enseignant: %3 %4, ")
+                          .arg(ecueLineEdit->text())
+                          .arg(groupComboBox->currentText())
+                          .arg(nomComboBox->currentText())
+                          .arg(prenomComboBox->currentText());
+
+    std::vector<cours> typesCours = {};
+    std::vector<int> heuresCours = {};
+    EcueControleur ecue;
+
+
+    if (cmCheckBox->isChecked()){
+        message += QString("CM: %1 heures ").arg(cmSpinBox->value());
+        typesCours.push_back(CM);
+        heuresCours.push_back(cmSpinBox->value());
+    }
+    if (tpCheckBox->isChecked()) {
+        if (elecCheckBox->isChecked()) {
+            message += QString("TP Elec : %1 heures ").arg(elecSpinBox->value());
+            typesCours.push_back(TP_ELEC);
+            heuresCours.push_back(elecSpinBox->value());        }
+        if (infoCheckBox->isChecked()) {
+            message += QString("TP Info : %1 heures ").arg(infoSpinBox->value());
+            typesCours.push_back(TP_INFO);
+            heuresCours.push_back(infoSpinBox->value());
+        }
+    }
+    if (tdCheckBox->isChecked()){
+        message += QString("TD: %1 heures ").arg(tdSpinBox->value());
+        typesCours.push_back(TD);
+        heuresCours.push_back(tdSpinBox->value());
+    }
+    if (examCheckBox->isChecked()){
+        message += QString("Examen: %1 heures ").arg(examSpinBox->value());
+        typesCours.push_back(EXAMEN);
+        heuresCours.push_back(examSpinBox->value());
+    }
+
+
+    // Appel de la fonction creerECUE et gestion du résultat
+    CreationResult result = ecue.creerECUE(ecueLineEdit->text().toStdString(), nomComboBox->currentText().toStdString(), prenomComboBox->currentText().toStdString(), typesCours, heuresCours, groupComboBox->currentText().toStdString());
+
+    // Afficher dans la console
+    qDebug() << "Données sauvegardées :\n" << message;
+
+    if (result == CreationResult::Success) {
+        showMessageAndHide(0); // 0 pour AJOUT_REUSSI
+    } else if (result == CreationResult::AlreadyExists) {
+        showMessageAndHide(2); // 3 pour EXISTE_DEJA
+    } else if (result == CreationResult::Error) {
+        showMessageAndHide(3);
+    }
+    emit windowClosed();
+}
+
+// ---- Quand on clique sur le bouton "annuler" ----
+
+void AjoutEcueWindow::annuler() {
+    ecueLineEdit->clear();
+    nomComboBox ->clear();
+    prenomComboBox  ->clear();
+    groupComboBox->setCurrentIndex(0);
+    cmCheckBox->setChecked(false);
+    tpCheckBox->setChecked(false);
+    tdCheckBox->setChecked(false);
+    examCheckBox->setChecked(false);
+    elecCheckBox->setChecked(false);
+    infoCheckBox->setChecked(false);
+
+    emit windowClosed();
+
+    close();
 }

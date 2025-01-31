@@ -1,13 +1,6 @@
 #ifndef AJOUT_ECUE_H
 #define AJOUT_ECUE_H
 
-#include <QWidget>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QSpinBox>
-#include <QGroupBox>
-#include <QDir>
 #include "definition.h"
 #include "Controleur/ecuecontroleur.h"
 
@@ -29,15 +22,12 @@ private:
     QSpinBox *examSpinBox;
     QCheckBox *elecCheckBox;
     QSpinBox *elecSpinBox;
-
     QCheckBox *infoCheckBox;
     QSpinBox *infoSpinBox;
-
     QMap<QString, QStringList> enseignantsData;
 
     void loadTeachersFromCSV();
     void loadGroupsFromCSV();
-
 
 
 private slots:
@@ -56,7 +46,7 @@ public:
     ~AjoutEcueWindow();
 
 signals:
-    void windowClosed();
+    void windowClosed(); // Signal émis à la fenêtre principale
 
 };
 

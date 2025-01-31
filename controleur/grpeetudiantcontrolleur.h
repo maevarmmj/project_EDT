@@ -2,18 +2,20 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-
-
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 #include <QStringList>
 #include <QDir>
+#include <QString>
+#include <QList>
+#include <algorithm>
+
 
 #include "Model/groupeetudiant.h"
 #include "Controleur/CreneauControl.h"
 #include "definition.h"
 
-bool ajouterGroupeEtudiantCSV(const std::string& nomGroupe);
-bool retirerGroupeEtudiantCSV(const std::string& nomGroupe);
+CreationResult ajouterGroupeEtudiantCSV(const std::string& nomGroupe);
+SuppressionResult retirerGroupeEtudiantCSV(const std::string& nomGroupe);
 

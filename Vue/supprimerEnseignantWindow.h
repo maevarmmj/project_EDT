@@ -1,14 +1,7 @@
 #ifndef SUPPRIMERENSEIGNANTWINDOW_H
 #define SUPPRIMERENSEIGNANTWINDOW_H
 
-#include <QMainWindow>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QLabel>
-#include <QComboBox>
-#include <QDir>
+#include "definition.h"
 #include "Controleur/enseignantControl.h"
 
 class SupprimerEnseignantWindow : public QMainWindow {
@@ -39,7 +32,7 @@ public:
 
 
 signals:
-    void windowClosed();
+    void windowClosed(); // Signal émis à la fenêtre principale
 };
 
 

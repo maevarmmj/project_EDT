@@ -11,8 +11,8 @@
 #include "Controleur/CreneauControl.h"
 #include "definition.h"
 
-bool ajouterSalleCSV(int numero, cours cours);
-bool retirerSalleCSV(int numero);
+CreationResult ajouterSalleCSV(int numero, cours cours);
+SuppressionResult retirerSalleCSV(int numero);
 QList<int> readRoomNumbersFromCSV(const QString& typeCours);
 
 #endif // SALLECONTROL_H

@@ -1,16 +1,7 @@
 #ifndef SUPPRIMERSALLEWINDOW_H
 #define SUPPRIMERSALLEWINDOW_H
 
-#include <QWidget>
-#include <QComboBox>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMessageBox>
-#include <QSpinBox>
-#include <QFormLayout>
-#include <QDir>
+#include "definition.h"
 #include "Controleur/SalleControl.h"
 
 class SupprimerSalleWindow : public QWidget
@@ -45,7 +36,7 @@ public:
 
 
 signals:
-    void salleWindowClosed();
+    void salleWindowClosed(); // Signal émis à la fenêtre principale
 };
 
 #endif // SUPPRIMERSALLEWINDOW_H

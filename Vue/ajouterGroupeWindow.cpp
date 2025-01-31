@@ -1,16 +1,11 @@
 #include "ajouterGroupeWindow.h"
-#include <QMessageBox>
-#include <QFile>
-#include <QTextStream>
-#include <QSpinBox>
-#include <iostream>
 
 AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     : QMainWindow(parent) {
 
     // Définition de la taille de la fenêtre
     resize(600, 400);
-    setWindowTitle("Créer un groupe");
+    setWindowTitle("Créer un élément");
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
@@ -19,17 +14,37 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     setCentralWidget(centralWidget);
     setWindowModality(Qt::ApplicationModal);
 
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
 
-    // Ajout d'un style général pour la fenêtre
-    // this->setStyleSheet(
-    //     "QWidget { background-color: #f4f4f4; }"
-    //     "QLabel { font-size: 16px; font-weight: bold; color: #333; }"
-    //     "QPushButton#saveButton { background-color: #5cb85c; color: white; font-size: 14px; padding: 8px; border-radius: 5px; }"
-    //     "QPushButton#saveButton:hover { background-color: #4cae4c; }"
-    //     "QPushButton#cancelButton { background-color: #d9534f; color: white; font-size: 14px; padding: 8px; border-radius: 5px; }"
-    //     "QPushButton#cancelButton:hover { background-color: #c9302c; }"
-    //     "QLineEdit, QComboBox { font-size: 14px; padding: 6px; border: 1px solid #ccc; border-radius: 5px; }"
-    //     );
+    QStackedWidget *messageStack = new QStackedWidget(this);
+
+
+    QLabel *AJOUT_REUSSI = new QLabel("Ajout réussi !");
+    AJOUT_REUSSI->setAlignment(Qt::AlignCenter);
+    AJOUT_REUSSI->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+
+    QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
+    MANQUE_INFO->setAlignment(Qt::AlignCenter);
+    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    QLabel *EXISTE_DEJA = new QLabel("Cette information existe déjà !");
+    EXISTE_DEJA->setAlignment(Qt::AlignCenter);
+    EXISTE_DEJA->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+
+    AJOUT_REUSSI->setFixedHeight(30);
+    MANQUE_INFO->setFixedHeight(30);
+    EXISTE_DEJA->setFixedHeight(30);
+
+    messageStack->addWidget(AJOUT_REUSSI);
+    messageStack->addWidget(MANQUE_INFO);
+    messageStack->addWidget(EXISTE_DEJA);
+
+    AJOUT_REUSSI->hide();
+    MANQUE_INFO->hide();
+    EXISTE_DEJA->hide();
+
+    // ------------------ Messages si réussite / erreur de la tache ------------------------
+
 
     mainLayout = new QVBoxLayout();
     centralWidget->setLayout(mainLayout);
@@ -50,7 +65,6 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
 
     connect(categoryComboBox, &QComboBox::currentTextChanged, this, &AjouterGroupeWindow::onCategoryChanged);
 
-    // Alignement des boutons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     cancelButton = new QPushButton("Annuler", this);
     cancelButton->setObjectName("cancelButton");
@@ -60,13 +74,15 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
 
     buttonLayout->addWidget(cancelButton);
     buttonLayout->addWidget(saveButton);
+    mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonLayout);
-
     connect(saveButton, &QPushButton::clicked, this, &AjouterGroupeWindow::onSaveClicked);
     connect(cancelButton, &QPushButton::clicked, this, &AjouterGroupeWindow::onCancelClicked);
 
     onCategoryChanged(categoryComboBox->currentText());
 }
+
+// ---- Fermer la fenêtre à partir de la croix ----
 
 AjouterGroupeWindow::~AjouterGroupeWindow() {
     emit windowClosed(); // Émettre le signal si la fenêtre est fermée par la croix
@@ -87,7 +103,7 @@ void AjouterGroupeWindow::onCategoryChanged(const QString &category) {
         formLayout->addRow("Prénom :", prenomLineEdit);
     }
     else if (category == "Salle") {
-        salleSpinBox = new QSpinBox(this);  // Utilisation de la variable membre
+        salleSpinBox = new QSpinBox(this);
         salleSpinBox->setRange(1, 438);
 
         typeComboBox = new QComboBox(this);
@@ -108,49 +124,86 @@ void AjouterGroupeWindow::clearForm() {
     }
 }
 
-
+// ---- Quand on clique sur le bouton "Enregistrer" ----
 void AjouterGroupeWindow::onSaveClicked() {
+    QStackedWidget* messageStack = findChild<QStackedWidget*>();
+    if (!messageStack) return;
+
+    auto showMessageAndHide = [messageStack](int index) {
+        messageStack->setCurrentIndex(index);
+        for (int i = 0; i < messageStack->count(); ++i) {
+            QWidget* widget = messageStack->widget(i);
+            if (widget) {
+                if (i == index) {
+                    widget->show();
+                } else {
+                    widget->hide();
+                }
+            }
+        }
+
+        QTimer::singleShot(2000, [messageStack]() {
+            if (messageStack) {
+                for (int i = 0; i < messageStack->count(); ++i) {
+                    QWidget* widget = messageStack->widget(i);
+                    if (widget) {
+                        widget->hide();
+                    }
+                }
+            }
+        });
+    };
+
     QString category = categoryComboBox->currentText();
     QString data;
+    CreationResult result;
 
     if (category == "Étudiants") {
         data = nameLineEdit->text();
-        std::cout << "Categorie Étudiant: \nNom du groupe: "
-                  << data.toStdString() << std::endl;
-        ajouterGroupeEtudiantCSV(data.toStdString());
-        QMessageBox::information(this, "Succès", "Les données ont été enregistrées.");
+        if (data.isEmpty()) {
+            showMessageAndHide(1); // 2 pour MANQUE_INFO
+            return;
+        }
+        std::cout << "Categorie Étudiant: \nNom du groupe: " << data.toStdString() << std::endl;
+        result = ajouterGroupeEtudiantCSV(data.toStdString());
     }
-
     else if (category == "Enseignant") {
-        data = nameLineEdit->text() + ", " + prenomLineEdit->text();
-        std::cout << "Categorie Enseignant: \nNom: "
-                  << nameLineEdit->text().toStdString()
-                  << ", Prenom: "
-                  << prenomLineEdit->text().toStdString()
-                  << std::endl;
-        ajouterEnseignantCSV(nameLineEdit->text().toStdString(), prenomLineEdit->text().toStdString());
-        QMessageBox::information(this, "Succès", "Les données ont été enregistrées.");
+        QString nom = nameLineEdit->text();
+        QString prenom = prenomLineEdit->text();
+        if (nom.isEmpty() || prenom.isEmpty()) {
+            showMessageAndHide(1); // 2 pour MANQUE_INFO
+            return;
+        }
+        data = nom + ", " + prenom;
+        std::cout << "Categorie Enseignant: \nNom: " << nom.toStdString() << ", Prenom: " << prenom.toStdString() << std::endl;
+        result = ajouterEnseignantCSV(nom.toStdString(), prenom.toStdString());
     }
-
-    else if (category == "Salle") {
-        QString numero = QString::number(salleSpinBox->value());
+    else {
         QString type = typeComboBox->currentText();
-        std::string type_str = type.toStdString();
-        std::cout << "Categorie Salle: \nNumero: "
-                  << salleSpinBox->value()
-                  << ", Type: "
-                  << type.toStdString()
-                  << std::endl;
-        ajouterSalleCSV(salleSpinBox->value(), StrToCours(type_str));
-        QMessageBox::information(this, "Succès", "Les données ont été enregistrées.");;
-    }
-    emit windowClosed(); // Émettre le signal si la fenêtre est fermée par la croix
+        if (type.isEmpty()) {
+            showMessageAndHide(1);
+            return;
+        }
+        QString numero = QString::number(salleSpinBox->value());
 
+        std::string type_str = type.toStdString();
+        std::cout << "Categorie Salle: \nNumero: " << salleSpinBox->value() << ", Type: " << type.toStdString() << std::endl;
+        result = ajouterSalleCSV(salleSpinBox->value(), StrToCours(type_str));
+    }
+
+    if (result == CreationResult::Success) {
+        showMessageAndHide(0); // 0 pour AJOUT_REUSSI
+    } else if (result == CreationResult::AlreadyExists) {
+        showMessageAndHide(2); // 3 pour EXISTE_DEJA
+    } else if (category != "Salle"){
+        showMessageAndHide(1); // 2 pour MANQUE_INFO
+    }
+    emit windowClosed();
 }
 
+// ---- Quand on clique sur le bouton "annuler" ----
 void AjouterGroupeWindow::onCancelClicked() {
-    QMessageBox::information(this, "Annulé", "L'opération a été annulée.");
-    emit windowClosed(); // Émettre le signal avant de fermer
+    emit windowClosed();
     close();
 }
 

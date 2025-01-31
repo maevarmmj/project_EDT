@@ -1,13 +1,7 @@
 #ifndef SUPPRIMERECUEWINDOW_H
 #define SUPPRIMERECUEWINDOW_H
 
-#include <QDialog>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QHBoxLayout>
-#include <QComboBox>
+#include "definition.h"
 #include "Controleur/ecuecontroleur.h"
 
 class SupprimerEcueWindow : public QDialog
@@ -17,7 +11,6 @@ class SupprimerEcueWindow : public QDialog
 private:
     QPushButton *deleteButton;
     QPushButton *cancelButton;
-
     QComboBox *ecueComboBox;
     QComboBox *enseignantNomComboBox;
     QComboBox *enseignantPrenomComboBox;
@@ -45,7 +38,7 @@ public:
     ~SupprimerEcueWindow();
 
 signals:
-    void ecueWindowClosed();
+    void ecueWindowClosed(); // Signal émis à la fenêtre principale
 };
 
 #endif // SUPPRIMERECUEWINDOW_H
