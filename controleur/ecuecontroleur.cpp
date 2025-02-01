@@ -361,10 +361,11 @@ uint32 EcueControleur::decrementerHeuresCours(const cours& typeCours, uint32 nbH
 
                 if (data.size() >= 7) {
                     QString existingNomECUE = data[0].trimmed();
+                    GroupeEtudiant existingGroupe = GroupeEtudiant(data[3].trimmed().toStdString());
                     QStringList existingTypesCours = data[4].split("/");
                     QStringList existingHeuresRestantesCours = data[6].split("/");
 
-                    if (existingNomECUE == QString::fromStdString(this->nom)) {
+                    if (existingNomECUE == QString::fromStdString(this->nom) && existingGroupe == this->etudiants) {
                         for (int j = 0; j < existingTypesCours.size(); ++j) {
                             if (existingTypesCours[j] == QString::fromStdString(coursToString(typeCours))) {
                                 existingHeuresRestantesCours[j] = QString::number(heuresAPlacer[i]);
