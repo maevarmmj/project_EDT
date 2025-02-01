@@ -316,6 +316,81 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
     file.close();
 }
 
+void popupEdt::replaceComboBox (){
+    QComboBox *comboBox;
+        // Récupérer la position du QComboBox dans la grille
+        int row = -1, col = -1;
+        for (int r = 0; r < gridLayout->rowCount(); ++r) {
+            for (int c = 0; c < gridLayout->columnCount(); ++c) {
+                if (gridLayout->itemAtPosition(r, c)) {
+                    QWidget *widget = gridLayout->itemAtPosition(r, c)->widget();
+                    if (qobject_cast<QComboBox*>(widget)) {
+                        comboBox = qobject_cast<QComboBox*>(widget);
+                        row = r;
+                        col = c;
+                        break;
+                    }
+                }
+            }
+            if (row != -1) break;
+        }
+
+        if (row != -1 && col != -1) {
+            // Recréer le bouton original
+            QPushButton *originalButton = new QPushButton();
+            originalButton->setCheckable(true);
+            connect(originalButton, &QPushButton::clicked, this, &popupEdt::onButtonClicked);
+            originalButton->setObjectName("matrice");
+
+            // Récupérer les informations du créneau
+            int buttonRow = row - 1;
+            int buttonCol = col - 1;
+            QTime heureDebut(buttonRow + 8, 0);
+            QString jour = days[buttonCol];
+            QString debut = QString("%1 %2").arg(jour).arg(heureDebut.toString("HH:mm"));
+
+            // Mettre à jour le texte du bouton avec les salles disponibles
+            QString typeCours = typeCoursComboBox->currentText();
+            QList<int> roomNumbers = readRoomNumbersFromCSV(typeCours);
+            QList<int> availableRooms;
+            for (int roomNumber : roomNumbers) {
+                if (isRoomAvailable(roomNumber, semaineSpinBox->value(), debut, QString("%1 %2").arg(jour).arg(heureDebut.addSecs(3600).toString("HH:mm")))) {
+                    availableRooms.append(roomNumber);
+                }
+            }
+
+            if (!availableRooms.isEmpty()) {
+                QStringList roomLabels;
+                for (int room : availableRooms) {
+                    roomLabels << QString::number(room);
+                }
+                QString roomsText = roomLabels.join(", ");
+                const int maxChars = 10;
+                if (roomsText.length() > maxChars) {
+                    roomsText = roomsText.left(maxChars) + "...";
+                }
+                originalButton->setText(roomsText);
+                originalButton->setToolTip(QString("Salles disponibles : %1").arg(roomLabels.join(", ")));
+            } else {
+                originalButton->setText("No room available");
+                originalButton->setToolTip("Aucune salle disponible");
+            }
+
+            // Remplacer le QComboBox par le bouton original
+            gridLayout->replaceWidget(comboBox, originalButton);
+            comboBox->deleteLater();
+            originalButton->show();
+            originalButton->update();
+        }
+}
+
+bool popupEdt::eventFilter(QObject *watched, QEvent *event) {
+    if (event->type() == QEvent::HoverLeave ) {
+        replaceComboBox ();
+    }
+    return QObject::eventFilter(watched, event);
+}
+
 // ---- Fonction pour bloquer les boutons des créneaux où aucune salle n'est disponible ----
 
 void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignant, const QString& groupe) {
@@ -432,6 +507,7 @@ void popupEdt::showMessageAndHide (int index) {
 void popupEdt::onButtonClicked() {
 
     QPushButton *clickedButton = qobject_cast<QPushButton*>(sender());
+    replaceComboBox ();
     if (!clickedButton) return;
     if (selectedButtons.size() >= heuresRestantes.toInt() && clickedButton->isChecked()){
         clickedButton->setChecked(false);
@@ -486,6 +562,7 @@ void popupEdt::onButtonClicked() {
             for (int room : availableRooms) {
                 roomComboBox->addItem(QString::number(room));
             }
+            roomComboBox->installEventFilter(this);
 
             // Remplacer le bouton par le QComboBox dans le layout
             gridLayout->replaceWidget(clickedButton, roomComboBox);

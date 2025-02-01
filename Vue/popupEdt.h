@@ -57,6 +57,8 @@ private slots :
     void onButtonClicked();
     void resetSelection();
     void onRoomSelected(int roomNumber);
+    bool eventFilter(QObject *watched, QEvent *event);
+    void replaceComboBox ();
 
 public:
     popupEdt(QWidget *parent = nullptr);
