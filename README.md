@@ -3,10 +3,14 @@
 
 *** 
 
-Ce programme en a été conçu pour la création d'un logiciel de **création d'emploi du temps à destination de l'administration d'une école.**
+Ce programme a été conçu dans le cadre d'un projet d'école, pour la création d'un logiciel de **création d'emploi du temps à destination de l'administration d'une école.**
 Il répond aux différents besoins pour pouvoir créer de **manière simplifiée les EDT**, et supprimer les éléments inutiles. Il gère également les erreurs possibles que l'utilisateur peut générer, pour une utilisation logique et ergonomique.\
 Les fichiers .csv énoncés dans ce readme et la base de données MySQL sont dans le dossier **"CSV"** du projet.
 Les ressources graphiques sont dans le dossier **"Ressources"**.
+\
+\
+Conseil avant le premier lancement du programme : \
+✅ S'il existe, supprimer le dossier "CSV" pour une meilleure simulation.
 
 ### Créé en :
 [![C++](https://img.shields.io/badge/C++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
@@ -14,10 +18,7 @@ Les ressources graphiques sont dans le dossier **"Ressources"**.
 <a href="https://github.com/Tenko2nd/project_EDT/graphs/contributors
 "><img src="https://contrib.rocks/image?repo=Tenko2nd/project_EDT" alt="contrib.rocks image" />
 </a>
-\
-\
-Conseil avant le premier lancement du programme : \
-✅ S'il existe, supprimer le dossier "CSV" pour une meilleure simulation.
+
 
 ***
 
