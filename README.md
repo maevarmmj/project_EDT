@@ -70,31 +70,31 @@ Lors du lancement du programme, la fenêtre principale apparaît.
 ***
 
 ### Bouton "Mise à jour de l'emploi du temps" : 
-<div style="display: flex; align-items: center;">
+<!-- <div style="display: flex; align-items: center;"> -->
   <img style="float: left; margin-right: 20px;" src="Ressources/majedt.png" alt="maj EDT" />
-  <div style="flex-direction: column;">
+  <!-- <div style="flex-direction: column;"> -->
     <div style="margin-bottom: 10px;">
-      <span style="display: inline-block; width: 12px; height: 12px; background-color: #d64d4d; border-radius: 25%; margin-right: 5px;"></span>
-      <span style="vertical-align: middle;">Rouge : Aucune salle n'est disponible</span>
+      <!-- <span style="display: inline-block; width: 12px; height: 12px; background-color: #d64d4d; border-radius: 25%; margin-right: 5px;"></span>-->
+      <span style="vertical-align: middle;">🔴 Rouge : Aucune salle n'est disponible</span>
     </div>
     <div style="margin-bottom: 10px;">
-      <span style="display: inline-block; width: 12px; height: 12px; background-color: #5f74cf; border-radius: 25%; margin-right: 5px;"></span>
-      <span style="vertical-align: middle;">Bleu : L'enseignant est déjà occupé par un autre cours</span>
+      <!-- <span style="display: inline-block; width: 12px; height: 12px; background-color: #5f74cf; border-radius: 25%; margin-right: 5px;"></span>-->
+      <span style="vertical-align: middle;">🔵 Bleu : L'enseignant est déjà occupé par un autre cours</span>
     </div>
     <div style="margin-bottom: 10px;">
-      <span style="display: inline-block; width: 12px; height: 12px; background-color: #5fcf65; border-radius: 25%; margin-right: 5px;"></span>
-      <span style="vertical-align: middle;">Vert : Le groupe d'étudiants est déjà occupé par un autre cours</span>
+      <!-- <span style="display: inline-block; width: 12px; height: 12px; background-color: #5fcf65; border-radius: 25%; margin-right: 5px;"></span>-->
+      <span style="vertical-align: middle;">🟢 Vert : Le groupe d'étudiants est déjà occupé par un autre cours</span>
     </div>
     <div style="margin-bottom: 10px;">
-      <span style="display: inline-block; width: 12px; height: 12px; background-color: gray; border-radius: 25%; margin-right: 5px;"></span>
-      <span style="vertical-align: middle;">Gris : Les heures de cours sélectionnées qui seront attribuées après l'appui sur le bouton <span style="background-color: #5f74cf; color: white; padding: 3px 7px; border-radius: 7px;">Valider</span></span>
+      <!-- <span style="display: inline-block; width: 12px; height: 12px; background-color: gray; border-radius: 25%; margin-right: 5px;"></span>-->
+      <span style="vertical-align: middle;">⚫ Gris : Les heures de cours sélectionnées qui seront attribuées après l'appui sur le bouton <span style="background-color: #5f74cf; color: white; padding: 3px 7px; border-radius: 7px;">Valider</span></span>
     </div>
     <div style="margin-bottom: 10px;">
-      <span style="display: inline-block; width: 12px; height: 12px; background-color: #a754b8; border-radius: 25%; margin-right: 5px;"></span>
-      <span style="vertical-align: middle;">Violet : Liste des salles libres à sélectionner</span>
+      <!-- <span style="display: inline-block; width: 12px; height: 12px; background-color: #a754b8; border-radius: 25%; margin-right: 5px;"></span>-->
+      <span style="vertical-align: middle;">🟣 Violet : Liste des salles libres à sélectionner</span>
     </div>
-  </div>
-</div>
+  <!-- </div>
+</div> -->
 
 <br clear="all">
 
