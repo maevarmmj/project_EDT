@@ -718,9 +718,9 @@ void popupEdt::validerSelection() {
         } else {
             qDebug() << "Erreur lors de l'ajout de la réservation.";
         }
-        validerEtAfficher( );
     }
 
+    validerEtAfficher( );
     // Réinitialiser la sélection
     resetSelection();
 

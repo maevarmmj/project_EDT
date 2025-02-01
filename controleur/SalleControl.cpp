@@ -1,4 +1,4 @@
-#import "SalleControl.h"
+#include "SalleControl.h"
 
 QString csv = QDir::currentPath() + QString::fromStdString("/../../CSV/Salles.csv");
 

@@ -1,9 +1,9 @@
 #ifndef CRENEAU_H
 #define CRENEAU_H
 
-#include <ctime>
 #include "Model/salle.h"
 #include "Model/ecue.h"
+#include "definition.h"
 
 class Creneau
 {

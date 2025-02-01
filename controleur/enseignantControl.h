@@ -1,14 +1,6 @@
 #ifndef ENSEIGNANTCONTROL_H
 #define ENSEIGNANTCONTROL_H
 
-
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QStringList>
-#include <QDir>
-#include <string>
-
 #include "Model/enseignant.h"
 #include "Controleur/CreneauControl.h"
 #include "definition.h"
