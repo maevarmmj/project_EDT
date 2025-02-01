@@ -651,8 +651,12 @@ void MainWindow::loadGroups(boolean firstTime) {
     if (firstTime) {
         groupComboBox->addItem("Sélectionner");
     }
-
+    bool t = true;
     for (const QString &filePath : filePaths) {
+        if (t) {groupComboBox->addItem("---- Étudiant ----"); t= false;}
+            else groupComboBox->addItem("---- Enseignant ----");
+        QStandardItemModel *model = qobject_cast<QStandardItemModel*>(groupComboBox->model());
+        model->item(model->rowCount() - 1)->setEnabled(false);
         QFile file(filePath);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             continue;

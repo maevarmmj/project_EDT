@@ -1,8 +1,6 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 
-#include <ctime>
-#include <iostream>
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -28,6 +26,7 @@
 #include <QScrollArea>
 #include <QSpinBox>
 #include <QStackedWidget>
+#include <QStandardItemModel>
 #include <QString>
 #include <QStringList>
 #include <QStyleFactory>
@@ -39,6 +38,8 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
+#include <ctime>
+#include <iostream>
 #include <string>
 #include <vector>
 
