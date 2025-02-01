@@ -1,8 +1,7 @@
 #ifndef GROUPEETUDIANT_H
 #define GROUPEETUDIANT_H
-#include <iostream>
 
-#include <string>
+#include "definition.h"
 
 class GroupeEtudiant
 {
@@ -16,5 +15,7 @@ public:
     std::string getnomGroupe() const;
     void deleteGroupe();
 };
+
+bool operator== (GroupeEtudiant &gp1, GroupeEtudiant &gp2);
 
 #endif // GROUPEETUDIANT_H

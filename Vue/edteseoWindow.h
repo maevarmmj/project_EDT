@@ -23,14 +23,10 @@ private:
     QTableWidget *table;
     QPushButton *addButton;
     QPushButton *remButton;
-    QPushButton *addGroupButton;
-    QPushButton *addECUEButton;
-    QPushButton *addUEButton;
-    QPushButton *remGroupButton;
-    QPushButton *remEnseignantButton;
-    QPushButton *remSalleButton;
-    QPushButton *remECUEButton;
-    QPushButton *remUEButton;
+    QListWidget *remOptionsList;
+    QListWidget *addOptionsList;
+    QTimer *remhideTimer;
+    QTimer *addhideTimer;
     QPushButton *updateButton;
     QPushButton *refreshButton;
     QList<QString> rooms;
@@ -43,6 +39,10 @@ private:
     bool checkECUEFile();
 
 private slots:
+    bool eventFilter(QObject *obj, QEvent *event);
+    void showOptions(QString remOrAdd);
+    void hideOptions(QString remOrAdd);
+    void delayedHideOptions(QString remOrAdd);
     void loadGroups(boolean firstTime);
     void addGroup();
     void addECUE();
@@ -52,8 +52,6 @@ private slots:
     void remSalle();
     void remECUE();
     void remUE();
-    void toggleButtonsVisibility();
-    void toggleRemButtonsVisibility();
     void refreshMainWindow();
     void updateEdt();
     void onComboBoxSelectionChanged(const QString &selectedText);

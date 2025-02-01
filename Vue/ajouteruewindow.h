@@ -2,7 +2,6 @@
 #define AJOUTERUEWINDOW_H
 
 #include "definition.h"
-#include "qmainwindow.h"
 
 class AjouterUEWindow : public QMainWindow {
     Q_OBJECT

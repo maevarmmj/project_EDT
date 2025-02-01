@@ -13,8 +13,6 @@ SOURCES += \
         Model/groupeetudiant.cpp \
         Model/salle.cpp \
         Model/ecue.cpp \
-        Model/semaine.cpp \
-        Model/edt.cpp \
         Controleur/CreneauControl.cpp \
         Controleur/enseignantControl.cpp \
         Controleur/grpeetudiantcontrolleur.cpp \
@@ -40,8 +38,6 @@ HEADERS += \
     Model/groupeetudiant.h \
     Model/salle.h \
     Model/ecue.h \
-    Model/semaine.h \
-    Model/edt.h \
     Vue/ajouteruewindow.h \
     Vue/popupEdt.h \
     Vue/edteseoWindow.h \

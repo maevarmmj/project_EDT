@@ -18,7 +18,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     // ---------------- Message erreurs---------------------
     messageStack = new QStackedWidget(this);
 
-    QLabel *plusHeure = new QLabel("Toutes les heures ont déjà été placé");
+    QLabel *plusHeure = new QLabel("Toutes les heures ont déjà été placées");
     plusHeure->setAlignment(Qt::AlignCenter);
     plusHeure->setObjectName("loupe");
     plusHeure->setFixedHeight(30);
@@ -35,24 +35,29 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     semaineSpinBox->setRange(1, 52);
     bandeauLayout->addWidget(semaineLabel);
     bandeauLayout->addWidget(semaineSpinBox);
+    bandeauLayout->addSpacing(20);
 
     // Label et ComboBox pour l'ECUE
     ecueLabel = new QLabel("ECUE :", bandeauWidget);
     ecueComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(ecueLabel);
     bandeauLayout->addWidget(ecueComboBox);
+    bandeauLayout->addSpacing(20);
 
     // Label et ComboBox pour le type de cours
     typeCoursLabel = new QLabel("Type de cours :", bandeauWidget);
     typeCoursComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(typeCoursLabel);
     bandeauLayout->addWidget(typeCoursComboBox);
+    bandeauLayout->addSpacing(20);
 
     // Bouton Valider
     validerButton = new QPushButton("Valider", bandeauWidget);
     bandeauLayout->addWidget(validerButton);
+    bandeauLayout->setAlignment(Qt::AlignHCenter);
 
     bandeauWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
     // Ajout du bandeau au layout principal
     mainLayout->addWidget(bandeauWidget);
     // ---------------- Fin Bandeau du Haut ----------------
@@ -156,6 +161,10 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     // ----------- Connexion du bouton Valider ----------------
 
     QObject::connect(validerButton, SIGNAL(clicked()), this, SLOT(validerEtAfficher()));
+
+    connect(semaineSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &popupEdt::validerEtAfficher);
+    connect(ecueComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &popupEdt::validerEtAfficher);
+    connect(typeCoursComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &popupEdt::validerEtAfficher);
 }
 
 popupEdt::~popupEdt(){
@@ -164,6 +173,7 @@ popupEdt::~popupEdt(){
 
 void popupEdt::validerEtAfficher( )
 {
+    selectedButtonInfos.clear();
     // Parcourir la grille de boutons
     for (int row = 0; row < 10; ++row) {
         for (int col = 0; col < 5; ++col) {
@@ -283,11 +293,11 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
             // Vérifier si la ligne correspond à l'ECUE et au type de cours sélectionnés
             if (QString("%1 - %2").arg(groupe, nomECUE) == ecueLabel) {
                 // Mettre à jour les labels du bandeau du bas
-                groupeValueLabel->setText(QString("Groupe: %1").arg(groupe));
+                groupeValueLabel->setText(QString("Groupe : %1").arg(groupe));
                 groupeValueLabel->setStyleSheet("QLabel { color : #5fcf65;font-weight: bold;}");
-                enseignantValueLabel->setText(QString("Enseignant: %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
+                enseignantValueLabel->setText(QString("Enseignant : %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
                 enseignantValueLabel->setStyleSheet("QLabel { color : #5f74cf;font-weight: bold;}");
-                ecueInfoValueLabel->setText(QString("ECUE: %1").arg(nomECUE));
+                ecueInfoValueLabel->setText(QString("ECUE : %1").arg(nomECUE));
 
                 // Récupérer l'index du type de cours sélectionné
                 QStringList typesCoursList = typesCours.split("/");
@@ -298,7 +308,7 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
                     QStringList heuresAPlacerList = heuresAPlacer.split("/");
                     if (typeCoursIndex < heuresAPlacerList.size()) {
                         heuresRestantes = heuresAPlacerList[typeCoursIndex];
-                        typeCoursInfoValueLabel->setText(QString("Heures à placer: %1").arg(heuresRestantes));
+                        typeCoursInfoValueLabel->setText(QString("Heures à placer : %1").arg(heuresRestantes));
                     } else {
                         typeCoursInfoValueLabel->setText("Heures à placer : N/A");
                     }
@@ -314,6 +324,81 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
     }
 
     file.close();
+}
+
+void popupEdt::replaceComboBox (){
+    QComboBox *comboBox;
+        // Récupérer la position du QComboBox dans la grille
+        int row = -1, col = -1;
+        for (int r = 0; r < gridLayout->rowCount(); ++r) {
+            for (int c = 0; c < gridLayout->columnCount(); ++c) {
+                if (gridLayout->itemAtPosition(r, c)) {
+                    QWidget *widget = gridLayout->itemAtPosition(r, c)->widget();
+                    if (qobject_cast<QComboBox*>(widget)) {
+                        comboBox = qobject_cast<QComboBox*>(widget);
+                        row = r;
+                        col = c;
+                        break;
+                    }
+                }
+            }
+            if (row != -1) break;
+        }
+
+        if (row != -1 && col != -1) {
+            // Recréer le bouton original
+            QPushButton *originalButton = new QPushButton();
+            originalButton->setCheckable(true);
+            connect(originalButton, &QPushButton::clicked, this, &popupEdt::onButtonClicked);
+            originalButton->setObjectName("matrice");
+
+            // Récupérer les informations du créneau
+            int buttonRow = row - 1;
+            int buttonCol = col - 1;
+            QTime heureDebut(buttonRow + 8, 0);
+            QString jour = days[buttonCol];
+            QString debut = QString("%1 %2").arg(jour).arg(heureDebut.toString("HH:mm"));
+
+            // Mettre à jour le texte du bouton avec les salles disponibles
+            QString typeCours = typeCoursComboBox->currentText();
+            QList<int> roomNumbers = readRoomNumbersFromCSV(typeCours);
+            QList<int> availableRooms;
+            for (int roomNumber : roomNumbers) {
+                if (isRoomAvailable(roomNumber, semaineSpinBox->value(), debut, QString("%1 %2").arg(jour).arg(heureDebut.addSecs(3600).toString("HH:mm")))) {
+                    availableRooms.append(roomNumber);
+                }
+            }
+
+            if (!availableRooms.isEmpty()) {
+                QStringList roomLabels;
+                for (int room : availableRooms) {
+                    roomLabels << QString::number(room);
+                }
+                QString roomsText = roomLabels.join(", ");
+                const int maxChars = 10;
+                if (roomsText.length() > maxChars) {
+                    roomsText = roomsText.left(maxChars) + "...";
+                }
+                originalButton->setText(roomsText);
+                originalButton->setToolTip(QString("Salles disponibles : %1").arg(roomLabels.join(", ")));
+            } else {
+                originalButton->setText("No room available");
+                originalButton->setToolTip("Aucune salle disponible");
+            }
+
+            // Remplacer le QComboBox par le bouton original
+            gridLayout->replaceWidget(comboBox, originalButton);
+            comboBox->deleteLater();
+            originalButton->show();
+            originalButton->update();
+        }
+}
+
+bool popupEdt::eventFilter(QObject *watched, QEvent *event) {
+    if (event->type() == QEvent::HoverLeave ) {
+        replaceComboBox ();
+    }
+    return QObject::eventFilter(watched, event);
 }
 
 // ---- Fonction pour bloquer les boutons des créneaux où aucune salle n'est disponible ----
@@ -432,6 +517,7 @@ void popupEdt::showMessageAndHide (int index) {
 void popupEdt::onButtonClicked() {
 
     QPushButton *clickedButton = qobject_cast<QPushButton*>(sender());
+    replaceComboBox ();
     if (!clickedButton) return;
     if (selectedButtons.size() >= heuresRestantes.toInt() && clickedButton->isChecked()){
         clickedButton->setChecked(false);
@@ -486,6 +572,7 @@ void popupEdt::onButtonClicked() {
             for (int room : availableRooms) {
                 roomComboBox->addItem(QString::number(room));
             }
+            roomComboBox->installEventFilter(this);
 
             // Remplacer le bouton par le QComboBox dans le layout
             gridLayout->replaceWidget(clickedButton, roomComboBox);
@@ -636,9 +723,9 @@ void popupEdt::validerSelection() {
         } else {
             qDebug() << "Erreur lors de l'ajout de la réservation.";
         }
-        validerEtAfficher( );
     }
 
+    validerEtAfficher( );
     // Réinitialiser la sélection
     resetSelection();
 
