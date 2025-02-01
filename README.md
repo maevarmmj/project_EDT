@@ -3,10 +3,13 @@
 
 *** 
 
-Ce programme en C++ a été conçu pour la création d'un logiciel de **création d'emploi du temps à destination de l'administration d'une école.**
+Ce programme en a été conçu pour la création d'un logiciel de **création d'emploi du temps à destination de l'administration d'une école.**
 Il répond aux différents besoins pour pouvoir créer de **manière simplifiée les EDT**, et supprimer les éléments inutiles. Il gère également les erreurs possibles que l'utilisateur peut générer, pour une utilisation logique et ergonomique.\
 Les fichiers .csv énoncés dans ce readme et la base de données MySQL sont dans le dossier **"CSV"** du projet.
 Les ressources graphiques sont dans le dossier **"Ressources"**.
+\
+### Créé en 
+[![C++](https://img.shields.io/badge/C++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
 \
 \
 Conseil avant le premier lancement du programme : \
@@ -28,30 +31,30 @@ Lors du lancement du programme, la fenêtre principale apparaît.
 ***
 
 ### Bouton "+" : 
-➕ ELEMENT : permet d'ajouter un Groupe d'étudiants (nom du groupe) / Enseignant (nom + prénom de l'enseignant) / Salle (n° et type de salle), qui seront respectivement enregistrés dans Groupes.csv / Enseignants.csv / Salles.csv. 
+➕ <ins>ELEMENT</ins> : permet d'ajouter un Groupe d'étudiants (nom du groupe) / Enseignant (nom + prénom de l'enseignant) / Salle (n° et type de salle), qui seront respectivement enregistrés dans Groupes.csv / Enseignants.csv / Salles.csv. 
 \
 \
-➕ ECUE : si les éléments suffisants ont été créés, permet d'ajouter une ECUE (nom + enseignant + groupe d'étudiants + types de cours de l'ECUE + heures par type de cours). L'ECUE est enregistrée dans Ecue.csv. Il faut obligatoirement au moins un groupe d'étudiants et un enseignant déjà créés.
+➕ <ins>ECUE</ins> : si les éléments suffisants ont été créés, permet d'ajouter une ECUE (nom + enseignant + groupe d'étudiants + types de cours de l'ECUE + heures par type de cours). L'ECUE est enregistrée dans Ecue.csv. Il faut obligatoirement au moins un groupe d'étudiants et un enseignant déjà créés.
 \
 \
-➕ UE : permet d'ajouter une UE qui contient plusieurs ECUE. ❌ Encore en cours ❌ Il faut obligatoirement au moins une ECUE déjà créée. 
+➕ <ins>UE</ins> : permet d'ajouter une UE qui contient plusieurs ECUE.  Il faut obligatoirement au moins une ECUE déjà créée. ❌ _Encore en cours_ ❌
 
 ***
 
-### Bouton "-" : 
-➖ GROUPE : permet de supprimer un groupe d'étudiants. Attention : si un groupe est liée à une ECUE, cette dernière sera automatiquement supprimée. Il faut obligatoirement au moins un groupe d'étudiants déjà créé.
+### Bouton "-" :
+➖ <ins>GROUPE</ins> : permet de supprimer un groupe d'étudiants. Attention : si un groupe est liée à une ECUE, cette dernière sera automatiquement supprimée. Il faut obligatoirement au moins un groupe d'étudiants déjà créé.
 \
 \
-➖ ENSEIGNANT : permet de supprimer un enseignant. Attention : si un enseignant est liée à une ECUE, cette dernière sera automatiquement supprimée. Il faut obligatoirement au moins un enseignant déjà créé.
+➖ <ins>ENSEIGNANT</ins> : permet de supprimer un enseignant. Attention : si un enseignant est liée à une ECUE, cette dernière sera automatiquement supprimée. Il faut obligatoirement au moins un enseignant déjà créé.
 \
 \
-➖ SALLE : permet de supprimer une salle (selon son numéro uniquement). Il faut obligatoirement au moins une salle déjà créée. Si une salle a été affectée à un créneau, les heures restantes à placer seront automatiquement mises à jour.
+➖ <ins>SALLE</ins> : permet de supprimer une salle (selon son numéro uniquement). Il faut obligatoirement au moins une salle déjà créée. Si une salle a été affectée à un créneau, les heures restantes à placer seront automatiquement mises à jour.
 \
 \
-➖ ECUE : permet de supprimer une ECUE. Il faut obligatoirement au moins une ECUE déjà créée.
+➖ <ins>ECUE</ins> : permet de supprimer une ECUE. Il faut obligatoirement au moins une ECUE déjà créée.
 \
 \
-➖ UE : permet de supprimer une UE. ❌ Encore en cours ❌ Il faut obligatoirement au moins une UE déjà créée. Etant donné qu'à l'heure actuelle, il n'est pas possible d'en créer une, il est tout de même possible d'avoir accès à cette fenêtre en créant artificiellement un fichier "UE.csv". 
+➖ <ins>UE</ins> : permet de supprimer une UE. Il faut obligatoirement au moins une UE déjà créée. Etant donné qu'à l'heure actuelle, il n'est pas possible d'en créer une, il est tout de même possible d'avoir accès à cette fenêtre en créant artificiellement un fichier "UE.csv". ❌ _Encore en cours_ ❌
 
 ***
 
