@@ -10,6 +10,10 @@ Les ressources graphiques sont dans le dossier **"Ressources"**.
 \
 ### Créé en 
 [![C++](https://img.shields.io/badge/C++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
+### Top contributors:
+<a href="https://github.com/Tenko2nd/project_EDT/graphs/contributors
+"><img src="https://contrib.rocks/image?repo=Tenko2nd/project_EDT" alt="contrib.rocks image" />
+</a>
 \
 \
 Conseil avant le premier lancement du programme : \
