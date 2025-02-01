@@ -207,3 +207,38 @@ QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top center; /* position at the top center */
 }
+
+#optionList {
+    font: 13pt 'Aptos';
+    color: #3f156b;
+    border: 2px solid #5e239d;
+    background-color: #faf0fc;
+    max-width: 100%;
+    max-height: 150%;
+}
+#optionList::item:selected {
+    font: 13pt 'Aptos';
+    color: #3f156b;
+    background-color: #faf0fc;
+    border: 0px solid #5e239d;
+}
+
+#optionList::item:selected:!active {
+    font: 13pt 'Aptos';
+    color: #3f156b;
+    background-color: #faf0fc;
+    border: 0px solid #5e239d;
+}
+
+#optionList::item:selected:active {
+    font: 13pt 'Aptos';
+    color: #3f156b;
+    background-color: #faf0fc;
+    border: 0px solid #5e239d;
+}
+
+#optionList::item:hover {
+    background: qlineargradient(spread:pad, x1: 1, y1: 0, x2: 0, y2: 0,
+                                stop: 0 #faf0fc, stop: 1 #f8dcfc);
+    border-radius: 10px;
+}

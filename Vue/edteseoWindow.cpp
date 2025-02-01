@@ -36,23 +36,17 @@ void MainWindow::setupUI() {
     remButton->setStyleSheet("padding: 5px;");
     topBarLayout->addWidget(remButton);
 
-    remGroupButton = new QPushButton("Groupe", this);
-    remEnseignantButton = new QPushButton("Enseignant", this);
-    remSalleButton = new QPushButton("Salle", this);
-    remECUEButton = new QPushButton("ECUE", this);
-    remUEButton = new QPushButton("UE", this);
+    remOptionsList = new QListWidget(centralWidget);
+    remOptionsList->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+    remOptionsList->setObjectName("optionList");
+    remOptionsList->hide();
 
-    remGroupButton->setVisible(false);
-    remEnseignantButton->setVisible(false);
-    remSalleButton->setVisible(false);
-    remECUEButton->setVisible(false);
-    remUEButton->setVisible(false);
-
-    topBarLayout->addWidget(remGroupButton);
-    topBarLayout->addWidget(remEnseignantButton);
-    topBarLayout->addWidget(remSalleButton);
-    topBarLayout->addWidget(remECUEButton);
-    topBarLayout->addWidget(remUEButton);
+    // rem options
+    remOptionsList->addItem("Groupe");
+    remOptionsList->addItem("Enseignant");
+    remOptionsList->addItem("Salle");
+    remOptionsList->addItem("ECUE");
+    remOptionsList->addItem("UE");
 
 
     // Bouton "+"
@@ -61,18 +55,35 @@ void MainWindow::setupUI() {
     addButton->setStyleSheet("padding: 5px;");
     topBarLayout->addWidget(addButton);
 
-    addGroupButton = new QPushButton("Élement", this);
-    addECUEButton = new QPushButton("ECUE", this);
-    addUEButton = new QPushButton("UE", this);
+    addOptionsList = new QListWidget(centralWidget);
+    addOptionsList->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+    addOptionsList->setObjectName("optionList");
+    addOptionsList->hide();
 
-    addGroupButton->setVisible(false);
-    addECUEButton->setVisible(false);
-    addUEButton->setVisible(false);
+    // Add options
+    addOptionsList->addItem("Élement");
+    addOptionsList->addItem("ECUE");
+    addOptionsList->addItem("UE");
 
-    topBarLayout->addWidget(addGroupButton);
-    topBarLayout->addWidget(addECUEButton);
-    topBarLayout->addWidget(addUEButton);
+    // Timer for delayed hiding
+    remhideTimer = new QTimer(this);
+    remhideTimer->setInterval(1000);
+    remhideTimer->setSingleShot(true);
+    connect(remhideTimer, &QTimer::timeout, this, [this]() {
+        delayedHideOptions("rem");
+    });
+    addhideTimer = new QTimer(this);
+    addhideTimer->setInterval(1000);
+    addhideTimer->setSingleShot(true);
+    connect(addhideTimer, &QTimer::timeout, this, [this]() {
+        delayedHideOptions("add");
+    });
 
+    // Event filter
+    remButton->installEventFilter(this);
+    remOptionsList->installEventFilter(this);
+    addButton->installEventFilter(this);
+    addOptionsList->installEventFilter(this);
 
     mainLayout->addLayout(topBarLayout);
 
@@ -89,6 +100,93 @@ void MainWindow::setupUI() {
     mainLayout->addWidget(table);
 
     setCentralWidget(centralWidget);
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == remButton) {
+        if (event->type() == QEvent::Enter) {
+            showOptions("rem");
+            remhideTimer->stop();
+            return true;
+        } else if (event->type() == QEvent::Leave) {
+            remhideTimer->start();
+            return true;
+        }
+    } else if (obj == addButton) {
+        if (event->type() == QEvent::Enter) {
+            showOptions("add");
+            remhideTimer->start();
+            return true;
+        } else if (event->type() == QEvent::Leave) {
+            addhideTimer->start();
+            return true;
+        }
+    }else if (obj == remOptionsList) {
+        if (event->type() == QEvent::Enter) {
+            remhideTimer->stop();
+            return true;
+        } else if (event->type() == QEvent::Leave) {
+            remOptionsList->hide();
+            return true;
+        } else if (event->type() == QEvent::MouseButtonPress) {
+            return true; // Prevent the event from propagating
+        } else if (event->type() == QEvent::FocusOut) {
+            hideOptions("rem");
+            return true;
+        }
+    }else if (obj == addOptionsList) {
+        if (event->type() == QEvent::Enter) {
+            addhideTimer->stop();
+            return true;
+        } else if (event->type() == QEvent::Leave) {
+            addOptionsList->hide();
+            return true;
+        } else if (event->type() == QEvent::MouseButtonPress) {
+            return true; // Prevent the event from propagating
+        } else if (event->type() == QEvent::FocusOut) {
+            hideOptions("add");
+            return true;
+        }
+    }
+    return QMainWindow::eventFilter(obj, event);
+}
+
+void MainWindow::showOptions(QString remOrAdd)
+{
+    if (remOrAdd == "rem"){
+    // Position and size
+    QPoint pos = remButton->mapToGlobal(QPoint(remButton->width(), 0));
+    remOptionsList->move(pos);
+
+    remOptionsList->show();
+    remOptionsList->setFocus();
+    } else if (remOrAdd == "add"){
+        // Position and size
+        QPoint pos = addButton->mapToGlobal(QPoint(addButton->width(), 0));
+        addOptionsList->move(pos);
+
+        addOptionsList->show();
+        addOptionsList->setFocus();
+    }
+}
+
+void MainWindow::hideOptions(QString remOrAdd)
+{
+    if (remOrAdd == "rem"){
+        remhideTimer->start();
+    } else if (remOrAdd == "add"){
+        addhideTimer->start();
+    }
+}
+
+void MainWindow::delayedHideOptions(QString remOrAdd)
+{
+    if (remOrAdd == "rem"){
+        remOptionsList->hide();
+    } else if (remOrAdd == "add"){
+        addOptionsList->hide();
+    }
 }
 
 // ------ Configuration de la table --------
@@ -118,17 +216,31 @@ void MainWindow::setupTable() {
 void MainWindow::setupActions() {
     connect(groupComboBox, &QComboBox::currentTextChanged, this, &MainWindow::onComboBoxSelectionChanged);
 
-    connect(addButton, &QPushButton::clicked, this, &MainWindow::toggleButtonsVisibility);
-    connect(addGroupButton, &QPushButton::clicked, this, &MainWindow::addGroup);
-    connect(addECUEButton, &QPushButton::clicked, this, &MainWindow::addECUE);
-    connect(addUEButton, &QPushButton::clicked, this, &MainWindow::addUE);
+    connect(addOptionsList, &QListWidget::itemClicked, this, [=](QListWidgetItem *item){
+        if (item->text() == "Élement"){
+            addGroup();
+        } else if (item->text() == "ECUE"){
+            addECUE();
+        } else if (item->text() == "UE"){
+            addUE();
+        }
+        addOptionsList->hide();
+    });
 
-    connect(remButton, &QPushButton::clicked, this, &MainWindow::toggleRemButtonsVisibility);
-    connect(remGroupButton, &QPushButton::clicked, this, &MainWindow::remGroup);
-    connect(remEnseignantButton, &QPushButton::clicked, this, &MainWindow::remEnseignant);
-    connect(remSalleButton, &QPushButton::clicked, this, &MainWindow::remSalle);
-    connect(remECUEButton, &QPushButton::clicked, this, &MainWindow::remECUE);
-    connect(remUEButton, &QPushButton::clicked, this, &MainWindow::remUE);
+    connect(remOptionsList, &QListWidget::itemClicked, this, [=](QListWidgetItem *item){
+        if (item->text() == "Groupe"){
+            remGroup();
+        } else if (item->text() == "Enseignant"){
+            remEnseignant();
+        } else if (item->text() == "Salle"){
+            remSalle();
+        } else if (item->text() == "ECUE"){
+            remECUE();
+        } else if (item->text() == "UE"){
+            remUE();
+        }
+        remOptionsList->hide();
+    });
 
     connect(updateButton, &QPushButton::clicked, this, &MainWindow::updateEdt);
 }
@@ -250,26 +362,6 @@ void MainWindow::onComboBoxSelectionChanged(const QString &selectedText) {
     }
 
     file.close();
-}
-
-// ------ Quand on appuie sur le "+", ça visibilise les autres boutons --------
-
-void MainWindow::toggleButtonsVisibility() {
-    bool isVisible = addGroupButton->isVisible();
-    addGroupButton->setVisible(!isVisible);
-    addECUEButton->setVisible(!isVisible);
-    addUEButton->setVisible(!isVisible);
-}
-
-// ------ Quand on appuie sur le "-", ça visibilise les autres boutons --------
-
-void MainWindow::toggleRemButtonsVisibility() {
-    bool isVisible = remGroupButton->isVisible();
-    remGroupButton->setVisible(!isVisible);
-    remEnseignantButton->setVisible(!isVisible);
-    remSalleButton->setVisible(!isVisible);
-    remECUEButton->setVisible(!isVisible);
-    remUEButton->setVisible(!isVisible);
 }
 
 
