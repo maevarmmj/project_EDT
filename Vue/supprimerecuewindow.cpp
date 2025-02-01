@@ -1,7 +1,7 @@
 #include "supprimerecuewindow.h"
 
 SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
-    : QDialog(parent)
+    : QMainWindow(parent)
 {
     setWindowTitle("Supprimer une ECUE");
     resize(400, 300);
@@ -9,6 +9,9 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
     QString file(QDir::currentPath() + "/../../Ressources/planning.ico");
     QIcon icon(file);
     setWindowIcon(icon);
+
+    centralWidget = new QWidget(this);
+    setCentralWidget(centralWidget);
 
     ecueComboBox = new QComboBox();
     enseignantNomComboBox = new QComboBox();
@@ -25,11 +28,11 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
 
     QLabel *SUPPRESSION_REUSSIE = new QLabel("Suppression réussie !");
     SUPPRESSION_REUSSIE->setAlignment(Qt::AlignCenter);
-    SUPPRESSION_REUSSIE->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+    SUPPRESSION_REUSSIE->setObjectName("reussi");
 
     QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
     MANQUE_INFO->setAlignment(Qt::AlignCenter);
-    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    MANQUE_INFO->setObjectName("loupe");
 
     SUPPRESSION_REUSSIE->setFixedHeight(30);
     MANQUE_INFO->setFixedHeight(30);
@@ -45,6 +48,7 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
 
     QLabel *label = new QLabel("Insérez de l'information de l'ECUE à supprimer");
     label->setAlignment(Qt::AlignHCenter);
+    label->setObjectName("titleLabel");
 
     QFormLayout *formLayout = new QFormLayout();
     formLayout->addRow("Nom ECUE :", ecueComboBox);
@@ -58,8 +62,10 @@ SupprimerEcueWindow::SupprimerEcueWindow(QWidget *parent)
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addWidget(cancelButton);
     buttonLayout->addWidget(deleteButton);
+    cancelButton->setObjectName("saveButton");
+    deleteButton->setObjectName("cancelButton");
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
     mainLayout->addWidget(label);
     mainLayout->addLayout(formLayout);
     mainLayout->addWidget(messageStack);

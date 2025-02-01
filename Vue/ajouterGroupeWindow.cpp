@@ -21,15 +21,15 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
 
     QLabel *AJOUT_REUSSI = new QLabel("Ajout réussi !");
     AJOUT_REUSSI->setAlignment(Qt::AlignCenter);
-    AJOUT_REUSSI->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+    AJOUT_REUSSI->setObjectName("reussi");
 
     QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
     MANQUE_INFO->setAlignment(Qt::AlignCenter);
-    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    MANQUE_INFO->setObjectName("loupe");
 
     QLabel *EXISTE_DEJA = new QLabel("Cette information existe déjà !");
     EXISTE_DEJA->setAlignment(Qt::AlignCenter);
-    EXISTE_DEJA->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    EXISTE_DEJA->setObjectName("loupe");
 
     AJOUT_REUSSI->setFixedHeight(30);
     MANQUE_INFO->setFixedHeight(30);
@@ -46,11 +46,11 @@ AjouterGroupeWindow::AjouterGroupeWindow(QWidget *parent)
     // ------------------ Messages si réussite / erreur de la tache ------------------------
 
 
-    mainLayout = new QVBoxLayout();
-    centralWidget->setLayout(mainLayout);
+    mainLayout = new QVBoxLayout(centralWidget);
 
     QLabel *titleLabel = new QLabel("Créer un élément :", this);
     titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setObjectName("titleLabel");
     mainLayout->addWidget(titleLabel);
 
     categoryComboBox = new QComboBox(this);

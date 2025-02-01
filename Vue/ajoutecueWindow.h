@@ -4,10 +4,11 @@
 #include "definition.h"
 #include "Controleur/ecuecontroleur.h"
 
-class AjoutEcueWindow : public QWidget {
+class AjoutEcueWindow : public QMainWindow {
     Q_OBJECT
 
 private:
+    QWidget *centralWidget;
     QLineEdit *ecueLineEdit;
     QComboBox *groupComboBox;
     QComboBox *nomComboBox;

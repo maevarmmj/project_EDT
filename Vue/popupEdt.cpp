@@ -15,6 +15,16 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
 
     mainLayout = new QVBoxLayout(centralWidget);
 
+    // ---------------- Message erreurs---------------------
+    messageStack = new QStackedWidget(this);
+
+    QLabel *plusHeure = new QLabel("Toutes les heures ont déjà été placé");
+    plusHeure->setAlignment(Qt::AlignCenter);
+    plusHeure->setObjectName("loupe");
+    plusHeure->setFixedHeight(30);
+    messageStack->addWidget(plusHeure);
+    plusHeure->hide();
+
     // ---------------- Bandeau du Haut --------------------
     bandeauWidget = new QWidget(centralWidget);
     bandeauLayout = new QHBoxLayout(bandeauWidget);
@@ -103,6 +113,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
             for (int col = 0; col < 5; ++col) {
                 QPushButton *button = new QPushButton();
                 button->setCheckable(true);
+                button->setObjectName("matrice");
                 // Connecter le signal clicked() du bouton à un slot (à définir plus tard)
                 connect(button, &QPushButton::clicked, this, &popupEdt::onButtonClicked);
                 gridLayout->addWidget(button, row + 1, col + 1);
@@ -124,6 +135,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
     buttonsLayout->addWidget(annulerButtonGrid);
     buttonsLayout->addWidget(validerButtonGrid);
+    mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonsLayout);
 
     // ---- Connexion des boutons valider/annuler ----
@@ -133,6 +145,8 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
 
     validerButtonGrid->hide();
     annulerButtonGrid->hide();
+    annulerButtonGrid->setObjectName("cancelButton");
+    validerButtonGrid->setObjectName("saveButton");
 
     gridLayout->setSpacing(0);
     mainLayout->setSpacing(10);
@@ -156,7 +170,8 @@ void popupEdt::validerEtAfficher( )
             if (row != 4){
                 QPushButton *button = qobject_cast<QPushButton*>(gridLayout->itemAtPosition(row + 1, col + 1)->widget());
                 if (button) {
-                    button->setStyleSheet(""); // Réinitialiser le style
+                    button->setObjectName("matrice");
+                    button->setStyleSheet("");
                     button->setText(""); // Effacer le texte
                     button->setEnabled(true); // Réactiver le bouton
                     button->setCheckable(true);
@@ -269,9 +284,9 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
             if (QString("%1 - %2").arg(groupe, nomECUE) == ecueLabel) {
                 // Mettre à jour les labels du bandeau du bas
                 groupeValueLabel->setText(QString("Groupe: %1").arg(groupe));
-                groupeValueLabel->setStyleSheet("QLabel { color : green;font-weight: bold;}");
+                groupeValueLabel->setStyleSheet("QLabel { color : #5fcf65;font-weight: bold;}");
                 enseignantValueLabel->setText(QString("Enseignant: %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
-                enseignantValueLabel->setStyleSheet("QLabel { color : blue;font-weight: bold;}");
+                enseignantValueLabel->setStyleSheet("QLabel { color : #5f74cf;font-weight: bold;}");
                 ecueInfoValueLabel->setText(QString("ECUE: %1").arg(nomECUE));
 
                 // Récupérer l'index du type de cours sélectionné
@@ -334,15 +349,14 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignan
                         availableRooms.append(roomNumber);
                     }
                 }
-                minButtonHeight = 40;
                 QPushButton *button = qobject_cast<QPushButton*>(gridLayout->itemAtPosition(row + 1, col + 1)->widget());
                 if (button) {
                     // Réinitialiser le style et l'état du bouton
+                    button->setObjectName("matrice");
                     button->setStyleSheet("");
                     button->setText("");
                     button->setEnabled(true);
                     button->setToolTip("");
-                    button->setMinimumHeight(minButtonHeight);
 
                     // Mettre à jour le texte du bouton avec les salles disponibles
                     if (!availableRooms.isEmpty()) {
@@ -361,15 +375,15 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignan
                         button->setText(roomsText);
                         button->setToolTip(QString("Salles disponibles : %1").arg(roomLabels.join(", ")));
                     } else {
-                        button->setStyleSheet("QPushButton {color: red;}");
+                        button->setStyleSheet("QPushButton {background-color: #d64d4d; border: 2px solid #9c3636; color: white;}");
                         button->setText("Aucune salle\ndisponible");
                         button->setEnabled(false);
-                        button->setToolTip("Aucune salle disponible");
+                        button->setToolTip("");
                     }
 
                     // Vérifier si l'enseignant est disponible pour ce créneau
                     if (!isTeacherAvailable(enseignant, semaine, debut, fin)) {
-                        button->setStyleSheet("background-color: blue; color: white");
+                        button->setStyleSheet("background-color: #5f74cf; border: 2px solid #435291; color: white");
                         button->setText("Enseignant\nIndisponible");
                         button->setEnabled(false);
                         button->setToolTip("");
@@ -377,7 +391,7 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignan
 
                     // Vérifier si le groupe est disponible pour ce créneau
                     if (!isGroupAvailable(groupe, semaine, debut, fin)) {
-                        button->setStyleSheet("background-color: green; color: white");
+                        button->setStyleSheet("background-color: #5fcf65; border: 2px solid #439147; color: white");
                         button->setEnabled(false);
                         button->setText(QString("%1\nIndisponible").arg(groupe));
                         button->setToolTip("");
@@ -387,13 +401,41 @@ void popupEdt::bloquerBoutonsIndisponibles(int semaine, const QString& enseignan
         }
     }
 }
+void popupEdt::showMessageAndHide (int index) {
+    QStackedWidget* messageStack = findChild<QStackedWidget*>();
+    if (!messageStack) return;
+
+    messageStack->setCurrentIndex(index);
+    for (int i = 0; i < messageStack->count(); ++i) {
+        QWidget* widget = messageStack->widget(i);
+        if (widget) {
+            if (i == index) {
+                widget->show();
+            } else {
+                widget->hide();
+            }
+        }
+    }
+
+    QTimer::singleShot(2000,this,  [messageStack]() {
+        if (messageStack) {
+            for (int i = 0; i < messageStack->count(); ++i) {
+                QWidget* widget = messageStack->widget(i);
+                if (widget) {
+                    widget->hide();
+                }
+            }
+        }
+    });
+}
 
 void popupEdt::onButtonClicked() {
+
     QPushButton *clickedButton = qobject_cast<QPushButton*>(sender());
     if (!clickedButton) return;
-    if (selectedButtons.size() >= heuresRestantes.toInt()){
+    if (selectedButtons.size() >= heuresRestantes.toInt() && clickedButton->isChecked()){
         clickedButton->setChecked(false);
-        qDebug() << "Toute les heures ont été selectionné pour ce module";
+        showMessageAndHide(0);
         return;
     }
 
@@ -440,10 +482,10 @@ void popupEdt::onButtonClicked() {
             // Créer un QComboBox pour la sélection de la salle
             QComboBox *roomComboBox = new QComboBox();
             roomComboBox->addItem("......");
+            roomComboBox->setStyleSheet("min-height: 2em; margin: 2px");
             for (int room : availableRooms) {
                 roomComboBox->addItem(QString::number(room));
             }
-            roomComboBox->setMinimumHeight(minButtonHeight);
 
             // Remplacer le bouton par le QComboBox dans le layout
             gridLayout->replaceWidget(clickedButton, roomComboBox);
@@ -468,10 +510,10 @@ void popupEdt::onButtonClicked() {
                 // Créer un nouveau bouton pour remplacer le QComboBox
                 QPushButton *newButton = new QPushButton(QString("Salle : %1").arg(selectedRoom));
                 connect(newButton, &QPushButton::clicked, this, &popupEdt::onButtonClicked);
-                newButton->setMinimumHeight(minButtonHeight);
+                newButton->setObjectName("matrice");
                 newButton->setCheckable(true);
                 newButton->setChecked(true);
-                newButton->setStyleSheet("background-color: gray; color: white");
+                newButton->setStyleSheet("background-color: gray; border: 2px solid #4f4f4f; color: white");
 
                 // Remplacer le QComboBox par le nouveau bouton
                 gridLayout->replaceWidget(roomComboBox, newButton);

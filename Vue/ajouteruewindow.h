@@ -12,9 +12,9 @@ private:
     QLabel* ueLabel;
     QLineEdit* ueLineEdit;
     QList<QCheckBox*> ecueCheckBoxes;
-    QPushButton* enregistrerButton;
+    QPushButton* saveButton;
     QGroupBox* ecueGroupBox;
-    QPushButton* annulerButton;
+    QPushButton* cancelButton;
 
     void chargerEcueDepuisCSV();
     void enregistrerUE();

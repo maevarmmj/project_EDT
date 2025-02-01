@@ -2,25 +2,46 @@ QMainWindow{
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
         stop:0 #ffe5d9, stop:1 #d5b3f1);
     }
+
 QLabel {
     color: #5e239d;
     font: 14pt 'Aptos';
-    }
+}
+QLabel#titleLabel{
+    color: #5e239d;
+    font-weight: bold;
+    font: 18pt 'Aptos';
+    margin-bottom: 10px;
+}
+QLabel#bientot{
+    font-size: 14px; 
+    color: #5e239d; 
+    font-weight: bold;
+}
+QLabel#reussi{
+    font-size: 14px; 
+    color: green; 
+    font-weight: bold;
+}
+QLabel#loupe{
+    font-size: 14px; 
+    color: red; 
+    font-weight: bold;;
+}
 
 QPushButton {
     font: 11pt 'Aptos';
     padding: 5px 15px;
     border-radius: 5px;
     color: white;
-    background-color: #a754b8;
-    }
+    background-color: #a754b8;    }
 QPushButton:hover {
     background-color: #9c4bad;
     }
 QPushButton:pressed {
         background-color: #7d3f8a;
     }    
- QPushButton#saveButton {
+QPushButton#saveButton {
     background-color: #5c85d6; 
 } 
 QPushButton#saveButton:hover {
@@ -38,37 +59,65 @@ QPushButton#cancelButton:hover {
 QPushButton#cancelButton:pressed {
     background-color: #b71c1c;
 } 
+QPushButton#matrice {
+    border: 2px solid #7d3f8a;
+    margin: 2px;
+    min-height: 2em;
+}
+
+CheckBox {
+    height: 1.5em;
+}
+QCheckBox::indicator:unchecked {
+    border: 1px solid #5e239d;
+    border-radius: 5px;
+    background-color: #f9f5fa;
+}
+QCheckBox::indicator:unchecked:hover {
+    background-color: #ecdff0;
+}
+QCheckBox#cbText {
+    color: #3f156b;
+    font: 11pt 'Aptos';
+    height: 1.5em;
+}
+
 QLineEdit {
     font: 11pt 'Aptos';
+    color: #3f156b;
     padding: 8px;
     border: 2px solid #5e239d;
     border-radius: 10px;
     background-color: white;
 }
+
 QComboBox {
     font: 11pt 'Aptos';
     padding: 6px;
     border: 2px solid #5e239d;
     border-radius: 10px;
     background-color: white;
+    color: #3f156b;
 }
 QComboBox::drop-down {
     width: 15px;
     padding-right: 5px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    image: url(../../Ressources/bas.png);
+    image: url(../../Ressources/cb_arrow.png);
 }
 QComboBox::down-arrow:on { 
     top: 1px;
     left: 1px;
 }
+
 QSpinBox {
-    
     font: 11pt 'Aptos';
     border: 2px solid #5e239d;
     border-radius: 10px;
     background-color: white;
+    color: #3f156b;
+    height: 1.5em;
 }
 
 QSpinBox::up-button {
@@ -87,7 +136,7 @@ QSpinBox::up-button:hover {
 }
 
 QSpinBox::up-button:pressed {
-        background-color: #7d3f8a;
+    background-color: #7d3f8a;
 }
 
 QSpinBox::up-arrow {
@@ -112,14 +161,14 @@ QSpinBox::down-button {
     border-bottom-right-radius: 10px;
     border-width: 1px 2px 2px 2px;
 }
-/*
+
 QSpinBox::down-button:hover {
-    border-image: url(:/images/spindown_hover.png) 1;
+    background-color: #9c4bad;
 }
 
 QSpinBox::down-button:pressed {
-    border-image: url(:/images/spindown_pressed.png) 1;
-}*/
+        background-color: #7d3f8a;
+}
 
 QSpinBox::down-arrow {
     image: url(../../Ressources/bas.png);
@@ -128,19 +177,33 @@ QSpinBox::down-arrow {
     padding-right: 5px;
     padding-left: 5px;
 }
-QSpinBox::down-arrow:disabled, QSpinBox::down-arrow:off { /* off state when value in min */
+QSpinBox::down-arrow:disabled, QSpinBox::down-arrow:off { 
    image: url(../../Ressources/neutre.png);
 }
-QTableView {
-    border-radius: 10px;
+
+QHeaderView::section {
+    background-color: #f9f5fa;
+    color: #5e239d;
 }
 QTableWidget::item {
     font: 10pt 'Aptos';
+    color: #3f156b;
     background-color: #f9f5fa;
-    color: black;
 }
 QTableWidget::item:selected {
     background-color: #ecdff0;
     border: 2px solid #f9f5fa;
-    color: black;
+    color: #3f156b;
+}
+
+QGroupBox {
+    border: 2px solid #5e239d;
+    border-radius: 10px;
+    margin-top: 1.5ex; /* leave space at the top for the title */
+    font: 14pt 'Aptos';
+    color: #5e239d;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* position at the top center */
 }

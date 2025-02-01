@@ -313,6 +313,17 @@ void MainWindow::remGroup() {
         QMessageBox::warning(this, "Erreur", "Veuillez créer un groupe avant !");
         return;
     }
+    if (!fileGroupes.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV";
+        return;
+    }
+    QTextStream in(&fileGroupes);
+    // Ignorer la première ligne (en-têtes)
+    in.readLine();
+    if (in.atEnd()){
+        QMessageBox::warning(this, "Erreur", "Aucune ECUE disponible !");
+        return;
+    }
     SupprimerGroupeWindow *remgroup = new SupprimerGroupeWindow();
     connect(remgroup, &SupprimerGroupeWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remgroup->show();
@@ -324,6 +335,17 @@ void MainWindow::remEnseignant() {
     QFile fileEnseignants(QDir::currentPath() + "/../../CSV/Enseignants.csv");
     if (!fileEnseignants.exists()) {
         QMessageBox::warning(this, "Erreur", "Veuillez créer un enseignant avant !");
+        return;
+    }
+    if (!fileEnseignants.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV";
+        return;
+    }
+    QTextStream in(&fileEnseignants);
+    // Ignorer la première ligne (en-têtes)
+    in.readLine();
+    if (in.atEnd()){
+        QMessageBox::warning(this, "Erreur", "Aucune ECUE disponible !");
         return;
     }
     SupprimerEnseignantWindow *remenseignant = new SupprimerEnseignantWindow();
@@ -339,6 +361,17 @@ void MainWindow::remSalle() {
         QMessageBox::warning(this, "Erreur", "Veuillez créer une salle avant !");
         return;
     }
+    if (!fileSalles.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV";
+        return;
+    }
+    QTextStream in(&fileSalles);
+    // Ignorer la première ligne (en-têtes)
+    in.readLine();
+    if (in.atEnd()){
+        QMessageBox::warning(this, "Erreur", "Aucune ECUE disponible !");
+        return;
+    }
     SupprimerSalleWindow *remsalle = new SupprimerSalleWindow();
     connect(remsalle, &SupprimerSalleWindow::salleWindowClosed, this, &MainWindow::refreshMainWindow);
     remsalle->show();}
@@ -349,6 +382,17 @@ void MainWindow::remECUE() {
     QFile fileEcue(QDir::currentPath() + "/../../CSV/Ecue.csv");
     if (!fileEcue.exists()) {
         QMessageBox::warning(this, "Erreur", "Veuillez créer une ECUE avant !");
+        return;
+    }
+    if (!fileEcue.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV";
+        return;
+    }
+    QTextStream in(&fileEcue);
+    // Ignorer la première ligne (en-têtes)
+    in.readLine();
+    if (in.atEnd()){
+        QMessageBox::warning(this, "Erreur", "Aucune ECUE disponible !");
         return;
     }
     SupprimerEcueWindow *suppEcue = new SupprimerEcueWindow();
@@ -364,6 +408,17 @@ void MainWindow::remUE() {
         QMessageBox::warning(this, "Erreur", "Veuillez créer une UE avant !");
         return;
     }
+    if (!fileGroupes.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV";
+        return;
+    }
+    QTextStream in(&fileGroupes);
+    // Ignorer la première ligne (en-têtes)
+    in.readLine();
+    if (in.atEnd()){
+        QMessageBox::warning(this, "Erreur", "Aucune ECUE disponible !");
+        return;
+    }
     SupprimerUEWindow *remUE = new SupprimerUEWindow();
     //connect(remUE, &SupprimerUEWindow::windowClosed, this, &MainWindow::refreshMainWindow);
     remUE->show();
@@ -372,6 +427,22 @@ void MainWindow::remUE() {
 // ------ Fenêtre "MAJ de l'EDT" --------
 
 void MainWindow::updateEdt() {
+    QFile fileECUE(QDir::currentPath() + "/../../CSV/Ecue.csv");
+    if (!fileECUE.exists()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez créer une ECUE avant !");
+        return;
+    }
+    if (!fileECUE.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Erreur : Impossible d'ouvrir le fichier CSV";
+        return;
+    }
+    QTextStream in(&fileECUE);
+    // Ignorer la première ligne (en-têtes)
+    in.readLine();
+    if (in.atEnd()){
+        QMessageBox::warning(this, "Erreur", "Aucune ECUE disponible !");
+        return;
+    }
     popupEdt *popup = new popupEdt();
     connect(popup, &popupEdt::windowClosed, this, &MainWindow::refreshMainWindow);
     popup->show();

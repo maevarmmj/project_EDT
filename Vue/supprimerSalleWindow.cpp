@@ -1,7 +1,7 @@
 #include "supprimerSalleWindow.h"
 
 
-SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
+SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("Supprimer un numéro de salle");
     resize(400, 200);
     setWindowModality(Qt::ApplicationModal);
@@ -9,7 +9,10 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     QIcon icon(file);
     setWindowIcon(icon);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout();
+    centralWidget = new QWidget(this);
+    setCentralWidget(centralWidget);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
 
     // ------------------ Messages si réussite / erreur de la tache ------------------------
 
@@ -17,11 +20,11 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
 
     QLabel *SUPPRESSION_REUSSIE = new QLabel("Suppression réussie !");
     SUPPRESSION_REUSSIE->setAlignment(Qt::AlignCenter);
-    SUPPRESSION_REUSSIE->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+    SUPPRESSION_REUSSIE->setObjectName("reussi");
 
     QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
     MANQUE_INFO->setAlignment(Qt::AlignCenter);
-    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    MANQUE_INFO->setObjectName("loupe");
 
     SUPPRESSION_REUSSIE->setFixedHeight(30);
     MANQUE_INFO->setFixedHeight(30);
@@ -36,6 +39,7 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
 
 
     QLabel *label = new QLabel("Sélectionnez le numéro de la salle à supprimer :");
+    label->setObjectName("titleLabel");
     salleComboBox = new QComboBox();
 
     if (!chargerSallesDepuisCSV()) {
@@ -48,12 +52,10 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *annulerButton = new QPushButton("Annuler");
     QPushButton *supprimerButton = new QPushButton("Supprimer");
-    annulerButton->setObjectName("cancelButton");
-    supprimerButton->setObjectName("deleteButton");
-    buttonLayout->addStretch();
+    annulerButton->setObjectName("saveButton");
+    supprimerButton->setObjectName("cancelButton");
     buttonLayout->addWidget(annulerButton);
     buttonLayout->addWidget(supprimerButton);
-    buttonLayout->addStretch();
     mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonLayout);
 
@@ -61,8 +63,6 @@ SupprimerSalleWindow::SupprimerSalleWindow(QWidget *parent) : QWidget(parent) {
     connect(supprimerButton, &QPushButton::clicked, this, &SupprimerSalleWindow::supprimer);
 
     connect(this, &SupprimerSalleWindow::salleWindowClosed, this, &SupprimerSalleWindow::updateSalleComboBox);
-
-    setLayout(mainLayout);
 }
 
 // ---- Fermer la fenêtre à partir de la croix ----

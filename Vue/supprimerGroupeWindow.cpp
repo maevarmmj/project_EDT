@@ -13,8 +13,7 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
     centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
 
-    mainLayout = new QVBoxLayout();
-    centralWidget->setLayout(mainLayout);
+    mainLayout = new QVBoxLayout(centralWidget);
 
     // ------------------ Messages si réussite / erreur de la tache ------------------------
 
@@ -22,11 +21,11 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
 
     QLabel *SUPPRESSION_REUSSIE = new QLabel("Suppression réussie !");
     SUPPRESSION_REUSSIE->setAlignment(Qt::AlignCenter);
-    SUPPRESSION_REUSSIE->setStyleSheet("font-size: 14px; color: green; font-weight: bold;");
+    SUPPRESSION_REUSSIE->setObjectName("reussi");
 
     QLabel *MANQUE_INFO = new QLabel("Veuillez remplir toutes les informations !");
     MANQUE_INFO->setAlignment(Qt::AlignCenter);
-    MANQUE_INFO->setStyleSheet("font-size: 14px; color: red; font-weight: bold;");
+    MANQUE_INFO->setObjectName("loupe");
 
     SUPPRESSION_REUSSIE->setFixedHeight(30);
     MANQUE_INFO->setFixedHeight(30);
@@ -42,6 +41,7 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
 
     QLabel *titleLabel = new QLabel("Supprimer un groupe d'étudiants :", this);
     titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setObjectName("titleLabel");
     mainLayout->addWidget(titleLabel);
 
     formLayout = new QFormLayout();
@@ -53,10 +53,10 @@ SupprimerGroupeWindow::SupprimerGroupeWindow(QWidget *parent)
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     deleteButton = new QPushButton("Supprimer", this);
-    deleteButton->setObjectName("deleteButton");
+    deleteButton->setObjectName("cancelButton");
 
     cancelButton = new QPushButton("Annuler", this);
-    cancelButton->setObjectName("cancelButton");
+    cancelButton->setObjectName("saveButton");
 
     buttonLayout->addWidget(cancelButton);
     buttonLayout->addWidget(deleteButton);

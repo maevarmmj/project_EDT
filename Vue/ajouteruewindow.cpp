@@ -27,7 +27,7 @@ void AjouterUEWindow::setupUI(){
 
     QLabel *TEST = new QLabel("Fonctionnalité bientôt disponible :)");
     TEST->setAlignment(Qt::AlignCenter);
-    TEST->setStyleSheet("font-size: 14px; color: orange; font-weight: bold;");
+    TEST->setObjectName("bientot");
     TEST->setFixedHeight(30);
     messageStack->addWidget(TEST);
     TEST->hide();
@@ -51,20 +51,23 @@ void AjouterUEWindow::setupUI(){
     QScrollArea *scrollArea = new QScrollArea(centralWidget);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(ecueGroupBox);
+    scrollArea->setStyleSheet("background-color: transparent;");
     mainLayout->addWidget(scrollArea);
 
     chargerEcueDepuisCSV();
 
     QHBoxLayout* buttonLayout = new QHBoxLayout();
-    annulerButton = new QPushButton("Annuler");
-    enregistrerButton = new QPushButton("Enregistrer");
-    buttonLayout->addWidget(annulerButton);
-    buttonLayout->addWidget(enregistrerButton);
+    cancelButton = new QPushButton("Annuler");
+    saveButton = new QPushButton("Enregistrer");
+    cancelButton->setObjectName("cancelButton");
+    saveButton->setObjectName("saveButton");
+    buttonLayout->addWidget(cancelButton);
+    buttonLayout->addWidget(saveButton);
     mainLayout->addWidget(messageStack);
     mainLayout->addLayout(buttonLayout);
 
-    connect(enregistrerButton, &QPushButton::clicked, this, &AjouterUEWindow::enregistrerUE);
-    connect(annulerButton, &QPushButton::clicked, this, &AjouterUEWindow::annuler);
+    connect(saveButton, &QPushButton::clicked, this, &AjouterUEWindow::enregistrerUE);
+    connect(cancelButton, &QPushButton::clicked, this, &AjouterUEWindow::annuler);
 }
 
 AjouterUEWindow::~AjouterUEWindow(){}
@@ -101,6 +104,7 @@ void AjouterUEWindow::chargerEcueDepuisCSV() {
                                        .arg(enseignantPrenom)
                                        .arg(groupe);
             QCheckBox *checkBox = new QCheckBox(checkBoxText);
+            checkBox->setObjectName("cbText");
             ecueCheckBoxes.append(checkBox);
             QVBoxLayout* layout = dynamic_cast<QVBoxLayout*>(ecueGroupBox->layout());
             if(layout) {
