@@ -38,7 +38,7 @@ void MainWindow::setupUI() {
 
     remOptionsList = new QListWidget(centralWidget);
     remOptionsList->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
-    remOptionsList->setAttribute(Qt::WA_TranslucentBackground);
+    remOptionsList->setObjectName("optionList");
     remOptionsList->hide();
 
     // rem options
@@ -47,24 +47,6 @@ void MainWindow::setupUI() {
     remOptionsList->addItem("Salle");
     remOptionsList->addItem("ECUE");
     remOptionsList->addItem("UE");
-
-    // remGroupButton = new QPushButton("Groupe", this);
-    // remEnseignantButton = new QPushButton("Enseignant", this);
-    // remSalleButton = new QPushButton("Salle", this);
-    // remECUEButton = new QPushButton("ECUE", this);
-    // remUEButton = new QPushButton("UE", this);
-
-    // remGroupButton->setVisible(false);
-    // remEnseignantButton->setVisible(false);
-    // remSalleButton->setVisible(false);
-    // remECUEButton->setVisible(false);
-    // remUEButton->setVisible(false);
-
-    // topBarLayout->addWidget(remGroupButton);
-    // topBarLayout->addWidget(remEnseignantButton);
-    // topBarLayout->addWidget(remSalleButton);
-    // topBarLayout->addWidget(remECUEButton);
-    // topBarLayout->addWidget(remUEButton);
 
 
     // Bouton "+"
@@ -75,7 +57,7 @@ void MainWindow::setupUI() {
 
     addOptionsList = new QListWidget(centralWidget);
     addOptionsList->setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
-    addOptionsList->setAttribute(Qt::WA_TranslucentBackground);
+    addOptionsList->setObjectName("optionList");
     addOptionsList->hide();
 
     // Add options
@@ -125,6 +107,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     if (obj == remButton) {
         if (event->type() == QEvent::Enter) {
             showOptions("rem");
+            remhideTimer->stop();
             return true;
         } else if (event->type() == QEvent::Leave) {
             remhideTimer->start();
@@ -133,6 +116,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     } else if (obj == addButton) {
         if (event->type() == QEvent::Enter) {
             showOptions("add");
+            remhideTimer->start();
             return true;
         } else if (event->type() == QEvent::Leave) {
             addhideTimer->start();
@@ -175,7 +159,6 @@ void MainWindow::showOptions(QString remOrAdd)
     QPoint pos = remButton->mapToGlobal(QPoint(remButton->width(), 0));
     remOptionsList->move(pos);
 
-    remhideTimer->stop();
     remOptionsList->show();
     remOptionsList->setFocus();
     } else if (remOrAdd == "add"){
@@ -183,7 +166,6 @@ void MainWindow::showOptions(QString remOrAdd)
         QPoint pos = addButton->mapToGlobal(QPoint(addButton->width(), 0));
         addOptionsList->move(pos);
 
-        addhideTimer->stop();
         addOptionsList->show();
         addOptionsList->setFocus();
     }
