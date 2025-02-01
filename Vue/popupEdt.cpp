@@ -18,7 +18,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     // ---------------- Message erreurs---------------------
     messageStack = new QStackedWidget(this);
 
-    QLabel *plusHeure = new QLabel("Toutes les heures ont déjà été placé");
+    QLabel *plusHeure = new QLabel("Toutes les heures ont déjà été placées");
     plusHeure->setAlignment(Qt::AlignCenter);
     plusHeure->setObjectName("loupe");
     plusHeure->setFixedHeight(30);
@@ -164,6 +164,7 @@ popupEdt::~popupEdt(){
 
 void popupEdt::validerEtAfficher( )
 {
+    selectedButtonInfos.clear();
     // Parcourir la grille de boutons
     for (int row = 0; row < 10; ++row) {
         for (int col = 0; col < 5; ++col) {
@@ -283,11 +284,11 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
             // Vérifier si la ligne correspond à l'ECUE et au type de cours sélectionnés
             if (QString("%1 - %2").arg(groupe, nomECUE) == ecueLabel) {
                 // Mettre à jour les labels du bandeau du bas
-                groupeValueLabel->setText(QString("Groupe: %1").arg(groupe));
+                groupeValueLabel->setText(QString("Groupe : %1").arg(groupe));
                 groupeValueLabel->setStyleSheet("QLabel { color : #5fcf65;font-weight: bold;}");
-                enseignantValueLabel->setText(QString("Enseignant: %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
+                enseignantValueLabel->setText(QString("Enseignant : %1 %2").arg(nomEnseignant.toUpper(), prenomEnseignant));
                 enseignantValueLabel->setStyleSheet("QLabel { color : #5f74cf;font-weight: bold;}");
-                ecueInfoValueLabel->setText(QString("ECUE: %1").arg(nomECUE));
+                ecueInfoValueLabel->setText(QString("ECUE : %1").arg(nomECUE));
 
                 // Récupérer l'index du type de cours sélectionné
                 QStringList typesCoursList = typesCours.split("/");
@@ -298,7 +299,7 @@ void popupEdt::mettreAJourBandeauBas(QLabel *groupeValueLabel, QLabel *enseignan
                     QStringList heuresAPlacerList = heuresAPlacer.split("/");
                     if (typeCoursIndex < heuresAPlacerList.size()) {
                         heuresRestantes = heuresAPlacerList[typeCoursIndex];
-                        typeCoursInfoValueLabel->setText(QString("Heures à placer: %1").arg(heuresRestantes));
+                        typeCoursInfoValueLabel->setText(QString("Heures à placer : %1").arg(heuresRestantes));
                     } else {
                         typeCoursInfoValueLabel->setText("Heures à placer : N/A");
                     }

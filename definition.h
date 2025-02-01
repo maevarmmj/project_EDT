@@ -19,6 +19,7 @@
 #include <QIcon>
 #include <QLabel>
 #include <QLineEdit>
+#include <QListWidget>
 #include <QMainWindow>
 #include <QMap>
 #include <QMenu>
