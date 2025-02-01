@@ -35,22 +35,26 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     semaineSpinBox->setRange(1, 52);
     bandeauLayout->addWidget(semaineLabel);
     bandeauLayout->addWidget(semaineSpinBox);
+    bandeauLayout->addSpacing(20);
 
     // Label et ComboBox pour l'ECUE
     ecueLabel = new QLabel("ECUE :", bandeauWidget);
     ecueComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(ecueLabel);
     bandeauLayout->addWidget(ecueComboBox);
+    bandeauLayout->addSpacing(20);
 
     // Label et ComboBox pour le type de cours
     typeCoursLabel = new QLabel("Type de cours :", bandeauWidget);
     typeCoursComboBox = new QComboBox(bandeauWidget);
     bandeauLayout->addWidget(typeCoursLabel);
     bandeauLayout->addWidget(typeCoursComboBox);
+    bandeauLayout->addSpacing(20);
 
     // Bouton Valider
     validerButton = new QPushButton("Valider", bandeauWidget);
     bandeauLayout->addWidget(validerButton);
+    bandeauLayout->setAlignment(Qt::AlignHCenter);
 
     bandeauWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     // Ajout du bandeau au layout principal
