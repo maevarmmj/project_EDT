@@ -1,8 +1,7 @@
 #ifndef ENSEIGNANT_H
 #define ENSEIGNANT_H
 
-#include <string>
-#include <iostream>
+#include "definition.h"
 
 class Enseignant {
 private:

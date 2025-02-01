@@ -1,10 +1,6 @@
 #ifndef SALLE_H
 #define SALLE_H
-#include <iostream>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
+
 #include "definition.h"
 
 class Salle

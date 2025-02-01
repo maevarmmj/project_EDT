@@ -1,9 +1,9 @@
 #ifndef AJOUTERGROUPEWINDOW_H
 #define AJOUTERGROUPEWINDOW_H
 
-#include <Controleur/grpeetudiantcontrolleur.h>
-#include <controleur/SalleControl.h>
-#include <controleur/enseignantControl.h>
+#include "Controleur/grpeetudiantcontrolleur.h"
+#include "controleur/SalleControl.h"
+#include "controleur/enseignantControl.h"
 
 #include "definition.h"
 

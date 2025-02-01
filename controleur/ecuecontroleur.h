@@ -3,11 +3,7 @@
 
 #include "Model/ecue.h"
 #include "definition.h"
-#include <QString>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlRecord>
+
 
 class EcueControleur
 {

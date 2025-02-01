@@ -1,12 +1,12 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 
-
+#include <ctime>
+#include <iostream>
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDateTime>
-#include <QDebug>
 #include <QDialog>
 #include <QDir>
 #include <QEnterEvent>
@@ -35,7 +35,12 @@
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlRecord>
 #include <string>
+#include <vector>
 
 
 typedef enum cours {CM, TD, TP_INFO, TP_ELEC, EXAMEN} cours;

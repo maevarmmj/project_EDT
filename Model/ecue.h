@@ -1,13 +1,7 @@
 #ifndef ECUE_H
 #define ECUE_H
 
-#include <QFile>
-#include <QTextStream>
-#include <QDir>
-#include <vector>
-
 #include "definition.h"
-#include <string>
 #include "enseignant.h"
 #include "groupeetudiant.h"
 #include "salle.h"
