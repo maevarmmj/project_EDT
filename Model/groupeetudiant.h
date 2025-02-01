@@ -16,4 +16,6 @@ public:
     void deleteGroupe();
 };
 
+bool operator== (GroupeEtudiant &gp1, GroupeEtudiant &gp2);
+
 #endif // GROUPEETUDIANT_H

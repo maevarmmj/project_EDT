@@ -57,6 +57,7 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     bandeauLayout->setAlignment(Qt::AlignHCenter);
 
     bandeauWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+
     // Ajout du bandeau au layout principal
     mainLayout->addWidget(bandeauWidget);
     // ---------------- Fin Bandeau du Haut ----------------
@@ -160,6 +161,10 @@ popupEdt::popupEdt(QWidget *parent) : QMainWindow(parent) {
     // ----------- Connexion du bouton Valider ----------------
 
     QObject::connect(validerButton, SIGNAL(clicked()), this, SLOT(validerEtAfficher()));
+
+    connect(semaineSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &popupEdt::validerEtAfficher);
+    connect(ecueComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &popupEdt::validerEtAfficher);
+    connect(typeCoursComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &popupEdt::validerEtAfficher);
 }
 
 popupEdt::~popupEdt(){
