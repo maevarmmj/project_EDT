@@ -38,35 +38,31 @@ Lors du lancement du programme, la fenêtre principale apparaît.
 ***
 
 ### Bouton "+" :
-<div style="display: flex; align-items: center;">
-  <img style="float: right; margin-right: 20px;" src="Ressources/add.png" alt="add button" />
-  <div style="flex-direction: column;">
+<img src="Ressources/add.png" alt="add button" />
+
 ➕ <ins>ELEMENT</ins> : permet d'ajouter un Groupe d'étudiants (nom du groupe) / Enseignant (nom + prénom de l'enseignant) / Salle (n° et type de salle), qui seront respectivement enregistrés dans Groupes.csv / Enseignants.csv / Salles.csv. 
-</br>
+<br/><br/>
 ➕ <ins>ECUE</ins> : si les éléments suffisants ont été créés, permet d'ajouter une ECUE (nom + enseignant + groupe d'étudiants + types de cours de l'ECUE + heures par type de cours). L'ECUE est enregistrée dans Ecue.csv. Il faut obligatoirement au moins un groupe d'étudiants et un enseignant déjà créés.
-</br>
+<br/><br/>
 ➕ <ins>UE</ins> : permet d'ajouter une UE qui contient plusieurs ECUE.  Il faut obligatoirement au moins une ECUE déjà créée. ❌ _Encore en cours_ ❌
-  </div>
-</div>
+ 
 
 
 ***
 
 ### Bouton "-" :
- <div style="display: flex; align-items: center;">
-  <img style="float: right; margin-right: 20px;" src="Ressources/remove.png" alt="remove button" />
-  <div style="flex-direction: column;">
+<img src="Ressources/remove.png" alt="remove button" />
+
 ➖ <ins>GROUPE</ins> : permet de supprimer un groupe d'étudiants. Attention : si un groupe est liée à une ECUE, cette dernière sera automatiquement supprimée. Il faut obligatoirement au moins un groupe d'étudiants déjà créé.
-</br>
+<br/><br/>
 ➖ <ins>ENSEIGNANT</ins> : permet de supprimer un enseignant. Attention : si un enseignant est liée à une ECUE, cette dernière sera automatiquement supprimée. Il faut obligatoirement au moins un enseignant déjà créé.
-</br>
+<br/><br/>
 ➖ <ins>SALLE</ins> : permet de supprimer une salle (selon son numéro uniquement). Il faut obligatoirement au moins une salle déjà créée. Si une salle a été affectée à un créneau, les heures restantes à placer seront automatiquement mises à jour.
-</br>
+<br/><br/>
 ➖ <ins>ECUE</ins> : permet de supprimer une ECUE. Il faut obligatoirement au moins une ECUE déjà créée.
-</br>
+<br/><br/>
 ➖ <ins>UE</ins> : permet de supprimer une UE. Il faut obligatoirement au moins une UE déjà créée. Etant donné qu'à l'heure actuelle, il n'est pas possible d'en créer une, il est tout de même possible d'avoir accès à cette fenêtre en créant artificiellement un fichier "UE.csv". ❌ _Encore en cours_ ❌
-  </div>
-</div>
+ 
 
 ***
 
@@ -105,4 +101,4 @@ Lors du lancement du programme, la fenêtre principale apparaît.
 🔄 Deuxième étape : sélection des créneaux pour l'ECUE concernée. Si l'utilisateur clique sur "Enregistrer", les créneaux sont enregistrées dans la base de donnée en MySQL. Sinon, le programme revient à sa dernière sauvegarde. Les salles disponibles sont misese à jour automatiquement. 
 \
 \
-🔄 Les heures à placer du type de cours de l'ECUE concernée sont mises à jour automatiquement dans la fenêtre principale (décrémentation). Tous les emplois du temps sont également mis à jour (étudiants et enseignant). \
+🔄 Les heures à placer du type de cours de l'ECUE concernée sont mises à jour automatiquement dans la fenêtre principale (décrémentation). Tous les emplois du temps sont également mis à jour (étudiants et enseignant).
